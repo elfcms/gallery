@@ -70,7 +70,7 @@ class AdminController extends Controller
             $menuData[$key]['text'] = $text;
 
         } */
-        return view('shop::admin.gallery.index',[
+        return view('gallery::admin.gallery.index',[
             'page' => [
                 'title' => 'Gallery',
                 'current' => url()->current(),

@@ -12,7 +12,7 @@
             </li>
         </ul>
     </nav> --}}
-    @section('shop-content')
+    @section('gallery-content')
     @show
 
 </div>

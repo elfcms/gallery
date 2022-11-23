@@ -40,7 +40,8 @@ return [
             "parent_route" => "admin.gallery.index",
             "icon" => "/vendor/elfcms/gallery/admin/images/icons/gallery.png",
             "position" => 120,
-            "submenu" => []
+            "submenu" => [
+            ]
         ],
     ],
 ];
