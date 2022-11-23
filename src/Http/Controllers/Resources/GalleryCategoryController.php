@@ -1,6 +1,6 @@
 <?php
 
-namespace Elfcms\Gallery\Http\Controllers;
+namespace Elfcms\Gallery\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
 use Elfcms\Gallery\Models\GalleryCategory;
@@ -15,7 +15,7 @@ class GalleryCategoryController extends Controller
      */
     public function index()
     {
-        //
+        return redirect(route('admin.gallery.index'));
     }
 
     /**

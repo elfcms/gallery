@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->text('additional_text')->nullable();
             $table->string('option')->nullable();
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

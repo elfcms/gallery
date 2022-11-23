@@ -1,9 +1,10 @@
 <?php
 
-namespace Elfcms\Gallery\Http\Controllers;
+namespace Elfcms\Gallery\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
 use Elfcms\Gallery\Models\Gallery;
+use Elfcms\Gallery\Models\GalleryCategory;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
@@ -15,7 +16,15 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = GalleryCategory::where('active',1)->with('galleries')->get();
+        //dd($categories);
+        return view('gallery::admin.gallery.index',[
+            'page' => [
+                'title' => 'Gallery',
+                'current' => url()->current(),
+            ],
+            'categories' => $categories,
+        ]);
     }
 
     /**
