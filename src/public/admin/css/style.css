@@ -24,6 +24,9 @@
     grid-column: 1/8;
     padding-bottom: 10px;
 }
+.grid-table td img {
+    height: 30px;
+}
 .grid-table .full-width td[colspan] {
     flex-direction: column;
     align-items: stretch;
