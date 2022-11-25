@@ -21,7 +21,7 @@
 </div> --}}
 <nav class="pagenav">
     <div class="abstract-nav-line">
-        <a href="{{route('admin.gallery.categories.create')}}" class="default-btn submit-button create-button">{{__('gallery::elf.create_gallery')}}</a>
+        <a href="{{route('admin.gallery.create')}}" class="default-btn submit-button create-button">{{__('gallery::elf.create_gallery')}}</a>
     </div>
 </nav>
 <div class="table-search-box">

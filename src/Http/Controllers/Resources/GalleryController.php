@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Elfcms\Gallery\Models\Gallery;
 use Elfcms\Gallery\Models\GalleryCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class GalleryController extends Controller
 {
@@ -86,7 +87,34 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->merge([
+            'slug' => Str::slug($request->slug),
+        ]);
+        $validated = $request->validate([
+            'category_id' => 'nullable',
+            'name' => 'required',
+            'slug' => 'required|unique:Elfcms\Gallery\Models\Gallery,slug',
+            'preview' => 'nullable|file|max:512'
+        ]);
+
+        $preview_path = '';
+        if (!empty($request->file()['preview'])) {
+            $preview = $request->file()['preview']->store('public/gallery/preview');
+            $preview_path = str_ireplace('public/','/storage/',$preview);
+        }
+
+        if (empty($validated['category_id'])) {
+            $validated['category_id'] = null;
+        }
+        $validated['preview'] = $preview_path;
+        $validated['description'] = $request->description;
+        $validated['additional_text'] = $request->text;
+        $validated['active'] = empty($request->active) ? 0 : 1;
+        $validated['option'] = $request->option;
+
+        $gallery = Gallery::create($validated);
+
+        return redirect(route('admin.gallery.edit',$gallery->slug))->with('gallerysuccess','Post created successfully');
     }
 
     /**
@@ -108,7 +136,15 @@ class GalleryController extends Controller
      */
     public function edit(Gallery $gallery)
     {
-        //
+        $categories = GalleryCategory::active()->get();
+        return view('gallery::admin.gallery.edit',[
+            'page' => [
+                'title' => __('gallery::elf.edit_gallery'),
+                'current' => url()->current(),
+            ],
+            'categories' => $categories,
+            'gallery' => $gallery,
+        ]);
     }
 
     /**

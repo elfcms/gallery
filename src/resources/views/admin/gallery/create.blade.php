@@ -1,6 +1,6 @@
-@extends('basic::admin.layouts.blog')
+@extends('gallery::admin.layouts.gallery')
 
-@section('blogpage-content')
+@section('gallery-content')
 
     @if (Session::has('postedited'))
         <div class="alert alert-success">{{ Session::get('postedited') }}</div>
@@ -16,7 +16,7 @@
     @endif
 
     <div class="item-form">
-        <h3>{{ __('basic::elf.create_post') }}</h3>
+        <h3>{{ $page['title'] }}</h3>
         <form action="{{ route('admin.gallery.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
@@ -41,6 +41,7 @@
                     <label for="category_id">{{ __('basic::elf.category') }}</label>
                     <div class="input-wrapper">
                         <select name="category_id" id="category_id">
+                            <option value="0">{{__('gallery::elf.no_category')}}</option>
                         @foreach ($categories as $item)
                             <option value="{{ $item->id }}" @if ($item->active != 1) class="inactive" @endif @if ($item->id == $category_id) selected @endif>{{ $item->name }}@if ($item->active != 1) [{{ __('basic::elf.inactive') }}] @endif</option>
                         @endforeach
@@ -72,7 +73,7 @@
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="additional_text">{{ __('basic::elf.text') }}</label>
+                    <label for="additional_text">{{ __('gallery::elf.additional_text') }}</label>
                     <div class="input-wrapper">
                         <textarea name="additional_text" id="additional_text" cols="30" rows="10"></textarea>
                     </div>
@@ -94,16 +95,9 @@
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="tags">{{ __('basic::elf.tags') }}</label>
+                    <label for="option">{{ __('gallery::elf.option') }}</label>
                     <div class="input-wrapper">
-                        <div class="tag-form-wrapper">
-                            <div class="tag-list-box"></div>
-                            <div class="tag-input-box">
-                                <input type="text" class="tag-input" autocomplete="off">
-                                <button type="button" class="default-btn tag-add-button">Add</button>
-                                <div class="tag-prompt-list"></div>
-                            </div>
-                        </div>
+                        <input type="text" name="option" id="option">
                     </div>
                 </div>
             </div>
@@ -113,17 +107,12 @@
         </form>
     </div>
     <script>
-    const imageInput = document.querySelector('#image')
-    if (imageInput) {
-        inputFileImg(imageInput)
-    }
     const previewInput = document.querySelector('#preview')
     if (previewInput) {
         inputFileImg(previewInput)
     }
     autoSlug('.autoslug')
 
-    tagFormInit()
     //add editor
     runEditor('#description')
     runEditor('#additional_text')
