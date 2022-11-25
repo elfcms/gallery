@@ -31,7 +31,16 @@ Route::group(['middleware'=>['web','cookie','start']],function() use ($adminPath
             'destroy' => 'gallery.categories.destroy'
         ]);
         Route::resource($adminPath . '/gallery', Elfcms\Gallery\Http\Controllers\Resources\GalleryController::class);
-        Route::resource($adminPath . '/gallery/{gallery}/items', Elfcms\Gallery\Http\Controllers\Resources\GalleryItemController::class)->names(['index' => 'item']);
+        Route::resource($adminPath . '/gallery/{gallery}/items', Elfcms\Gallery\Http\Controllers\Resources\GalleryItemController::class)->names([
+            'index' => 'gallery.items',
+            'create' => 'gallery.items.create',
+            'edit' => 'gallery.items.edit',
+            'store' => 'gallery.items.store',
+            'show' => 'gallery.items.show',
+            'edit' => 'gallery.items.edit',
+            'update' => 'gallery.items.update',
+            'destroy' => 'gallery.items.destroy'
+        ]);
 
     });
 

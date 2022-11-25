@@ -3,6 +3,7 @@
 namespace Elfcms\Gallery\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
+use Elfcms\Gallery\Models\Gallery;
 use Elfcms\Gallery\Models\GalleryCategory;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,43 @@ class GalleryCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return redirect(route('admin.gallery.index'));
+        $trend = 'asc';
+        $order = 'id';
+        $search = $request->search ?? '';
+        if (!empty($request->trend) && $request->trend == 'desc') {
+            $trend = 'desc';
+        }
+        if (!empty($request->order)) {
+            $order = $request->order;
+        }
+        if (!empty($request->count)) {
+            $count = intval($request->count);
+        }
+        if (empty($count)) {
+            $count = 30;
+        }
+        if (!empty ($search)) {
+            $categories = GalleryCategory::where('name','like',"%{$search}%")->orderBy($order, $trend)->with('galleries')->get();//paginate($count);
+        }
+        else {
+            $categories = GalleryCategory::orderBy($order, $trend)->with('galleries')->get();//paginate($count);
+        }
+        $nullCategory = new GalleryCategory;//::where('id',null)->with('galleries')->get();
+        $nullCategory->id = null;
+        $nullCategory->name = '<' . __('gallery::elf.no_category') . '>';
+        $nullCategory->galleries = Gallery::where('category_id',null)->get();
+        $categories->push($nullCategory);
+        //dd($categories);
+        return view('gallery::admin.gallery.category.index',[
+            'page' => [
+                'title' => __('gallery::elf.galleries'),
+                'current' => url()->current(),
+            ],
+            'categories' => $categories,
+            'search' => $search,
+        ]);
     }
 
     /**

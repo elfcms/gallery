@@ -34,8 +34,8 @@ return [
 
     "menu" => [
         [
-            "title" => "Gallery",
-            "lang_title" => "gallery::elf.gallery",
+            "title" => "Galleries",
+            "lang_title" => "gallery::elf.galleries",
             "route" => "admin.gallery.index",
             "parent_route" => "admin.gallery.index",
             "icon" => "/vendor/elfcms/gallery/admin/images/icons/gallery.png",

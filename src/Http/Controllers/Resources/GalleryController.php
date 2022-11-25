@@ -14,16 +14,49 @@ class GalleryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = GalleryCategory::where('active',1)->with('galleries')->get();
-        //dd($categories);
+        $trend = 'asc';
+        $order = 'id';
+        $search = $request->search ?? '';
+        if (!empty($request->trend) && $request->trend == 'desc') {
+            $trend = 'desc';
+        }
+        if (!empty($request->order)) {
+            $order = $request->order;
+        }
+        if (!empty($request->count)) {
+            $count = intval($request->count);
+        }
+        if (empty($count)) {
+            $count = 30;
+        }
+
+        $category = null;
+        if (!empty ($search)) {
+            $galleries = Gallery::where('name','like',"%{$search}%")->orderBy($order, $trend)->with('category')->withCount('items')->paginate($count);
+        }
+        elseif (!empty($request->category)) {
+            $galleries = Gallery::where('category_id',$request->category)->orderBy($order, $trend)->with('category')->withCount('items')->paginate($count);
+            $category = GalleryCategory::find($request->category);
+        }
+        else {
+            $galleries = Gallery::orderBy($order, $trend)->with('category')->withCount('items')->paginate($count);
+        }
+        /* $nullCategory = new GalleryCategory;//::where('id',null)->with('galleries')->get();
+        $nullCategory->id = null;
+        $nullCategory->name = '<' . __('gallery::elf.no_category') . '>';
+        $nullCategory->galleries = Gallery::where('category_id',null)->get();
+        $categories->push($nullCategory); */
+        //dd($galleries);
         return view('gallery::admin.gallery.index',[
             'page' => [
-                'title' => 'Gallery',
+                'title' => __('gallery::elf.galleries'),
                 'current' => url()->current(),
             ],
-            'categories' => $categories,
+            'galleries' => $galleries,
+            'search' => $search,
+            'category' => $category,
         ]);
     }
 
@@ -32,9 +65,17 @@ class GalleryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $categories = GalleryCategory::active()->get();
+        return view('gallery::admin.gallery.create',[
+            'page' => [
+                'title' => __('gallery::elf.create_gallery'),
+                'current' => url()->current(),
+            ],
+            'categories' => $categories,
+            'category_id' => $request->category_id
+        ]);
     }
 
     /**

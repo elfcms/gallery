@@ -1,0 +1,64 @@
+.grid-table.galleries-by-category {
+    grid-template-columns:
+        minmax(50px, 1fr)
+        minmax(100px, 1fr)
+        minmax(230px, 3fr)
+        minmax(180px, 2fr)
+        minmax(180px, 2fr)
+        minmax(130px, 1.7fr)
+        minmax(180px, 2fr);
+}
+.grid-table.galleries-table {
+    grid-template-columns:
+        minmax(50px, 1fr)
+        minmax(100px, 1fr)
+        minmax(230px, 3fr)
+        minmax(230px, 3fr)
+        minmax(130px, 1.7fr)
+        minmax(180px, 2fr)
+        minmax(180px, 2fr)
+        minmax(130px, 1.3fr)
+        minmax(180px, 2fr);
+}
+.grid-table .full-width td[colspan="7"] {
+    grid-column: 1/8;
+    padding-bottom: 10px;
+}
+.grid-table .full-width td[colspan] {
+    flex-direction: column;
+    align-items: stretch;
+}
+.grid-table .full-width td[colspan] h6 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 1em 0;
+}
+.grid-table .full-width td[colspan] h6.notempty {
+    cursor: pointer;
+}
+.grid-table .full-width td[colspan] h6.notempty::after {
+    content: attr(data-show);
+}
+.grid-table .full-width td[colspan] h6.notempty.expanded::after {
+    content: attr(data-hide);
+}
+.grid-table .full-width td[colspan] .table-collapse {
+    overflow: hidden;
+    max-height: 0px;
+    transition: .4s linear;
+}
+.grid-table .full-width td[colspan] .table-collapse.expanded {
+    max-height: 5000px;
+}
+.grid-table .full-width td[colspan] th {
+    background-color: #a5a5a5;
+}
+.grid-table .full-width td[colspan] tr:nth-child(odd) td {
+    background-color: #e8f6ff;
+}
+.grid-table .full-width td[colspan] tr:nth-child(even) td {
+    background-color: #cddfeb;
+}
+.grid-table .full-width td[colspan] tr:hover td {
+    background-color: #c3e7ff;
+}
