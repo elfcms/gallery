@@ -212,6 +212,10 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery)
     {
-        //
+        if (!$gallery->delete()) {
+            return redirect(route('admin.gallery.index'))->withErrors(['gallerysuccess'=>'Error of post deleting']);
+        }
+
+        return redirect(route('admin.gallery.index'))->with('gallerysuccess',__('gallery::elf.gallery_deleted_successfully'));
     }
 }

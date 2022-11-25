@@ -127,9 +127,9 @@
                 </td>
                 <td class="button-column non-text-buttons">
                 @if (!empty($gallery->id))
-                    <a href="{{ route('admin.gallery.items.create',$gallery->id) }}" class="default-btn submit-button create-button" title="{{ __('gallery::elf.create_item') }}"></a>
-                    <a href="{{ route('admin.gallery.edit',$gallery->id) }}" class="default-btn edit-button" title="{{ __('basic::elf.edit') }}"></a>
-                    <form action="{{ route('admin.gallery.update',$gallery->id) }}" method="POST">
+                    <a href="{{ route('admin.gallery.items.create',$gallery->slug) }}" class="default-btn submit-button create-button" title="{{ __('gallery::elf.create_item') }}"></a>
+                    <a href="{{ route('admin.gallery.edit',$gallery->slug) }}" class="default-btn edit-button" title="{{ __('basic::elf.edit') }}"></a>
+                    <form action="{{ route('admin.gallery.update',$gallery->slug) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="id" id="id" value="{{ $gallery->id }}">
@@ -139,17 +139,17 @@
 
                         </button>
                     </form>
-                    <form action="{{ route('admin.gallery.destroy',$gallery->id) }}" method="POST" data-submit="check">
+                    <form action="{{ route('admin.gallery.destroy',$gallery->slug) }}" method="POST" data-submit="check">
                         @csrf
                         @method('DELETE')
                         <input type="hidden" name="id" value="{{ $gallery->id }}">
-                        <input type="hidden" name="email" value="{{ $gallery->email }}">
+                        <input type="hidden" name="name" value="{{ $gallery->name }}">
                         <button type="submit" class="default-btn delete-button" title="{{ __('basic::elf.delete') }}"></button>
                     </form>
                     <div class="contextmenu-content-box">
-                        <a href="{{ route('admin.gallery.items.create',$gallery->id) }}" class="contextmenu-item">{{ __('gallery::elf.create_item') }}</a>
-                        <a href="{{ route('admin.gallery.edit',$gallery->id) }}" class="contextmenu-item">{{ __('basic::elf.edit') }}</a>
-                        <form action="{{ route('admin.gallery.update',$gallery->id) }}" method="POST">
+                        <a href="{{ route('admin.gallery.items.create',$gallery->slug) }}" class="contextmenu-item">{{ __('gallery::elf.create_item') }}</a>
+                        <a href="{{ route('admin.gallery.edit',$gallery->slug) }}" class="contextmenu-item">{{ __('basic::elf.edit') }}</a>
+                        <form action="{{ route('admin.gallery.update',$gallery->slug) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" id="id" value="{{ $gallery->id }}">
@@ -163,11 +163,11 @@
                             @endif
                             </button>
                         </form>
-                        <form action="{{ route('admin.gallery.destroy',$gallery->id) }}" method="POST" data-submit="check">
+                        <form action="{{ route('admin.gallery.destroy',$gallery->slug) }}" method="POST" data-submit="check">
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $gallery->id }}">
-                            <input type="hidden" name="email" value="{{ $gallery->email }}">
+                            <input type="hidden" name="name" value="{{ $gallery->name }}">
                             <button type="submit" class="contextmenu-item">{{ __('basic::elf.delete') }}</button>
                         </form>
                     </div>
@@ -185,6 +185,54 @@
 </div>
 {{$galleries->links('basic::admin.layouts.pagination')}}
 <script>
+const checkForms = document.querySelectorAll('form[data-submit="check"]')
+function setConfirmDelete(forms) {
+    if (forms) {
+        forms.forEach(form => {
+            form.addEventListener('submit',function(e){
+                e.preventDefault();
+                let galleryId = this.querySelector('[name="id"]').value,
+                    galleryName = this.querySelector('[name="name"]').value,
+                    self = this
+                popup({
+                    title:'{{ __('basic::elf.deleting_of_element') }}' + galleryId,
+                    content:'<p>{{ __('basic::elf.are_you_sure_to_deleting_gallery') }} "' + galleryName + '" (ID ' + galleryId + ')?</p>',
+                    buttons:[
+                        {
+                            title:'{{ __('basic::elf.delete') }}',
+                            class:'default-btn delete-button',
+                            callback: function(){
+                                self.submit()
+                            }
+                        },
+                        {
+                            title:'{{ __('basic::elf.cancel') }}',
+                            class:'default-btn cancel-button',
+                            callback:'close'
+                        }
+                    ],
+                    class:'danger'
+                })
+            })
+        })
+    }
+}
+
+setConfirmDelete(checkForms)
+
+const tablerow = document.querySelectorAll('.galleries-table tbody tr');
+if (tablerow) {
+    tablerow.forEach(row => {
+        row.addEventListener('contextmenu',function(e){
+            e.preventDefault()
+            let content = row.querySelector('.contextmenu-content-box').cloneNode(true)
+            let forms  = content.querySelectorAll('form[data-submit="check"]')
+            setConfirmDelete(forms)
+            contextPopup(content,{'left':e.x,'top':e.y})
+        })
+    })
+}
+
 const tableExpander = document.querySelectorAll('h6.notempty');
 if (tableExpander) {
     tableExpander.forEach(element => {
