@@ -31,6 +31,11 @@ class GalleryItem extends Model
         return $this->belongsTo(Gallery::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(GalleryTag::class, 'gallery_item_tags', 'gallery_item_id', 'gallery_tag_id');
+    }
+
     /**
      * Get the route key for the model.
      *

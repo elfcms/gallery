@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('gallery_tags', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::table('gallery_items', function (Blueprint $table) {
+            $table->string('link')->nullable()->after('additional_text');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gallery_tags');
+        Schema::table('gallery_items', function (Blueprint $table) {
+            $table->dropColumn('link');
+        });
     }
 };

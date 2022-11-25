@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('gallery_items', function (Blueprint $table) {
-            //
+        Schema::create('gallery_item_tags', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('gallery_item_id')->constrained();
+            $table->foreignId('gallery_tag_id')->constrained();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('gallery_items', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('gallery_item_tags');
     }
 };
