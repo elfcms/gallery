@@ -3,6 +3,7 @@
 namespace Elfcms\Gallery\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
+use Elfcms\Gallery\Models\Gallery;
 use Elfcms\Gallery\Models\GalleryItem;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,24 @@ class GalleryItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Gallery $gallery)
     {
-        //
+        if ($request->ajax()) {
+            return view('gallery::admin.gallery.items.content.index',[
+                'page' => [
+                    'title' => __('gallery::elf.items'),
+                    'current' => url()->current(),
+                ],
+                'gallery' => $gallery,
+            ]);
+        }
+        return view('gallery::admin.gallery.items.index',[
+            'page' => [
+                'title' => __('gallery::elf.items'),
+                'current' => url()->current(),
+            ],
+            'gallery' => $gallery,
+        ]);
     }
 
     /**
@@ -23,9 +39,28 @@ class GalleryItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request, Gallery $gallery)
     {
-        //
+        $maxPosition = GalleryItem::max('position');
+        $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
+        if ($request->ajax()) {
+            return view('gallery::admin.gallery.items.content.create',[
+                'page' => [
+                    'title' => __('gallery::elf.create_item'),
+                    'current' => url()->current(),
+                ],
+                'gallery' => $gallery,
+                'position' => $position,
+            ]);
+        }
+        return view('gallery::admin.gallery.items.create',[
+            'page' => [
+                'title' => __('gallery::elf.create_item'),
+                'current' => url()->current(),
+            ],
+            'gallery' => $gallery,
+            'position' => $position,
+        ]);
     }
 
     /**

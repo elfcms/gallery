@@ -19,7 +19,7 @@
         @endforeach
     </div>
 </div> --}}
-<nav class="pagenav">
+{{-- <nav class="pagenav">
     <div class="abstract-nav-line">
         <a href="{{route('admin.gallery.create')}}" class="default-btn submit-button create-button">{{__('gallery::elf.create_gallery')}}</a>
     </div>
@@ -45,9 +45,9 @@
             </div>
         </div>
     </form>
-</div>
-@if (Session::has('gallerysuccess'))
-<div class="alert alert-alternate">{{ Session::get('gallerysuccess') }}</div>
+</div> --}}
+@if (Session::has('elementsuccess'))
+<div class="alert alert-alternate">{{ Session::get('elementsuccess') }}</div>
 @endif
 @if ($errors->any())
 <div class="alert alert-danger">
@@ -58,7 +58,33 @@
     </ul>
 </div>
 @endif
-<div class="widetable-wrapper">
+
+<div class="gallery-info-box">
+    <div class="gallery-preview-box">
+    @empty($gallery->preview)
+        <span>No image</span>
+    @else
+        <img src="{{ asset($gallery->preview) }}" alt="">
+    @endempty
+    </div>
+    <div class="gallery-data-box">
+        <h2>{{ $gallery->name }}</h2>
+        <div class="gallery-description">{{ $gallery->description }}</div>
+        <div class="gallery-addtitional-text">{{ $gallery->addtitional_text }}</div>
+    </div>
+    <div class="dallery-edit-button-box">
+        <a href="{{ route('admin.gallery.edit',$gallery) }}" class="default-btn big-square-button edit-button">
+            {{__('basic::elf.edit')}}
+        </a>
+    </div>
+</div>
+<div class="gallery-items-box">
+    @include('gallery::admin.gallery.items.content.index')
+</div>
+
+
+
+{{-- <div class="widetable-wrapper">
     <table class="grid-table galleries-table">
         <thead>
             <tr>
@@ -105,9 +131,7 @@
                     <img src="{{ asset($gallery->preview) }}" alt="{{ $gallery->name }}">
                 @endif
                 </td>
-                <td>
-                    <a href="{{ route('admin.gallery.items',$gallery->slug) }}">{{ $gallery->name }}</a>
-                </td>
+                <td>{{ $gallery->name }}</td>
                 <td>
                 @empty($gallery->category)
                     {{__('gallery::elf.no_category')}}
@@ -185,9 +209,9 @@
         </div>
     @endif
 </div>
-{{$galleries->links('basic::admin.layouts.pagination')}}
+{{$galleries->links('basic::admin.layouts.pagination')}} --}}
 <script>
-const checkForms = document.querySelectorAll('form[data-submit="check"]')
+/* const checkForms = document.querySelectorAll('form[data-submit="check"]')
 function setConfirmDelete(forms) {
     if (forms) {
         forms.forEach(form => {
@@ -253,6 +277,6 @@ if (tableExpander) {
             }
         });
     });
-}
+} */
 </script>
 @endsection
