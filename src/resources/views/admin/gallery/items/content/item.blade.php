@@ -1,4 +1,4 @@
-<a href="{{ route('admin.gallery.items.edit',['gallery'=>$gallery,'item'=>$item]) }}" class="gallery-item-tile" title="{{ __('basic::elf.edit') . ' ' . $item->name }}" style="order:{{$item->position}};" data-id="{{ $item->id }}">
+<a href="{{ route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$item]) }}" class="gallery-item-tile gallery-item-element" title="{{ __('basic::elf.edit') . ' ' . $item->name }}" style="order:{{$item->position}};" data-id="{{ $item->id }}" data-slug="{{ $item->slug }}">
     <img src="
         @if (!empty($item->thumbnail))
             {{asset($item->thumbnail)}}

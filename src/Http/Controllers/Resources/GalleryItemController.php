@@ -136,13 +136,24 @@ class GalleryItemController extends Controller
         $galleryItem = GalleryItem::create($validated);
 
         if ($request->ajax()) {
-            $data = view('gallery::admin.gallery.items.content.item',[
+            /* $data = view('gallery::admin.gallery.items.content.item',[
                 'gallery' => $gallery,
                 'item' => $galleryItem,
             ])->render();
             return [
                 'result' => 'success',
                 'data' => $data
+            ]; */
+            return [
+                'result' => 'success',
+                'message' => __('gallery::elf.item_edited_successfully'),
+                'data' => [
+                    'id' => $galleryItem->id,
+                    'name' => $galleryItem->name,
+                    'slug' => $galleryItem->slug,
+                    'image' => $galleryItem->image,
+                    'position' => $galleryItem->position,
+                ],
             ];
         }
         else {
@@ -205,6 +216,41 @@ class GalleryItemController extends Controller
 
             $galleryItem->save();
 
+            if ($request->ajax()) {
+                return [
+                    'result' => 'success',
+                    'message' => __('gallery::elf.item_edited_successfully'),
+                    'data' => [
+                        'id' => $galleryItem->id,
+                        'name' => $galleryItem->name,
+                        'slug' => $galleryItem->slug,
+                        'image' => $galleryItem->image,
+                        'position' => $galleryItem->position,
+                    ]
+                ];
+            }
+
+            return redirect(route('admin.gallery.items'))->with('elementsuccess',__('gallery::elf.item_edited_successfully'));
+        }
+        elseif ($request->posedit && $request->posedit == 1) {
+            $galleryItem->position = $request->position ?? 0;
+
+            $galleryItem->save();
+
+            if ($request->ajax()) {
+                return [
+                    'result' => 'success',
+                    'message' => __('gallery::elf.item_edited_successfully'),
+                    'data' => [
+                        'id' => $galleryItem->id,
+                        'name' => $galleryItem->name,
+                        'slug' => $galleryItem->slug,
+                        'image' => $galleryItem->image,
+                        'position' => $galleryItem->position,
+                    ],
+                ];
+            }
+
             return redirect(route('admin.gallery.items'))->with('elementsuccess',__('gallery::elf.gallery_edited_successfully'));
         }
         else {
@@ -216,18 +262,17 @@ class GalleryItemController extends Controller
                     'slug' => $request->slug . '_' . time(),
                 ]);
             }
-            if (empty($request->image && !empty($request->image_path))) {
-                $request->merge([
-                    'image' => $request->image_path,
-                ]);
-            }
             $validated = $request->validate([
                 'name' => 'required',
                 //'slug' => 'required|unique:Elfcms\Blog\Models\BlogPost,slug',
-                'image' => 'required|file|max:512',
+                'image' => 'nullable|file|max:512',
                 'preview' => 'nullable|file|max:256',
                 'thumbnail' => 'nullable|file|max:256'
             ]);
+
+            if (empty($request->image) && empty($request->image_path)) {
+                return redirect(route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$galleryItem]))->withErrors(['image'=>__('validation.required',['Attribute'=>__('basic::elf.image')])]);
+            }
 
             $image_path = $request->image_path;
             if (!empty($request->file()['image'])) {
@@ -250,9 +295,9 @@ class GalleryItemController extends Controller
 
             $galleryItem->name = $validated['name'];
             $galleryItem->slug = $request->slug;
-            $galleryItem->preview = $image_path;
+            $galleryItem->image = $image_path;
             $galleryItem->preview = $preview_path;
-            $galleryItem->preview = $thumbnail_path;
+            $galleryItem->thumbnail = $thumbnail_path;
             $galleryItem->description = $request->description;
             $galleryItem->additional_text = $request->additional_text;
             $galleryItem->active = empty($request->active) ? 0 : 1;
@@ -263,13 +308,16 @@ class GalleryItemController extends Controller
             $galleryItem->save();
 
             if ($request->ajax()) {
-                $data = view('gallery::admin.gallery.items.content.item',[
-                    'gallery' => $gallery,
-                    'item' => $galleryItem,
-                ])->render();
                 return [
                     'result' => 'success',
-                    'data' => $data
+                    'message' => __('gallery::elf.item_edited_successfully'),
+                    'data' => [
+                        'id' => $galleryItem->id,
+                        'name' => $galleryItem->name,
+                        'slug' => $galleryItem->slug,
+                        'image' => $galleryItem->image,
+                        'position' => $galleryItem->position,
+                    ],
                 ];
             }
 
