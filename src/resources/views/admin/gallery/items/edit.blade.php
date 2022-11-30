@@ -15,6 +15,6 @@
     </div>
     @endif
 
-    @include('gallery::admin.gallery.items.content.create')
+    @include('gallery::admin.gallery.items.content.edit')
 
 @endsection

@@ -19,6 +19,8 @@ class GalleryItem extends Model
         'additional_text',
         'option',
         'active',
+        'link',
+        'position',
     ];
 
     public function scopeActive($query)

@@ -171,7 +171,7 @@ class GalleryController extends Controller
                 'category_id' => 'nullable',
                 'name' => 'required',
                 //'slug' => 'required|unique:Elfcms\Blog\Models\BlogPost,slug',
-                'image' => 'nullable|file|max:512',
+                //'image' => 'nullable|file|max:512',
                 'preview' => 'nullable|file|max:256'
             ]);
             if (Gallery::where('slug',$request->slug)->where('id','<>',$gallery->id)->first()) {

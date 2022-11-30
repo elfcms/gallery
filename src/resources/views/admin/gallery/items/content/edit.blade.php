@@ -1,8 +1,8 @@
 <div class="item-form">
     <h3>{{ $page['title'] }}</h3>
-    <form action="{{ route('admin.gallery.items.store',$gallery) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.gallery.items.update',['gallery'=>$gallery,'galleryItem'=>$item]) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('POST')
+        @method('PUT')
         <div class="colored-rows-box">
             <div class="input-box colored">
                 <div class="checkbox-wrapper">
@@ -11,7 +11,9 @@
                             type="checkbox"
                             name="active"
                             id="active"
+                            @if ($item->active == 1)
                             checked
+                            @endif
                         >
                         <i></i>
                         <label for="active">
@@ -23,13 +25,13 @@
             <div class="input-box colored">
                 <label for="name">{{ __('basic::elf.name') }}</label>
                 <div class="input-wrapper">
-                    <input type="text" name="name" id="name" autocomplete="off">
+                    <input type="text" name="name" id="name" value="{{ $item->name }}">
                 </div>
             </div>
             <div class="input-box colored">
                 <label for="slug">{{ __('basic::elf.slug') }}</label>
                 <div class="input-wrapper">
-                    <input type="text" name="slug" id="slug" autocomplete="off">
+                    <input type="text" name="slug" id="slug" value="{{ $item->slug }}">
                 </div>
                 <div class="input-wrapper">
                     <div class="autoslug-wrapper">
@@ -41,13 +43,13 @@
             <div class="input-box colored">
                 <label for="desctiption">{{ __('basic::elf.description') }}</label>
                 <div class="input-wrapper">
-                    <textarea name="description" id="description"></textarea>
+                    <textarea name="description" id="description">{{ $item->description }}</textarea>
                 </div>
             </div>
             <div class="input-box colored">
                 <label for="additional_text">{{ __('gallery::elf.additional_text') }}</label>
                 <div class="input-wrapper">
-                    <textarea name="additional_text" id="additional_text"></textarea>
+                    <textarea name="additional_text" id="additional_text">{{ $item->additional_text }}</textarea>
                 </div>
             </div>
             <div class="input-box colored">
@@ -57,10 +59,18 @@
                     <div class="image-button">
                         <div class="delete-image hidden">&#215;</div>
                         <div class="image-button-img">
-                            <img src="{{ asset('/vendor/elfcms/blog/admin/images/icons/upload.png') }}" alt="Upload file">
+                        @if (!empty($item->image))
+                            <img src="{{ asset($item->image) }}" alt="">
+                        @else
+                            <img src="{{ asset('/vendor/elfcms/gallery/admin/images/icons/upload.png') }}" alt="Upload file">
+                        @endif
                         </div>
                         <div class="image-button-text">
+                            @if (!empty($item->image))
+                            {{ __('basic::elf.change_file') }}
+                        @else
                             {{ __('basic::elf.choose_file') }}
+                        @endif
                         </div>
                         <input type="file" name="image" id="image">
                     </div>
@@ -73,10 +83,18 @@
                     <div class="image-button">
                         <div class="delete-image hidden">&#215;</div>
                         <div class="image-button-img">
-                            <img src="{{ asset('/vendor/elfcms/blog/admin/images/icons/upload.png') }}" alt="Upload file">
+                        @if (!empty($item->preview))
+                            <img src="{{ asset($item->preview) }}" alt="">
+                        @else
+                            <img src="{{ asset('/vendor/elfcms/gallery/admin/images/icons/upload.png') }}" alt="Upload file">
+                        @endif
                         </div>
                         <div class="image-button-text">
+                            @if (!empty($item->preview))
+                            {{ __('basic::elf.change_file') }}
+                        @else
                             {{ __('basic::elf.choose_file') }}
+                        @endif
                         </div>
                         <input type="file" name="preview" id="preview">
                     </div>
@@ -89,10 +107,18 @@
                     <div class="image-button">
                         <div class="delete-image hidden">&#215;</div>
                         <div class="image-button-img">
-                            <img src="{{ asset('/vendor/elfcms/blog/admin/images/icons/upload.png') }}" alt="Upload file">
+                        @if (!empty($item->thumbnail))
+                            <img src="{{ asset($item->thumbnail) }}" alt="">
+                        @else
+                            <img src="{{ asset('/vendor/elfcms/gallery/admin/images/icons/upload.png') }}" alt="Upload file">
+                        @endif
                         </div>
                         <div class="image-button-text">
+                        @if (!empty($item->thumbnail))
+                            {{ __('basic::elf.change_file') }}
+                        @else
                             {{ __('basic::elf.choose_file') }}
+                        @endif
                         </div>
                         <input type="file" name="thumbnail" id="thumbnail">
                     </div>
@@ -101,19 +127,19 @@
             <div class="input-box colored">
                 <label for="position">{{ __('basic::elf.position') }}</label>
                 <div class="input-wrapper">
-                    <input type="number" name="position" id="position" value="{{$position}}">
+                    <input type="number" name="position" id="position" value="{{ $item->position }}">
                 </div>
             </div>
             <div class="input-box colored">
                 <label for="link">{{ __('basic::elf.link') }}</label>
                 <div class="input-wrapper">
-                    <input type="text" name="link" id="link">
+                    <input type="text" name="link" id="link" value="{{ $item->link }}">
                 </div>
             </div>
             <div class="input-box colored">
                 <label for="option">{{ __('gallery::elf.option') }}</label>
                 <div class="input-wrapper">
-                    <input type="text" name="option" id="option">
+                    <input type="text" name="option" id="option" value="{{ $item->option }}">
                 </div>
             </div>
         </div>
