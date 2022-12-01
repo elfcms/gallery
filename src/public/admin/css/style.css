@@ -156,9 +156,25 @@ main:has(.gallery-items-box) {
     text-decoration: none;
     color: #222222;
     overflow: hidden;
+    position: relative;
+}
+.gallery-item-tile::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
 }
 .gallery-item-tile:hover {
     box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, .3);
+}
+.gallery-item-tile.dropready {
+    translate: (5px,0px);
+}
+.gallery-item-tile.dragged {
+    opacity: .5;
 }
 .gallery-item-tile h5 {
     margin: 0 auto;
@@ -256,9 +272,29 @@ main:has(.gallery-items-box) {
 }
 
 .dragndrop-wrapper {
-    width: 600px;
+    /* width: 600px;
     height: 500px;
-    border: 2px solid lightskyblue;
+    border: 2px solid lightskyblue; */
+    position: relative;
+}
+.dragndrop-wrapper.filedrag::after {
+    content: attr(data-uploadtext);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 500;
+    color: #ffffff;
+    text-shadow: 0px 0px 5px #06516e;
+    background-color: rgba(6, 81, 110, 0.5);
+    z-index: 10;
+    backdrop-filter: blur(1px);
+    box-shadow: inset 0px 0px 6px 0px #06516e;
 }
 .dragndrop-wrapper.dragover {
     background-color: #a5a5a5;

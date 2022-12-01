@@ -32,7 +32,7 @@ class Gallery extends Model
 
     public function items()
     {
-        return $this->hasMany(GalleryItem::class);
+        return $this->hasMany(GalleryItem::class)->orderBy('position');
     }
 
     /**

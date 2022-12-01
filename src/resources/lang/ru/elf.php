@@ -22,4 +22,5 @@ return [
     'showing_results_for_category' => 'Показаны результаты для категории :category',
     'additional_text' => 'Дополнительный текст',
     'option' => 'Опция',
+    'file_upload' => 'Загрузка файлов',
 ];

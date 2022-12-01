@@ -22,4 +22,5 @@ return [
     'showing_results_for_category' => 'Showing results for category :category',
     'additional_text' => 'Additional text',
     'option' => 'Option',
+    'file_upload' => 'File upload',
 ];
