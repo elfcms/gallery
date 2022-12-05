@@ -1,18 +1,225 @@
 {{-- <div class="dragndrop-wrapper">
 
 </div> --}}
-<div class="gallery-items-content dragndrop-wrapper" draggable="false" data-uploadtext="{{__('gallery::elf.file_upload')}}">
-    <a href="{{route('admin.gallery.items.create',$gallery)}}" class="gallery-item-add gallery-item-tile" id="galleryitemcreate" title="{{__('gallery::elf.create_item')}}"></a>
-    @foreach ($gallery->items as $item)
-        @include('gallery::admin.gallery.items.content.item')
-    @endforeach
-</div>
-<div class="gallery-items-buttons">
-    <button class="default-btn submit-button" disabled>{{ __('basic::elf.save') }}</button>
-</div>
+<form action="{{ route('admin.gallery.items.groupSave',$gallery) }}" method="POST" name="gallery-item-list" id="gallery-item-list">
+    @method('POST')
+    @csrf
+    <div class="gallery-items-content dragndrop-wrapper" draggable="false" data-uploadtext="{{__('gallery::elf.file_upload')}}">
+        <a href="{{route('admin.gallery.items.create',$gallery)}}" class="gallery-item-add gallery-item-tile" id="galleryitemcreate" title="{{__('gallery::elf.create_item')}}"></a>
+        @foreach ($gallery->items as $item)
+            @include('gallery::admin.gallery.items.content.item')
+        @endforeach
+    </div>
+    <div class="gallery-items-buttons">
+        <button class="default-btn submit-button" disabled>{{ __('basic::elf.save') }}</button>
+    </div>
+</form>
 
 
 <script>
+
+function ajax(url, params = {}) {
+    if (!params.method && typeof params.method !== 'sting')  {
+        params.method = 'GET';
+    }
+    params.method = params.method.toUpperCase();
+    if (params.method != 'GET' && params.method != 'POST') {
+        params.method = 'GET';
+    }
+    if (!params.resolve) {
+        params.resolve = (result) => {
+            return result;
+        };
+    }
+  // Возвращаем новое обещание.
+  let promise = new Promise(function(resolve, reject) {
+    // Выполняем обычные действия XHR
+    let request = new XMLHttpRequest();
+    request.open(params.method, url);
+    if (params.headers && typeof params.headers === 'object') {
+        Object.entries(params.headers).forEach((entry) => {
+            const [key, value] = entry;
+            if (key && value) {
+                request.setRequestHeader(key,value);
+            }
+        });
+    }
+    request.onload = function() {
+      // этот метод вызывается даже для 404 и т.п.
+      // поэтому проверяем статус
+      if (request.status == 200) {
+        // Разрешаем обещание с текстом ответа
+        resolve(request.response);
+      }
+      else {
+        // В остальных случаях отклоняем с текстом статуса
+        // в надежде, что там будет осмысленный текст ошибки
+        reject(Error(request.statusText));
+      }
+    };
+
+    // Обрабатываем ошибки сети
+    request.onerror = function() {
+      reject(Error("Network Error"));
+    };
+
+    // Выполняем запрос
+    if (params.method == 'POST' && params.formData) {
+        request.send(params.formData);
+    }
+    else {
+        request.send();
+    }
+  });
+
+  promise.then(params.resolve)
+}
+
+
+const submitItems = document.querySelector('.gallery-items-buttons .submit-button');
+const editItemElements = document.querySelectorAll('.gallery-item-element');
+const createButton = document.querySelector('#galleryitemcreate');
+const dragndropBox = document.querySelector('.dragndrop-wrapper');
+const itemListForm = document.querySelector('#gallery-item-list');
+
+if (itemListForm) {
+    itemListForm.addEventListener('submit',function(e){
+        e.preventDefault();
+        return false;
+    });
+}
+
+if (submitItems) {
+    submitItems.addEventListener('click',function(e){
+        e.preventDefault();
+        let form = itemListForm;
+        if (!form) {
+            form = this.closest('form');
+        }
+        if (!form) {
+            return false;
+        }
+        itemListSave (form);
+    });
+}
+
+function preloadSet(element) {
+    if (typeof element === 'string') {
+        element = document.querySelector(element);
+    }
+    if (!(element instanceof HTMLElement) && element !== document) {
+        return false;
+    }
+    const preloader = document.createElement('div')
+    preloader.classList.add('preload-wrapper');
+    preloader.insertAdjacentHTML('beforeend','<div class="preload-box"><div></div><div></div><div></div></div>');
+    element.append(preloader);
+
+    return preloader;
+}
+
+function preloadUnset(preloader) {
+    if (typeof preloader === 'string') {
+        preloader = document.querySelector(preloader);
+    }
+    if (!(preloader instanceof HTMLElement)) {
+        return false;
+    }
+    preloader.remove();
+}
+
+function itemListSave(form) {
+    if (!form || !form.action) {
+        return false;
+    }
+    const formData = new FormData(form);
+    const itemsBox = document.querySelector('.gallery-items-content');
+    let preloader = preloadSet('.big-container');
+    fetch(form.action,{
+        method: 'POST',
+        headers: {
+            //'Accept': 'application/json',
+            //'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        },
+        credentials: 'same-origin',
+        body: formData
+    }).then(
+        (result) => result.json()
+    ).then (
+        (data) => {
+            console.log(data);
+            preloadUnset(preloader);
+            if (data.result && data.result == 'success') {
+                const forDeletes = document.querySelectorAll('.gallery-item-element.fordelete');
+                if (forDeletes) {
+                    forDeletes.forEach(delElem => {
+                        delElem.remove();
+                    });
+                }
+                /* if (isEdit) {
+                    currentItem.dataset.slug = data.data.slug;
+                    currentItem.style.order = data.data.position;
+                    currentItem.title = '__("basic::elf.edit") ' + data.data.name;
+                    const h5 = currentItem.querySelector('h5');
+                    if (h5) {
+                        h5.innerHTML = data.data.name;
+                    }
+                    const img = currentItem.querySelector('img');
+                    if (img) {
+                        img.src = data.data.image;
+                    }
+                    currentItem.href = '/admin/gallery/{{$gallery->slug}}/items/'+data.data.slug+'/edit';
+                }
+                else if (itemsBox) {
+                    const newItem = document.createElement('div');
+                    newItem.href = '/admin/gallery/{{$gallery->slug}}/items/'+data.data.slug+'/edit';
+                    newItem.classList.add('gallery-item-tile','gallery-item-element');
+                    newItem.dataset.slug = data.data.slug;
+                    newItem.dataset.id = data.data.id;
+                    newItem.style.order = data.data.position;
+                    newItem.title = '__("basic::elf.edit") ' + data.data.name;
+                    const img = document.createElement('img');
+                    if (img) {
+                        img.src = data.data.image;
+                        newItem.append(img)
+                    }
+                    const h5 = document.createElement('h5');
+                    if (h5) {
+                        h5.innerHTML = data.data.name;
+                        newItem.append(h5)
+                    }
+                    newItem.addEventListener('click',function(e){
+                        e.preventDefault();
+                        editItem(newItem.href,newItem);
+                    });
+                    itemsBox.append(newItem);
+                }
+                createBoxWrapper.remove(); */
+            }
+            else {
+                if (data.errors && data.message) {
+                    /* let dataErrors = [],
+                        i = 0;
+                    for (key in data.errors) {
+                        if (data.errors[key].length) {
+                            data.errors[key].forEach(message => {
+                                dataErrors[i] = message;
+                                i++;
+                            });
+                        }
+                    } */
+                    //let errorString = '<div class="alert alert-danger">'+data.message+'</div>';
+                    //infoMessageBox.insertAdjacentHTML('beforeend',errorString);
+                }
+            }
+        }
+    ).catch(error => {
+        preloadUnset(preloader);
+    });
+}
+
 function editItem(action,currentItem,isEdit=true){
     const createBoxWrapper = document.createElement('div');
     createBoxWrapper.classList.add('gallery-item-create-popup-wrapper');
@@ -92,10 +299,6 @@ function editItem(action,currentItem,isEdit=true){
                             (result) => result.json()
                         ).then (
                             (data) => {
-                        console.log('--');
-                        console.log(data);
-                        console.log(isEdit);
-                        console.log(currentItem);
                                 if (data.result && data.result == 'success' && data.data) {
                                     const itemsBox = document.querySelector('.gallery-items-content');
                                     if (isEdit) {
@@ -179,7 +382,6 @@ function editItem(action,currentItem,isEdit=true){
     });
 }
 // Edit item
-const editItemElements = document.querySelectorAll('.gallery-item-element');
 if (editItemElements) {
     editItemElements.forEach(editElement => {
         editElement.draggable = true;
@@ -187,10 +389,22 @@ if (editItemElements) {
             e.preventDefault();
             editItem(this.href,this);
         });
+        const deleteInput = editElement.querySelector('input[data-field="delete"]');
+        if (deleteInput) {
+            deleteInput.addEventListener('click',function(e){
+                e.stopPropagation();
+                submitItems.disabled = false;
+                if (this.checked) {
+                    editElement.classList.add('fordelete')
+                }
+                else {
+                    editElement.classList.remove('fordelete')
+                }
+            });
+        }
     });
 }
 // Create item
-const createButton = document.querySelector('#galleryitemcreate');
 if (createButton) {
     createButton.addEventListener('click',function(e){
         e.preventDefault();
@@ -198,10 +412,6 @@ if (createButton) {
     });
 }
 
-const submitItems = document.querySelector('.gallery-items-buttons .submit-button');
-
-
-const dragndropBox = document.querySelector('.dragndrop-wrapper');
 /* if (dragndropBox) {
     dragndropBox.addEventListener('dragover',function(e){
         e.preventDefault();
@@ -436,6 +646,10 @@ function dndInit(element) {
             let i = 1;
             items.forEach(item => {
                 item.style.order = i;
+                let positionInput = item.querySelector('input[data-field="position"]');
+                if (positionInput) {
+                    positionInput.value = i;
+                }
                 i++;
             });
         }

@@ -191,6 +191,69 @@ main:has(.gallery-items-box) {
     width: 100%;
     height: 110px;
 }
+.gallery-item-tile.fordelete {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.gallery-item-tile.fordelete img {
+    opacity: .7;
+    filter: grayscale(.7);
+}
+.gallery-item-tile .delete-item-box {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11;
+}
+.gallery-item-tile .delete-item-box input[type="checkbox"] {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 5;
+    cursor: pointer;
+}
+.gallery-item-tile .delete-item-box input[data-field="delete"] + i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(1px 1px 1px #ffffff) drop-shadow(-1px -1px 1px #ffffff) drop-shadow(-1px 1px 1px #ffffff) drop-shadow(1px -1px 1px #ffffff);
+    opacity: 0;
+}
+.gallery-item-tile:hover .delete-item-box input[data-field="delete"] + i {
+    opacity: .5;
+}
+.gallery-item-tile:hover .delete-item-box input[data-field="delete"]:hover + i {
+    opacity: .8;
+}
+.gallery-item-tile .delete-item-box input[data-field="delete"]:checked + i {
+    opacity: 1;
+}
+.gallery-item-tile .delete-item-box input[data-field="delete"] + i::before,
+.gallery-item-tile .delete-item-box input[data-field="delete"] + i::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: tomato;
+}
+.gallery-item-tile .delete-item-box input[data-field="delete"] + i::before {
+    rotate: -45deg;
+}
+.gallery-item-tile .delete-item-box input[data-field="delete"] + i::after {
+    rotate: 45deg;
+}
 
 .gallery-item-add {
     display: flex;
@@ -213,12 +276,13 @@ main:has(.gallery-items-box) {
 
 .gallery-items-buttons {
     position: sticky;
-    bottom: 30px;
+    bottom: 29px;
     margin: 0px -20px;
     padding: 15px 20px;
     background-color: #ffffff;
     text-align: center;
     box-shadow: 0px -4px 4px -4px rgba(0,0,0,0.3);
+    z-index: 10;
 }
 
 
@@ -301,4 +365,105 @@ main:has(.gallery-items-box) {
 }
 .dragndrop-wrapper.droped {
     background-color: thistle;
+}
+
+
+/* preloader */
+
+.preload-wrapper {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0 0 4px 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    z-index: 15;
+    border-radius: 4px;
+    backdrop-filter: blur(1);
+}
+.preload-box {
+    width: 100px;
+    height: 20px;
+    position: relative;
+    margin: auto;
+}
+
+.preload-box div {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 20px;
+    height: 20px;
+}
+
+.preload-box div:nth-child(3) {
+    background-color: #94c732;
+    animation: preload-sqare-3 2s ease-in-out infinite;
+}
+
+.preload-box div:nth-child(2) {
+    background-color: #1e90ff;
+    animation: preload-sqare-2 2s ease-in-out infinite;
+}
+
+.preload-box div:nth-child(1) {
+    background-color: #112266;
+    animation: preload-sqare-1 2s ease-in-out infinite;
+}
+
+@keyframes preload-sqare-1 {
+    0% {
+        left: 0px;
+    }
+    25% {
+        left: 40px;
+    }
+    50% {
+        left: 80px;
+    }
+    75% {
+        left: 80px;
+    }
+    100% {
+        left: 0px;
+    }
+}
+
+@keyframes preload-sqare-2 {
+    0% {
+        left: 0px;
+    }
+    25% {
+        left: 40px;
+    }
+    50% {
+        left: 40px;
+    }
+    75% {
+        left: 80px;
+    }
+    100% {
+        left: 0px;
+    }
+}
+
+@keyframes preload-sqare-3 {
+    0% {
+        left: 0px;
+    }
+    25% {
+        left: 0px;
+    }
+    50% {
+        left: 0px;
+    }
+    75% {
+        left: 80px;
+    }
+    100% {
+        left: 0px;
+    }
 }

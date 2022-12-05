@@ -9,4 +9,9 @@
         @endif
     " alt="">
     <h5>{{ $item->name }}</h5>
+    <div class="delete-item-box" title="{{ __('basic::elf.delete') }}">
+        <input type="checkbox" name="item[{{$item->id}}][delete]" id="item_{{$item->id}}_delete" data-field="delete" onclick="event.stopPropagation()">
+        <i></i>
+    </div>
+    <input type="hidden" name="item[{{$item->id}}][position]" value="{{$item->position}}" data-field="position">
 </a>

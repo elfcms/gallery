@@ -327,18 +327,6 @@ class GalleryItemController extends Controller
     }
 
     /**
-     * Update position for group in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Gallery  $gallery
-     * @return \Illuminate\Http\Response
-     */
-    public function positionGroupUpdate(Request $request, Gallery $gallery)
-    {
-        dd($request->all());
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\GalleryItem  $galleryItem
