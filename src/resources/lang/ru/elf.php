@@ -23,4 +23,8 @@ return [
     'additional_text' => 'Дополнительный текст',
     'option' => 'Опция',
     'file_upload' => 'Загрузка файлов',
+    'deleting_items' => 'Удаление элементов',
+    'the_following_items_will_be_removed' => 'Будут удалены следующие элементы',
+    'marked_items_will_be_removed' => 'Отмеченные элементы будут удалены',
+    'error' => 'Ошибка',
 ];

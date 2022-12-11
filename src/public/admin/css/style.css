@@ -359,6 +359,7 @@ main:has(.gallery-items-box) {
     z-index: 10;
     backdrop-filter: blur(1px);
     box-shadow: inset 0px 0px 6px 0px #06516e;
+    border-radius: 5px;
 }
 .dragndrop-wrapper.dragover {
     background-color: #a5a5a5;

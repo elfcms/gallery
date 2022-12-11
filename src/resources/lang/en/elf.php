@@ -23,4 +23,8 @@ return [
     'additional_text' => 'Additional text',
     'option' => 'Option',
     'file_upload' => 'File upload',
+    'deleting_items' => 'Deleting items',
+    'the_following_items_will_be_removed' => 'The following items will be removed',
+    'marked_items_will_be_removed' => 'Marked items will be removed',
+    'error' => 'Error',
 ];

@@ -23,4 +23,8 @@ return [
     'additional_text' => 'Zusätzlicher Text',
     'option' => 'Option',
     'file_upload' => 'Datei-Upload',
+    'deleting_items' => 'Löschen von Elementen',
+    'the_following_items_will_be_removed' => 'Die folgenden Elemente werden entfernt',
+    'marked_items_will_be_removed' => 'Markierte Elemente werden entfernt',
+    'error' => 'Fehler',
 ];
