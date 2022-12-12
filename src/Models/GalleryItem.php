@@ -16,6 +16,7 @@ class GalleryItem extends Model
         'slug',
         'image',
         'preview',
+        'thumbnail',
         'description',
         'additional_text',
         'option',

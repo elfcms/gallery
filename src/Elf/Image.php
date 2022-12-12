@@ -96,7 +96,7 @@ class Image {
     }
 
 
-    public static function watermark(string|object $image, string|object $stamp, int|bool $top = null, int|bool $left = null, int $bottom = null, int $right = null)
+    public static function watermarkGd(string|object $image, string|object $stamp, int|bool $top = null, int|bool $left = null, int $bottom = null, int $right = null)
     {
         if (gettype($image) === 'string') {
             $image = self::fromFile($image);
@@ -139,6 +139,24 @@ class Image {
         imagedestroy($stamp);
 
         return $image;
+    }
+
+    public static function watermark(string|object $image, string|object $stamp, string $file, int|bool $top = null, int|bool $left = null, int $bottom = null, int $right = null)
+    {
+        $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        if (!in_array($extension,['gif','jpeg','jpg','png','webp'])) {
+            return false;
+        }
+        if ($extension == 'jpg') {
+            $extension = 'jpeg';
+        }
+        $saveFunction = 'image' . $extension;
+
+        if ($saveFunction(self::watermarkGd($image, $stamp, $top, $left, $bottom, $right), Storage::path($file))) {
+            return $file;
+        }
+
+        return false;
     }
 
     public static function fromFile(string $file)

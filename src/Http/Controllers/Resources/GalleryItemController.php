@@ -43,7 +43,10 @@ class GalleryItemController extends Controller
      */
     public function create(Request $request, Gallery $gallery)
     {
-        Image::resize('/public/gallery/test/elka-9_1.webp', '/public/gallery/test/', height: 300);
+        //Image::resize('/public/gallery/test/elka-9_1.webp', '/public/gallery/test/', height: 300);
+        //dd(pathinfo('/dfgdfgdfg/sdfgdgs/sgfsdgsdfg.ASD',PATHINFO_EXTENSION));
+        //$i = Image::watermarkToFile('/public/gallery/test/elka-9.jpg','/public/gallery/test/wm.png','/public/gallery/test/001.jpg',bottom:30, right: 10);
+        //dd($i);
         $maxPosition = GalleryItem::where('gallery_id',$gallery->id)->max('position');
         $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
         if ($request->ajax()) {
@@ -89,8 +92,7 @@ class GalleryItemController extends Controller
             ]);
 
         }
-        //return ['name'=>$request->name,'img'=>$request->file()];
-        //return ['request'=>$request->all()];
+
         if (empty($request->slug)) {
             $request->merge([
                 'slug' => Str::slug($request->name),
@@ -101,7 +103,7 @@ class GalleryItemController extends Controller
                 'slug' => Str::slug($request->slug),
             ]);
         }
-        if (GalleryItem::where('slug',$request->slug)->count() > 0) {
+        if (GalleryItem::withTrashed()->where('slug',$request->slug)->count() > 0) {
             $request->merge([
                 'slug' => $request->slug . '_' . time(),
             ]);
@@ -125,12 +127,17 @@ class GalleryItemController extends Controller
             $preview = $request->file()['preview']->store('public/gallery/items/preview');
             $preview_path = str_ireplace('public/','/storage/',$preview);
         }
-        elseif (!empty($image_path) && (!isset($imageConfig['preview']['auto']) || $imageConfig['preview']['auto'] === true)) {
-            //$preview =
+        elseif (!empty($image_path) && !empty($image) && (!isset($imageConfig['preview']['auto']) || $imageConfig['preview']['auto'] === true)) {
+            $preview = Image::resize($image,'public/gallery/items/preview/',$imageConfig['preview']['width'],$imageConfig['preview']['height']);
+            $preview_path = str_ireplace('public/','/storage/',$preview);
         }
         $thumbnail_path = '';
         if (!empty($request->file()['thumbnail'])) {
             $thumbnail = $request->file()['thumbnail']->store('public/gallery/items/thumbnail');
+            $thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
+        }
+        elseif (!empty($image_path) && !empty($image) && (!isset($imageConfig['thumbnail']['auto']) || $imageConfig['thumbnail']['auto'] === true)) {
+            $thumbnail = Image::resize($image,'public/gallery/items/thumbnail/',$imageConfig['thumbnail']['width'],$imageConfig['thumbnail']['height']);
             $thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
         }
 
