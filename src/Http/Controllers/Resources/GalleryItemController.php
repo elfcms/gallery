@@ -3,6 +3,7 @@
 namespace Elfcms\Gallery\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
+use Elfcms\Gallery\Elf\Image;
 use Elfcms\Gallery\Models\Gallery;
 use Elfcms\Gallery\Models\GalleryItem;
 use Illuminate\Http\Request;
@@ -42,7 +43,8 @@ class GalleryItemController extends Controller
      */
     public function create(Request $request, Gallery $gallery)
     {
-        $maxPosition = GalleryItem::max('position');
+        Image::resize('/public/gallery/test/elka-9_1.webp', '/var/www/site15/elfcms/storage/app/public/gallery/test/', height: 300);
+        $maxPosition = GalleryItem::where('gallery_id',$gallery->id)->max('position');
         $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
         if ($request->ajax()) {
             return view('gallery::admin.gallery.items.content.create',[
@@ -72,6 +74,15 @@ class GalleryItemController extends Controller
      */
     public function store(Request $request, Gallery $gallery)
     {
+        $imageConfig = config('elfcms.gallery.images');
+        $imageConfig['image']['size'] = $imageConfig['image']['size'] ?? 768;
+        $imageConfig['preview']['size'] = $imageConfig['preview']['size'] ?? 512;
+        $imageConfig['preview']['width'] = $imageConfig['preview']['width'] ?? 800;
+        $imageConfig['preview']['height'] = $imageConfig['preview']['height'] ?? 600;
+        $imageConfig['thumbnail']['size'] = $imageConfig['thumbnail']['size'] ?? 256;
+        $imageConfig['thumbnail']['width'] = $imageConfig['thumbnail']['width'] ?? 400;
+        $imageConfig['thumbnail']['height'] = $imageConfig['thumbnail']['height'] ?? 300;
+
         if (empty($request->name) && !empty($request->file()['image'])) {
             $request->merge([
                 'name' => $request->file()['image']->getClientOriginalName(),
@@ -95,23 +106,27 @@ class GalleryItemController extends Controller
                 'slug' => $request->slug . '_' . time(),
             ]);
         }
+
         $validated = $request->validate([
             'category_id' => 'nullable',
             'name' => 'required',
             'slug' => 'required|unique:Elfcms\Gallery\Models\GalleryItem,slug',
-            'image' => 'required|file|max:768',
-            'preview' => 'nullable|file|max:512'
+            'image' => 'required|file|max:'.$imageConfig['image']['size'],
+            'preview' => 'nullable|file|max:'.$imageConfig['preview']['size']
         ]);
 
+        $image_path = '';
+        if (!empty($request->file()['image'])) {
+            $image = $request->file()['image']->store('public/gallery/items/image');
+            $image_path = str_ireplace('public/','/storage/',$image);
+        }
         $preview_path = '';
         if (!empty($request->file()['preview'])) {
             $preview = $request->file()['preview']->store('public/gallery/items/preview');
             $preview_path = str_ireplace('public/','/storage/',$preview);
         }
-        $image_path = '';
-        if (!empty($request->file()['image'])) {
-            $image = $request->file()['image']->store('public/gallery/items/image');
-            $image_path = str_ireplace('public/','/storage/',$image);
+        elseif (!empty($image_path) && (!isset($imageConfig['preview']['auto']) || $imageConfig['preview']['auto'] === true)) {
+            //$preview =
         }
         $thumbnail_path = '';
         if (!empty($request->file()['thumbnail'])) {
@@ -169,9 +184,15 @@ class GalleryItemController extends Controller
      * @param  \App\Models\GalleryItem  $galleryItem
      * @return \Illuminate\Http\Response
      */
-    public function show(GalleryItem $galleryItem)
+    public function show(Request $request, Gallery $gallery, GalleryItem $galleryItem)
     {
-        //
+        if ($request->ajax()) {
+            return view('gallery::admin.gallery.items.content.item',[
+                'gallery' => $gallery,
+                'item' => $galleryItem,
+            ]);
+        }
+        return redirect(route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$galleryItem]));
     }
 
     /**

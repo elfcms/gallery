@@ -31,15 +31,20 @@ return [
     */
 
     'images' => [
+        'image' => [
+            'size' => 768
+        ],
         'preview' => [
             'auto' => true,
             'width' => 800,
             'height' => 600,
+            'size' => 512,
         ],
         'thumbnail' => [
             'auto' => true,
             'width' => 400,
             'height' => 300,
+            'size' => 256,
         ],
     ],
 
