@@ -2,6 +2,7 @@
 
 namespace Elfcms\Gallery\Elf;
 
+use GdImage;
 use Illuminate\Support\Facades\Storage;
 
 class Image {
@@ -92,6 +93,68 @@ class Image {
         }
 
         return $result;
+    }
+
+
+    public static function watermark(string|object $image, string|object $stamp, int|bool $top = null, int|bool $left = null, int $bottom = null, int $right = null)
+    {
+        if (gettype($image) === 'string') {
+            $image = self::fromFile($image);
+        }
+
+        if (gettype($image) !== 'object' || !($image instanceof GdImage)) {
+            return false;
+        }
+
+        if (gettype($stamp) === 'string') {
+            $stamp = self::fromFile($stamp);
+        }
+
+        if (gettype($stamp) !== 'object' || !($stamp instanceof GdImage)) {
+            return false;
+        }
+
+        $imageWidth = imagesx($image) ?? 0;
+        $imageHeight = imagesy($image) ?? 0;
+
+        $stampWidth = imagesx($stamp) ?? 0;
+        $stampHeight = imagesy($stamp) ?? 0;
+
+        if ($right !== null && $right !== false && ($left === null || $left === false)) {
+            $left = $imageWidth - $stampWidth - $right;
+        }
+        else {
+            $left = 0;
+        }
+
+        if ($bottom !== null && $bottom !== false && ($top === null || $top === false)) {
+            $top = $imageHeight - $stampHeight - $bottom;
+        }
+        else {
+            $top = 0;
+        }
+
+        imagecopy($image, $stamp, $left, $top, 0, 0, $stampWidth, $stampHeight);
+
+        imagedestroy($stamp);
+
+        return $image;
+    }
+
+    public static function fromFile(string $file)
+    {
+        $filePath = Storage::path($file);
+        if (empty($file) || empty($filePath) || !file_exists($filePath)) {
+            return false;
+        }
+        $imageData = getimagesize($filePath);
+        if (!in_array($imageData[2],[1,2,3,18])) {
+            return false;
+        }
+        $extension = image_type_to_extension($imageData[2],false);
+        $crateFunction = 'imagecreatefrom' . $extension;
+
+        return $crateFunction($filePath);
     }
 
 }

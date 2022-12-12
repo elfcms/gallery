@@ -43,7 +43,7 @@ class GalleryItemController extends Controller
      */
     public function create(Request $request, Gallery $gallery)
     {
-        Image::resize('/public/gallery/test/elka-9_1.webp', '/var/www/site15/elfcms/storage/app/public/gallery/test/', height: 300);
+        Image::resize('/public/gallery/test/elka-9_1.webp', '/public/gallery/test/', height: 300);
         $maxPosition = GalleryItem::where('gallery_id',$gallery->id)->max('position');
         $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
         if ($request->ajax()) {
