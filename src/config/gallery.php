@@ -72,7 +72,7 @@ return [
 
     'component' => [
         'slider' => [
-            'class' => '',
+            'class' => '\Elfcms\Gallery\View\Components\Slider',
             'options' => [
                 'gallery' => false,
                 'theme' => 'default',
