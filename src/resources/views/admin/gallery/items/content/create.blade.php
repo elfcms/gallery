@@ -116,6 +116,19 @@
                     <input type="text" name="option" id="option">
                 </div>
             </div>
+            <div class="input-box colored">
+                <label for="tags">{{ __('basic::elf.tags') }}</label>
+                <div class="input-wrapper">
+                    <div class="tag-form-wrapper">
+                        <div class="tag-list-box"></div>
+                        <div class="tag-input-box">
+                            <input type="text" class="tag-input" autocomplete="off">
+                            <button type="button" class="default-btn tag-add-button">Add</button>
+                            <div class="tag-prompt-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="button-box single-box">
             <button type="submit" class="default-btn submit-button">{{ __('basic::elf.submit') }}</button>
@@ -137,6 +150,9 @@ if (thumbnailInput) {
     inputFileImg(thumbnailInput)
 }
 autoSlug('.autoslug')
+
+
+galleryTagFormInit()
 
 //add editor
 runEditor('#description')

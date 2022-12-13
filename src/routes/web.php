@@ -20,7 +20,21 @@ Route::group(['middleware'=>['web','cookie','start']],function() use ($adminPath
             }
             return $result;
         }); */
-        Route::resource($adminPath . '/gallery/categories', Elfcms\Gallery\Http\Controllers\Resources\GalleryCategoryController::class)->names([
+        Route::post($adminPath . '/gallery/tags/addnotexist', [\Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class,'addNotExist'])->name('gallery.tags.addnotexist');
+        Route::resource($adminPath . '/gallery/tags', \Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class)
+        ->parameters(['tags'=>'galleryTag'])
+        ->names([
+            'index' => 'gallery.tags',
+            'create' => 'gallery.tags.create',
+            'edit' => 'gallery.tags.edit',
+            'store' => 'gallery.tags.store',
+            'show' => 'gallery.tags.show',
+            'edit' => 'gallery.tags.edit',
+            'update' => 'gallery.tags.update',
+            'destroy' => 'gallery.tags.destroy'
+        ]);
+        Route::resource($adminPath . '/gallery/categories', Elfcms\Gallery\Http\Controllers\Resources\GalleryCategoryController::class)
+        ->names([
             'index' => 'gallery.categories',
             'create' => 'gallery.categories.create',
             'edit' => 'gallery.categories.edit',

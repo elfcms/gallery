@@ -69,4 +69,14 @@ return [
             ]
         ],
     ],
+
+    'component' => [
+        'slider' => [
+            'class' => '',
+            'options' => [
+                'gallery' => false,
+                'theme' => 'default',
+            ],
+        ],
+    ],
 ];

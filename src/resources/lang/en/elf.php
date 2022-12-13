@@ -27,4 +27,6 @@ return [
     'the_following_items_will_be_removed' => 'The following items will be removed',
     'marked_items_will_be_removed' => 'Marked items will be removed',
     'error' => 'Error',
+    'following_files_will_be_downloaded' => 'The following files will be downloaded',
+    'are_you_sure' => 'Are you sure?',
 ];

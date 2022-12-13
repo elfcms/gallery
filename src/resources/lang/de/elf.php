@@ -27,4 +27,6 @@ return [
     'the_following_items_will_be_removed' => 'Die folgenden Elemente werden entfernt',
     'marked_items_will_be_removed' => 'Markierte Elemente werden entfernt',
     'error' => 'Fehler',
+    'following_files_will_be_downloaded' => 'Die folgenden Dateien werden heruntergeladen',
+    'are_you_sure' => 'Sind Sie sicher?',
 ];

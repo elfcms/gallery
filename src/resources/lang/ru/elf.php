@@ -27,4 +27,6 @@ return [
     'the_following_items_will_be_removed' => 'Будут удалены следующие элементы',
     'marked_items_will_be_removed' => 'Отмеченные элементы будут удалены',
     'error' => 'Ошибка',
+    'following_files_will_be_downloaded' => 'Будут загружены следующие файлы',
+    'are_you_sure' => 'Вы уверены?',
 ];

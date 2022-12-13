@@ -77,6 +77,12 @@ class GalleryItemController extends Controller
      */
     public function store(Request $request, Gallery $gallery)
     {
+        /* if ($request->ajax()) {
+            return [
+                'image' => $request->file()['image'],
+                'name' => $request->file()['image']->getClientOriginalName(),
+            ];
+        } */
         $imageConfig = config('elfcms.gallery.images');
         $imageConfig['image']['size'] = $imageConfig['image']['size'] ?? 768;
         $imageConfig['preview']['size'] = $imageConfig['preview']['size'] ?? 512;
@@ -144,6 +150,13 @@ class GalleryItemController extends Controller
         if (empty($validated['category_id'])) {
             $validated['category_id'] = null;
         }
+
+        $position = $request->position;
+        if (empty($position)) {
+            $maxPosition = GalleryItem::where('gallery_id',$gallery->id)->max('position');
+            $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
+        }
+
         $validated['image'] = $image_path;
         $validated['preview'] = $preview_path;
         $validated['thumbnail'] = $thumbnail_path;
@@ -151,11 +164,17 @@ class GalleryItemController extends Controller
         $validated['additional_text'] = $request->additional_text;
         $validated['active'] = empty($request->active) ? 0 : 1;
         $validated['option'] = $request->option;
-        $validated['position'] = $request->position;
+        $validated['position'] = $position;
         $validated['link'] = $request->link;
         $validated['gallery_id'] = $gallery->id;
 
         $galleryItem = GalleryItem::create($validated);
+
+        if (!empty($request->tags)) {
+            foreach ($request->tags as $tagId) {
+                $galleryItem->tags()->attach($tagId);
+            }
+        }
 
         if ($request->ajax()) {
             /* $data = view('gallery::admin.gallery.items.content.item',[
@@ -169,13 +188,14 @@ class GalleryItemController extends Controller
             return [
                 'result' => 'success',
                 'message' => __('gallery::elf.item_edited_successfully'),
-                'data' => [
+                'data' => $galleryItem->toArray(),
+                /* [
                     'id' => $galleryItem->id,
                     'name' => $galleryItem->name,
                     'slug' => $galleryItem->slug,
                     'image' => $galleryItem->image,
                     'position' => $galleryItem->position,
-                ],
+                ], */
             ];
         }
         else {
@@ -333,19 +353,34 @@ class GalleryItemController extends Controller
             $galleryItem->link = $request->link;
             $galleryItem->position = intval($request->position);
 
+            $existTags = $galleryItem->tags->toArray();
+
+            $newTags = $request->tags ? $request->tags : [];
+
+            if (!empty($existTags)) {
+                foreach ($existTags as $existTag) {
+                    if (!in_array($existTag['id'],$newTags)) {
+                        $galleryItem->tags()->detach($existTag['id']);
+                    }
+                    else {
+                        $key = array_search($existTag['id'],$newTags);
+                        unset($newTags[$key]);
+                    }
+                }
+            }
+            if (!empty($newTags)) {
+                foreach ($newTags as $tagId) {
+                    $galleryItem->tags()->attach($tagId);
+                }
+            }
+
             $galleryItem->save();
 
             if ($request->ajax()) {
                 return [
                     'result' => 'success',
                     'message' => __('gallery::elf.item_edited_successfully'),
-                    'data' => [
-                        'id' => $galleryItem->id,
-                        'name' => $galleryItem->name,
-                        'slug' => $galleryItem->slug,
-                        'image' => $galleryItem->image,
-                        'position' => $galleryItem->position,
-                    ],
+                    'data' => $galleryItem->toArray(),
                 ];
             }
 

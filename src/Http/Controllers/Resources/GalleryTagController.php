@@ -13,9 +13,28 @@ class GalleryTagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return GalleryTag::all()->toJson();
+        }
+        $trend = 'asc';
+        $order = 'id';
+        if (!empty($request->trend) && $request->trend == 'desc') {
+            $trend = 'desc';
+        }
+        if (!empty($request->order)) {
+            $order = $request->order;
+        }
+        $tags = GalleryTag::orderBy($order, $trend)->paginate(30);
+
+        return view('gallery::admin.gallery.tags.index',[
+            'page' => [
+                'title' => 'Tags',
+                'current' => url()->current(),
+            ],
+            'tags' => $tags
+        ]);
     }
 
     /**
@@ -25,7 +44,12 @@ class GalleryTagController extends Controller
      */
     public function create()
     {
-        //
+        return view('gallery::admin.gallery.tags.create',[
+            'page' => [
+                'title' => 'Create tag',
+                'current' => url()->current(),
+            ],
+        ]);
     }
 
     /**
@@ -36,7 +60,24 @@ class GalleryTagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|unique:Elfcms\Gallery\Models\GalleryTag,name'
+        ]);
+        $galleryTag = GalleryTag::create($validated);
+
+        if ($request->ajax()) {
+            $result = 'error';
+            $message = __('elf.error_of_tag_created');
+            $data = [];
+            if ($galleryTag) {
+                $result = 'success';
+                $message = __('elf.tag_created_successfully');
+                $data = ['id'=> $galleryTag->id];
+            }
+            return json_encode(['result'=>$result,'message'=>$message,'data'=>$data]);
+        }
+
+        return redirect(route('admin.gallery.tags.edit',$galleryTag->id))->with('tagcreated',__('elf.tag_created_successfully'));
     }
 
     /**
@@ -45,9 +86,11 @@ class GalleryTagController extends Controller
      * @param  \App\Models\GalleryTag  $galleryTag
      * @return \Illuminate\Http\Response
      */
-    public function show(GalleryTag $galleryTag)
+    public function show(Request $request, GalleryTag $galleryTag)
     {
-        //
+        if ($request->ajax()) {
+            return GalleryTag::find($galleryTag->id)->toJson();
+        }
     }
 
     /**
@@ -58,7 +101,13 @@ class GalleryTagController extends Controller
      */
     public function edit(GalleryTag $galleryTag)
     {
-        //
+        return view('gallery::admin.gallery.tags.edit',[
+            'page' => [
+                'title' => 'Edit tag #' . $galleryTag->id,
+                'current' => url()->current(),
+            ],
+            'tag' => $galleryTag
+        ]);
     }
 
     /**
@@ -70,7 +119,20 @@ class GalleryTagController extends Controller
      */
     public function update(Request $request, GalleryTag $galleryTag)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        if (GalleryTag::where('name',$validated['name'])->where('id','<>',$galleryTag->id)->first()) {
+            return redirect(route('admin.gallery.tags.edit',$galleryTag->id))->withErrors([
+                'name' => 'Tag already exists'
+            ]);
+        }
+
+        $galleryTag->name = $validated['name'];
+        $galleryTag->save();
+
+        return redirect(route('admin.gallery.tags.edit',$galleryTag->id))->with('tagedited',__('elf.tag_edited_successfully'));
     }
 
     /**
@@ -81,6 +143,47 @@ class GalleryTagController extends Controller
      */
     public function destroy(GalleryTag $galleryTag)
     {
-        //
+        if (!$galleryTag->delete()) {
+            return redirect(route('admin.gallery.tags'))->withErrors(['tagdelerror'=>'Error of tag deleting']);
+        }
+
+        return redirect(route('admin.gallery.tags'))->with('tagdeleted','Tag deleted successfully');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addNotExist(Request $request)
+    {
+        if ($request->ajax()) {
+            //return $request->toArray();
+            $validated = $request->validate([
+                'name' => 'required'
+            ]);
+
+            $result = 'error';
+            $message = __('elf.error_of_tag_created');
+            $data = [];
+
+            if ($tagByName = GalleryTag::where('name',$validated['name'])->first()) {
+                $result = 'exist';
+                $message = 'Tag already exist';
+                $data = ['id'=> $tagByName->id,'name'=>$tagByName->name];
+            }
+            else {
+                $galleryTag = GalleryTag::create($validated);
+
+                if ($galleryTag) {
+                    $result = 'success';
+                    $message = __('elf.tag_created_successfully');
+                    $data = ['id'=> $galleryTag->id,'name'=>$validated['name']];
+                }
+            }
+
+            return json_encode(['result'=>$result,'message'=>$message,'data'=>$data]);
+        }
     }
 }

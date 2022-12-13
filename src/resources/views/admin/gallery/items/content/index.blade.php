@@ -1,6 +1,3 @@
-{{-- <div class="dragndrop-wrapper">
-
-</div> --}}
 <form action="{{ route('admin.gallery.items.groupSave',$gallery) }}" method="POST" name="gallery-item-list" id="gallery-item-list">
     @method('POST')
     @csrf
@@ -115,7 +112,6 @@ function itemListSave(form) {
         (result) => result.json()
     ).then (
         (data) => {
-            //console.log(data);
             if (data.result && data.result == 'success') {
                 const forDeletes = document.querySelectorAll('.gallery-item-element.fordelete');
                 if (forDeletes) {
@@ -164,47 +160,245 @@ function filesUpload (files) {
     if (!files) {
         return false;
     }
-    //
-    console.log('upload');
-    console.log(files);
 
+    let fileNames = [];
+    let n = 0;
     for(key in files) {
-        //if (key != 'length' && key != 'item' && files[key].type) {
         if (files[key] instanceof File) {
-            console.log(files[key]);
-            fileUpload(files[key]);
+            fileNames[n] = files[key].name;
+            n++;
         }
     };
+    if (n > 0) {
+        popup({
+            title:'&nbsp;',
+            content:'{{__("gallery::elf.following_files_will_be_downloaded")}}: <br><br>' + fileNames.join('<br>') + '<p>{{__("gallery::elf.are_you_sure")}}</p>',
+            buttons:[
+                {
+                    title:'{{__("basic::elf.cancel")}}',
+                    class:'default-btn',
+                    callback:'close'
+                },
+                {
+                    title:'OK',
+                    class:'default-btn alternate-button',
+                    callback: [
+                        function(){
+                            for(key in files) {
+                                if (files[key] instanceof File) {
+                                    fileUpload(files[key],key);
+                                }
+                            };
+                        },
+                        'close'
+                    ]
+                }
+            ],
+            class:'alternate'
+        });
+    }
 }
 
-function fileUpload (file) {
+function createLoder () {
+    const box = document.createElement('div');
+    box.classList.add('item-loader-box');
+    const counter = document.createElement('div');
+    counter.classList.add('item-loader-counter');
+    const bar = document.createElement('div');
+    bar.classList.add('item-loader-bar');
+    const progress = document.createElement('div');
+    bar.append(progress);
+    box.append(counter, bar);
+    return {
+        box: box,
+        counter: counter,
+        bar: bar,
+        progress: progress
+    }
+}
+
+function fileUpload (file, key = null) {
     if (!(file instanceof File)) {
         return false;
     }
+
+    const item = createItem({
+        id: key,
+        slug: key,
+        name: file.name,
+        position: 1000,
+        image: '/vendor/elfcms/gallery/admin/images/empty.png',
+    },true);
+
+    item.href = 'javascript:void(0)';
+
+    dragndropBox.append(item);
+
+    const loader = createLoder();
+
+    item.append(loader.box);
+
     const formData = new FormData();
-    formData.append('file', file, file.name);
-    ajax('/admin/gal/test',{
+    formData.append('image', file, file.name);
+    formData.append('_token','{{csrf_token()}}');
+    formData.append('_method','POST');
+    formData.append('active','1');
+    ajax('{{route("admin.gallery.items.store",$gallery)}}',{
         method: 'post',
         formData: formData,
         headers: {
+            'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
         resolve: function(result) {
-            console.log('resolve',result.response);
+            let answer = JSON.parse(result.response);
+            if (answer && answer.result && answer.result == 'success') {
+                setItemData(item, answer.data, true, function(){
+                    if (loader.box) {
+                        loader.box.remove();
+                    }
+                });
+            }
+            else {
+                loader.counter.innerHTML = 'Error';
+            }
         },
         progress: function(e) {
-            //console.log(e);
             if (e.lengthComputable) {
-                //progressBox.innerHTML = `Получено ${event.loaded} из ${event.total} байт`;
-                //console.log(`${file.name}: Получено ${e.loaded} из ${e.total} байт`)
-                console.log(Math.round(e.loaded / e.total * 100) + '%');
-            }/*  else {
-                //progressBox.innerHTML = `Получено ${event.loaded} байт`;
-                console.log(`${file.name}: Получено ${e.loaded} байт`)
-            } */
+                let percent = Math.round(e.loaded / e.total * 100) + '%';
+                loader.counter.innerHTML = percent;
+                loader.progress.style.width = percent;
+            }
         },
         uploadResolve: null,
     });
+}
+
+function setItemData (item, data, empty=false, callback=null) {
+    if (typeof item === 'string') {
+        item = document.querySelector(item);
+    }
+    if (!(item instanceof HTMLElement)) {
+        return false;
+    }
+
+    item.href = '/admin/gallery/{{$gallery->slug}}/items/'+data.slug+'/edit';
+    item.dataset.slug = data.slug;
+    item.dataset.id = data.id;
+    item.style.order = data.position;
+    item.title = '__("basic::elf.edit") ' + data.name;
+    const img = item.querySelector('img');
+    if (img) {
+        if (data.thumbnail) {
+            img.src = data.thumbnail;
+        }
+        else if (data.preview) {
+            img.src = data.preview;
+        }
+        else {
+            img.src = data.image;
+        }
+    }
+    const h5 = item.querySelector('h5');
+    if (h5) {
+        h5.innerHTML = data.name;
+    }
+    if (empty) {
+        const deleteBox = document.createElement('div');
+        deleteBox.classList.add('delete-item-box');
+        deleteBox.title = '{{__("basic::elf.delete")}}'
+        const deleteInp = document.createElement('input');
+        deleteInp.type = 'checkbox';
+        deleteInp.name = `item[${data.id}][delete]`;
+        deleteInp.id = `item_${data.id}_delete`;
+        deleteInp.dataset.field = 'delete';
+        deleteInp.addEventListener('click',function(e){
+            e.stopPropagation();
+            submitItems.disabled = false;
+            if (this.checked) {
+                item.classList.add('fordelete')
+            }
+            else {
+                item.classList.remove('fordelete')
+            }
+        });
+        deleteBox.append(deleteInp);
+        deleteBox.insertAdjacentHTML('beforeend','<i></i>');
+        item.append(deleteBox);
+        item.addEventListener('click',function(e){
+            e.preventDefault();
+            editItem(item.href,item);
+        });
+        item.insertAdjacentHTML('beforeend',`<input type="hidden" name="item[${data.id}][position]" value="${data.position}" data-field="position">`);
+    }
+    else {
+        const deleteInp = item.querySelector('.delete-item-box input[type="checkbox"]');
+        deleteInp.type = 'checkbox';
+        deleteInp.name = `item[${data.id}][delete]`;
+        deleteInp.id = `item_${data.id}_delete`;
+    }
+    if (callback && typeof callback === 'function') {
+        callback();
+    }
+}
+
+function createItem (data, empty = false) {
+    const newItem = document.createElement('a');
+    newItem.href = '/admin/gallery/{{$gallery->slug}}/items/'+data.slug+'/edit';
+    newItem.classList.add('gallery-item-tile','gallery-item-element');
+    newItem.dataset.slug = data.slug;
+    newItem.dataset.id = data.id;
+    newItem.style.order = data.position;
+    newItem.title = '__("basic::elf.edit") ' + data.name;
+    newItem.draggable = true;
+    const img = document.createElement('img');
+    if (img) {
+        if (data.thumbnail) {
+            img.src = data.thumbnail;
+        }
+        else if (data.preview) {
+            img.src = data.preview;
+        }
+        else {
+            img.src = data.image;
+        }
+        newItem.append(img)
+    }
+    const h5 = document.createElement('h5');
+    if (h5) {
+        h5.innerHTML = data.name;
+        newItem.append(h5)
+    }
+    if (!empty) {
+        const deleteBox = document.createElement('div');
+        deleteBox.classList.add('delete-item-box');
+        deleteBox.title = '{{__("basic::elf.delete")}}'
+        const deleteInp = document.createElement('input');
+        deleteInp.type = 'checkbox';
+        deleteInp.name = `item[${data.id}][delete]`;
+        deleteInp.id = `item_${data.id}_delete`;
+        deleteInp.dataset.field = 'delete';
+        deleteInp.addEventListener('click',function(e){
+            e.stopPropagation();
+            submitItems.disabled = false;
+            if (this.checked) {
+                newItem.classList.add('fordelete')
+            }
+            else {
+                newItem.classList.remove('fordelete')
+            }
+        });
+        deleteBox.append(deleteInp);
+        deleteBox.insertAdjacentHTML('beforeend','<i></i>');
+        newItem.append(deleteBox);
+        newItem.addEventListener('click',function(e){
+            e.preventDefault();
+            editItem(newItem.href,newItem);
+        });
+        newItem.insertAdjacentHTML('beforeend',`<input type="hidden" name="item[${data.id}][position]" value="${data.position}" data-field="position">`);
+    }
+
+    return newItem;
 }
 
 function dndInit(element) {
@@ -325,77 +519,6 @@ function dndInit(element) {
     });
 }
 
-function ajax(url, params = {}) {
-    if (!params.method && typeof params.method !== 'sting')  {
-        params.method = 'GET';
-    }
-    params.method = params.method.toUpperCase();
-    if (params.method != 'GET' && params.method != 'POST') {
-        params.method = 'GET';
-    }
-    if (!params.resolve) {
-        params.resolve = (result) => {
-            return result;
-        };
-    }
-
-    let promise = new Promise(function(resolve, reject) {
-        let request = new XMLHttpRequest();
-        request.open(params.method, url);
-        if (params.headers && typeof params.headers === 'object') {
-            Object.entries(params.headers).forEach((entry) => {
-                const [key, value] = entry;
-                if (key && value) {
-                    request.setRequestHeader(key,value);
-                }
-            });
-        }
-
-        if (params.progress && typeof params.progress === 'function') {
-            request.upload.onprogress = function(event) {
-                params.progress(event);
-            }
-        }
-
-        if (params.uploadResolve && typeof params.uploadResolve === 'function') {
-            request.upload.onload = function() {
-                params.uploadResolve(request);
-            }
-        }
-
-        if (params.progress && typeof params.progress === 'function') {
-            request.onprogress = function(event) {
-                params.progress(event);
-            }
-        }
-
-        request.onload = function() {
-            if (request.status == 200) {
-                resolve(request);
-            }
-            else {
-                reject(Error(request.statusText));
-            }
-        };
-
-        request.onerror = function() {
-            reject(Error("Network Error"));
-        };
-
-        if (params.method == 'POST' && params.formData) {
-            request.send(params.formData);
-        }
-        else {
-            request.send();
-        }
-    });
-
-    if (params.resolve && typeof params.resolve === 'function') {
-        promise.then(params.resolve)
-    }
-}
-
-
 function editItem(action,currentItem,isEdit=true){
     const createBoxWrapper = document.createElement('div');
     createBoxWrapper.classList.add('gallery-item-create-popup-wrapper');
@@ -450,7 +573,6 @@ function editItem(action,currentItem,isEdit=true){
                     const submitButton = createForm.querySelector('[type="submit"]');
                     const newSubmitButton = submitButton.cloneNode(true);
                     const submitButtonBox = submitButton.parentNode;
-                    //infoMessageBox.id = 'infomessagebox';
                     submitButtonBox.append(newSubmitButton);
                     submitButton.remove();
                     const infoMessageBox = document.createElement('div');
@@ -485,7 +607,15 @@ function editItem(action,currentItem,isEdit=true){
                                         }
                                         const img = currentItem.querySelector('img');
                                         if (img) {
-                                            img.src = data.data.image;
+                                            if (data.data.thumbnail) {
+                                                img.src = data.data.thumbnail;
+                                            }
+                                            else if (data.data.preview) {
+                                                img.src = data.data.preview;
+                                            }
+                                            else {
+                                                img.src = data.data.image;
+                                            }
                                         }
                                         currentItem.href = '/admin/gallery/{{$gallery->slug}}/items/'+data.data.slug+'/edit';
                                     }
@@ -516,7 +646,6 @@ function editItem(action,currentItem,isEdit=true){
                                         deleteInp.name = `item[${data.data.id}][delete]`;
                                         deleteInp.id = `item_${data.data.id}_delete`;
                                         deleteInp.dataset.field = 'delete';
-                                        //deleteInp.onclick = 'event.stopPropagation()';
                                         deleteInp.addEventListener('click',function(e){
                                             e.stopPropagation();
                                             submitItems.disabled = false;
@@ -562,6 +691,7 @@ function editItem(action,currentItem,isEdit=true){
                                 formSubmit();
                             });
                         }
+                        galleryTagFormInit();
                     },500)
                 }
             }

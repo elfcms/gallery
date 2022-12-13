@@ -368,6 +368,43 @@ main:has(.gallery-items-box) {
     background-color: thistle;
 }
 
+.item-loader-box {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 140px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.item-loader-counter {
+    font-size: 24px;
+    font-weight: 500;
+    color: #06516e;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+}
+.item-loader-counter::after {
+    content: attr(data-content);
+}
+.item-loader-bar {
+    width: 100px;
+    height: 15px;
+    border: 1px solid #06516e;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+.item-loader-bar > div {
+    content: '';
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: #06516e;
+}
 
 /* preloader */
 

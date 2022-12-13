@@ -142,6 +142,27 @@
                     <input type="text" name="option" id="option" value="{{ $item->option }}">
                 </div>
             </div>
+            <div class="input-box colored">
+                <label for="tags">{{ __('basic::elf.tags') }}</label>
+                <div class="input-wrapper">
+                    <div class="tag-form-wrapper">
+                        <div class="tag-list-box">
+                            @foreach ($item->tags as $tag)
+                            <div class="tag-item-box" data-id="{{ $tag->id }}">
+                                <span class="tag-item-name">{{ $tag->name }}</span>
+                                <span class="tag-item-remove" onclick="removeTagFromList(this)">&#215;</span>
+                                <input type="hidden" name="tags[]" value="{{ $tag->id }}">
+                            </div>
+                            @endforeach
+                        </div>
+                        <div class="tag-input-box">
+                            <input type="text" class="tag-input" autocomplete="off">
+                            <button type="button" class="default-btn tag-add-button">Add</button>
+                            <div class="tag-prompt-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="button-box single-box">
             <button type="submit" class="default-btn submit-button">{{ __('basic::elf.submit') }}</button>
@@ -163,6 +184,8 @@ if (thumbnailInput) {
     inputFileImg(thumbnailInput)
 }
 autoSlug('.autoslug')
+
+galleryTagFormInit()
 
 //add editor
 runEditor('#description')

@@ -71,6 +71,13 @@ class AdminController extends Controller
             'request' => $request->all(),
             'method' => $request->method(),
             'files' => $request->file(),
+            'data' => [
+                'id' => 1234,
+                'slug' => 'test_slug',
+                'name' => 'test_name',
+                'position' => 2000,
+                'image' => asset('/storage/gallery/items/thumbnail/ew9UseZWSPvAowzj7y5sJAbkk6EcAnacpHYakcd0_400_300.jpg'),
+            ]
         ];
     }
 
