@@ -70,7 +70,7 @@ return [
         ],
     ],
 
-    'component' => [
+    'components' => [
         'slider' => [
             'class' => '\Elfcms\Gallery\View\Components\Slider',
             'options' => [

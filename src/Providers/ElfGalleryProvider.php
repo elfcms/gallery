@@ -81,5 +81,9 @@ class ElfGalleryProvider extends ServiceProvider
         $router->middlewareGroup('cookie', array(
             CookieCheck::class
         ));
+
+        $this->loadViewComponentsAs('elfcms-gallery', [
+            'slider' => \Elfcms\Gallery\View\Components\Slider::class,
+        ]);
     }
 }
