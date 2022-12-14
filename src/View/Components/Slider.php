@@ -24,10 +24,8 @@ class Slider extends Component
         if (gettype($gallery) == 'string') {
             $result = Gallery::where('slug',$gallery)->with('items')->first();
         }
+        $result->data = $result->sliderJson();
         $this->gallery = $result;
-        //dd($this->gallery);
-        //dd($this->menu->items('id','desc'));
-        //dd($this->menu->items());
         $this->theme = $theme;
     }
 

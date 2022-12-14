@@ -35,6 +35,27 @@ class Gallery extends Model
         return $this->hasMany(GalleryItem::class)->orderBy('position');
     }
 
+    public function sliderData()
+    {
+        $this->with('items');
+        $result = [];
+        foreach ($this->items as $item) {
+            $result[] = [
+                'title' => $item['name'],
+                'description' => $item['description'],
+                'img' => empty($item['preview']) ? $item['image'] : $item['preview'],
+                'full' => $item['image'],
+                'thumb' => empty($item['thumbnail']) ? (empty($item['preview']) ? $item['image'] : $item['preview']) : $item['thumbnail'],
+            ];
+        }
+        return $result;
+    }
+
+    public function sliderJson()
+    {
+        return json_encode($this->sliderData(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
     /**
      * Get the route key for the model.
      *

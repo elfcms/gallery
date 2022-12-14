@@ -1,8 +1,7 @@
-<link rel="stylesheet" href="/vendor/elfcms/gallery/css/components/slider/default.css">
+<link rel="stylesheet" href="/vendor/elfcms/gallery/css/components/slider/big.css">
 <div class="slider-wrapper">
     <div id="slider"></div>
 </div>
-
 <script src="/vendor/elfcms/gallery/js/kjs.js"></script>
 <script>
 const dataString = '{!! $gallery->data ?? '[{}]' !!}';
