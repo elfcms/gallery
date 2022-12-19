@@ -4,31 +4,34 @@
 </div>
 <script src="/vendor/elfcms/gallery/js/kjs.js"></script>
 <script>
-const dataString = '{!! $gallery->data ?? '[{}]' !!}';
+const dataString = '{!! $gallery->sliderJson() ?? '[{}]' !!}';
 const data = JSON.parse(dataString);
-new KJS('#slider', data, {
+let slider = new KJS('#slider', data, {
     count: 1,
     gap: 2,
     step: 1,
     infinity: true,
-    single: false,
+    //single: false,
     //title: true,
     //description: true,
     //arrows: false,
-    auto: 4,
-    zoom: true,
+    //auto: 4,
+    //zoom: true,
+    dots: true,
     track: {
         //direction: 'vertical'
     },
     responsive: {
-        700: {
-            count: 2,
-            step: 2
-        },
-        400: {
-            count: 1,
-            step: 1
-        },
+        768: {
+            dots: false
+        }
     }
-})
+    //type: 'big'
+});
+window.onresize = () => {
+    let active = slider.active;
+    slider.init();
+    slider.step = active;
+    slider.setStep();
+}
 </script>

@@ -1,4 +1,6 @@
-:root {
+:root,
+::after,
+::before {
     --arrow-size: 20px;
     --track-size: 120px;
 }

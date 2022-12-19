@@ -13,6 +13,7 @@ class KJS {
         this.itemsCount = data.length;
 
         this.param = {
+            type:       parameters?.type        ?? 'default',
             count:      parameters?.count       ?? 1,
             infinity:   parameters?.infinity    ?? false,
             gap:        parameters?.gap         ?? 0,
@@ -40,6 +41,10 @@ class KJS {
                 box:        parameters?.classes?.box    ?? 'slide-box'
             },
             responsive: parameters?.responsive ?? false,
+        }
+
+        if (this.param.type != 'big' && this.param.type != 'middle' && this.param.type != 'small') {
+            this.param.type = 'default';
         }
 
         this.defaultParam = JSON.parse(JSON.stringify(this.param));
@@ -87,6 +92,8 @@ class KJS {
         this.lightBoxNext;
         this.lightBoxPrev;
         this.lightBoxClose;
+        this.dotsBox;
+        this.dotsItems = [];
 
         this.trackSwipe = {
             start: 0,
@@ -105,14 +112,14 @@ class KJS {
         if (typeof this.container === 'object' && this.container instanceof HTMLElement) {
             this.setParams();
             this.init();
-            
+
             if (this.param.responsive) {
                 window.addEventListener('resize',()=>{
                     let lastResponsiveSize = this.responsiveSize;
                     this.setParams();
-                    console.log(lastResponsiveSize, this.responsiveSize)
+                    //console.log(lastResponsiveSize, this.responsiveSize)
                     if (lastResponsiveSize != this.responsiveSize) {
-                        console.log('init')
+                        //console.log('init')
                         this.init();
                     }
                     //this.init();
@@ -126,7 +133,7 @@ class KJS {
 
     init() {
 
-        //console.log(window.innerWidth)
+        ////console.log(window.innerWidth)
 
         //this.responsiveSize = window.innerWidth;
 
@@ -168,7 +175,7 @@ class KJS {
         this.viewSize = this.param.gap * (this.param.count - 1);
         this.itemSize = parseInt((this.trackViewSize - (this.viewSize)) / this.param.count);
         this.trackSize = this.itemSize * this.itemsCount + this.param.gap * (this.itemsCount - 1);
-        console.log('1',this.itemSize);
+        //console.log('1',this.itemSize);
         this.maxStep = Math.ceil((this.itemsCount - this.param.count) / this.param.step);
 
 
@@ -200,6 +207,10 @@ class KJS {
             if (this.param.description) {
                 this.box.append(this.createDescription());
             }
+        }
+
+        if (this.param.dots) {
+            this.setDots();
         }
 
         if (this.param.auto !== false) {
@@ -236,6 +247,42 @@ class KJS {
         this.autoInterval = setInterval(() => {
             this.next();
         }, this.param.auto)
+    }
+
+    setDots() {
+        if (!this.dotsBox) {
+            this.dotsBox = document.createElement('div');
+            this.dotsBox.classList.add('slider-dots-box');
+            if (this.itemsCount > 0) {
+                for (let i=0; i<this.itemsCount; i++) {
+                    this.dotsItems[i] = document.createElement('div');
+                    this.dotsItems[i].classList.add('slider-dots-item');
+                    this.dotsItems[i].dataset.item = i;
+                    let self = this;
+                    this.dotsItems[i].addEventListener('click',function(){
+                        console.log(i);
+                        self.step = self.active = i;
+                        self.setStep();
+                        self.setActiveDot();
+                    });
+                    this.dotsBox.append(this.dotsItems[i]);
+                }
+            }
+            this.dotsItems[this.active].classList.add('active');
+        }
+
+        if (!this.trackBox.querySelector('.slider-dots-box')) {
+            this.trackBox.append(this.dotsBox);
+        }
+    }
+
+    setActiveDot() {
+        if (this.dotsItems.length) {
+            this.dotsItems.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            this.dotsItems[this.active].classList.add('active');
+        }
     }
 
     showLightBox() {
@@ -288,8 +335,8 @@ class KJS {
 
         this.lightBoxPicture.addEventListener('touchstart',(e) => {
             this.fullSwipe.start = this.fullSwipe.current = this.fullSwipe.end = e.touches[0]['page'+this.shiftName];
-            console.log('start', this.fullSwipe.start, this.fullSwipe.current, this.fullSwipe.end)
-        },false);
+            //console.log('start', this.fullSwipe.start, this.fullSwipe.current, this.fullSwipe.end)
+        },{passive: true});
 
         this.lightBoxPicture.addEventListener('touchend',(e) => {
 
@@ -308,21 +355,21 @@ class KJS {
             this.fullSwipe.start = 0;
             this.fullSwipe.current = 0;
             this.fullSwipe.end = 0;
-        },false);
+        },{passive: true});
 
         this.lightBoxPicture.addEventListener('touchmove',(e) => {
             this.fullSwipe.current = e.touches[0]['page'+this.shiftName];
             /* let touchMoving = this.fullSwipe.current - this.fullSwipe.start + this.shift;
-            console.log(touchMoving)
+            //console.log(touchMoving)
             this.trackInner.style.setProperty('transform','translate'+this.shiftName+'('+touchMoving+'px)'); */
-        },false);
+        },{passive: true});
 
         this.lightBoxPicture.addEventListener('touchcancel',(e) => {
             this.fullSwipe.start = 0;
             this.fullSwipe.current = 0;
             this.fullSwipe.end = 0;
             //this.trackInner.style.setProperty('transform','translate'+this.shiftName+'('+this.shift+'px)');
-        },false);
+        },{passive: true});
 
         /* /swipe */
 
@@ -335,7 +382,7 @@ class KJS {
         this.lightBoxCenter.append(this.lightBoxInfo);
         this.lightBoxBackground.append(this.lightBoxCenter);
         this.lightBoxBackground.append(this.lightBoxClose);
-        
+
         container.append(this.lightBoxBackground);
     }
 
@@ -372,7 +419,7 @@ class KJS {
     }
 
     setFullActive() {
-        //console.log(this.fullActive)
+        ////console.log(this.fullActive)
         let img = this.data[this.fullActive].full ?? this.data[this.fullActive].img ?? this.data[this.fullActive].thumb;
         this.lightBoxPicture.style.backgroundImage = "url('" + img + "')";
     }
@@ -390,7 +437,7 @@ class KJS {
         if (!this.items[this.active]) {
             return false;
         }
-        
+
         this.items[this.active].classList.add('active');
         this.items.forEach(item => {
             if (item != this.items[this.active]) {
@@ -407,7 +454,7 @@ class KJS {
         if (this.param.description && this.descriptionBox) {
             this.descriptionBox.innerHTML = this.items[this.active].dataset.description;
         }
-        
+
         return this.items[this.active];
     }
 
@@ -424,7 +471,7 @@ class KJS {
         if (this.step >= this.maxStep) {
             shift = this.trackSize - this.trackViewSize;
 
-            console.log('2',this.trackSize);
+            //console.log('2',this.trackSize);
             this.lastStep = true;
         }
         else {
@@ -436,6 +483,10 @@ class KJS {
         this.trackInner.style.setProperty('transform','translate'+this.shiftName+'('+this.shift+'px)');
 
         this.setActive();
+
+        if (this.param.dots) {
+            this.setActiveDot();
+        }
     }
 
     next() {
@@ -451,6 +502,12 @@ class KJS {
             this.active += this.param.step;
         }
         this.setStep();
+        if (this.autoInterval) {
+            clearInterval(this.autoInterval);
+            this.autoInterval = setInterval(() => {
+                this.next();
+            }, this.param.auto)
+        }
     }
 
     prev() {
@@ -466,6 +523,12 @@ class KJS {
             this.active -= this.param.step;
         }
         this.setStep();
+        if (this.autoInterval) {
+            clearInterval(this.autoInterval);
+            this.autoInterval = setInterval(() => {
+                this.next();
+            }, this.param.auto)
+        }
     }
 
     createItem(itemData) {
@@ -480,7 +543,20 @@ class KJS {
         }
 
         let img = data.img;
-        if (this.param.single || this.param.count == 1) {
+
+        if (this.param.single) {
+            img = data.thumb;
+        }
+        else if (this.param.count == 1) {
+            img = data.full;
+        }
+        if (this.param.type == 'big') {
+            img = data.full;
+        }
+        else if (this.param.type == 'middle') {
+            img = data.img;
+        }
+        else if (this.param.type == 'small') {
             img = data.thumb;
         }
 
@@ -489,7 +565,7 @@ class KJS {
         if (img) {
             item.style.backgroundImage = "url('" + img + "')";
         }
-        
+
         if (data.title) {
             item.title = data.title;
         }
@@ -502,11 +578,11 @@ class KJS {
         if (data.description) {
             item.dataset.description = data.description;
         }
-        
+
         if (data.html) {
             item.innerHTML = data.html;
         }
-        console.log('i',this.itemSize)
+        //console.log('i',this.itemSize)
         if (this.itemSize) {
             item.style.setProperty(this.sizeName, this.itemSize+'px');
             let image = new Image();
@@ -519,7 +595,7 @@ class KJS {
                 }
             }
         }
-        
+
         return item;
     }
 
@@ -528,7 +604,7 @@ class KJS {
         trackInner.classList.add(this.param.classes.track + '-inner');
         trackInner.classList.add(this.param.track.direction);
         this.trackInner = trackInner;
-        
+
         return this.trackInner;
     }
 
@@ -596,8 +672,8 @@ class KJS {
 
         this.track.addEventListener('touchstart',(e) => {
             this.trackSwipe.start = this.trackSwipe.current = this.trackSwipe.end = e.touches[0]['page'+this.shiftName];
-            console.log('start', this.trackSwipe.start, this.trackSwipe.current, this.trackSwipe.end)
-        },false);
+            //console.log('start', this.trackSwipe.start, this.trackSwipe.current, this.trackSwipe.end)
+        },{passive: true});
 
         this.track.addEventListener('touchend',(e) => {
 
@@ -616,28 +692,28 @@ class KJS {
             this.trackSwipe.start = 0;
             this.trackSwipe.current = 0;
             this.trackSwipe.end = 0;
-        },false);
+        },{passive: true});
 
         this.track.addEventListener('touchmove',(e) => {
             this.trackSwipe.current = e.touches[0]['page'+this.shiftName];
             let touchMoving = this.trackSwipe.current - this.trackSwipe.start + this.shift;
-            console.log(touchMoving)
+            //console.log(touchMoving)
             this.trackInner.style.setProperty('transform','translate'+this.shiftName+'('+touchMoving+'px)');
-        },false);
+        },{passive: true});
 
         this.track.addEventListener('touchcancel',(e) => {
             this.trackSwipe.start = 0;
             this.trackSwipe.current = 0;
             this.trackSwipe.end = 0;
             this.trackInner.style.setProperty('transform','translate'+this.shiftName+'('+this.shift+'px)');
-        },false);
+        },{passive: true});
 
         /* /swipe */
-        console.log('track')
+        //console.log('track')
 
         this.trackBox = trackBox;
         return this.trackBox;
-        
+
     }
 
     createTitle() {
@@ -706,16 +782,17 @@ class KJS {
             for (let size in this.param.responsive) {
                 size = parseInt(size);
                 if (window.innerWidth <= size) {
-                    console.log('01',size,window.innerWidth)
+                    //console.log('01',size,window.innerWidth)
                     this.responsiveSize = size;
                     this.responsiveParam = this.param.responsive[this.responsiveSize];
                     break;
                 }
                 else {
-                    console.log('02',size,window.innerWidth)
+                    //console.log('02',size,window.innerWidth)
                 }
             }
-            console.log(this.param.count,this.responsiveParam?.count,this.defaultParam.count)
+            //console.log(this.param.count,this.responsiveParam?.count,this.defaultParam.count)
+            this.param.type        = this.responsiveParam?.type         ?? this.defaultParam.type;
             this.param.count       = this.responsiveParam?.count        ?? this.defaultParam.count;
             this.param.infinity    = this.responsiveParam?.infinity     ?? this.defaultParam.infinity;
             this.param.gap         = this.responsiveParam?.gap          ?? this.defaultParam.gap;
@@ -731,7 +808,7 @@ class KJS {
             this.param.title       = this.responsiveParam?.title        ?? this.defaultParam.title;
             this.param.description = this.responsiveParam?.description  ?? this.defaultParam.description;
             this.param.track       = this.responsiveParam?.track        ?? this.defaultParam.track;
-            console.log(this.param.count,this.responsiveParam?.count,this.defaultParam.count)
+            //console.log(this.param.count,this.responsiveParam?.count,this.defaultParam.count)
 
         }
 

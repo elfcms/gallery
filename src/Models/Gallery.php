@@ -35,11 +35,18 @@ class Gallery extends Model
         return $this->hasMany(GalleryItem::class)->orderBy('position');
     }
 
-    public function sliderData()
+    public function sliderData($size = 0)
     {
         $this->with('items');
         $result = [];
         foreach ($this->items as $item) {
+            $tumbnail = empty($item['thumbnail']) ? (empty($item['preview']) ? $item['image'] : $item['preview']) : $item['thumbnail'];
+            if ($size == 1) {
+                $tumbnail = empty($item['preview']) ? $item['image'] : $item['preview'];
+            }
+            elseif ($size == 2) {
+                $tumbnail = $item['image'];
+            }
             $result[] = [
                 'title' => $item['name'],
                 'description' => $item['description'],
@@ -51,9 +58,9 @@ class Gallery extends Model
         return $result;
     }
 
-    public function sliderJson()
+    public function sliderJson($size = 0)
     {
-        return json_encode($this->sliderData(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        return json_encode($this->sliderData($size), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
     /**
