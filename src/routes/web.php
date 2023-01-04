@@ -58,8 +58,6 @@ Route::group(['middleware'=>['web','cookie','start']],function() use ($adminPath
             'destroy' => 'gallery.items.destroy',
         ]);
         Route::post($adminPath . 'gallery/{gallery}/items/group', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'galleryItemGroupSave'])->name('gallery.items.groupSave');
-        Route::any($adminPath . '/gal/test', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'test']);
-        Route::any($adminPath . '/gal/tf', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'tf']);
 
     });
 

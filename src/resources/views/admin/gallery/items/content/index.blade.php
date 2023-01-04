@@ -243,7 +243,7 @@ function fileUpload (file, key = null) {
     formData.append('_token','{{csrf_token()}}');
     formData.append('_method','POST');
     formData.append('active','1');
-    ajax('{{route("admin.gallery.items.store",$gallery)}}',{
+    eajax('{{route("admin.gallery.items.store",$gallery)}}',{
         method: 'post',
         formData: formData,
         headers: {
