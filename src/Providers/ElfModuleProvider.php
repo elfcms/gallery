@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
-class ElfGalleryProvider extends ServiceProvider
+class ElfModuleProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -60,7 +60,7 @@ class ElfGalleryProvider extends ServiceProvider
             }
         }
         if ($firstStart) {
-            Artisan::call('vendor:publish',['--provider'=>'Elfcms\Gallery\Providers\ElfGalleryProvider','--force'=>true]);
+            Artisan::call('vendor:publish',['--provider'=>'Elfcms\Gallery\Providers\ElfModuleProvider','--force'=>true]);
             Artisan::call('migrate');
             if (unlink($startFile)) {
                 //
