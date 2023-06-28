@@ -85,7 +85,7 @@
                         <div class="image-button">
                             <div class="delete-image hidden">&#215;</div>
                             <div class="image-button-img">
-                                <img src="{{ asset('/vendor/elfcms/blog/admin/images/icons/upload.png') }}" alt="Upload file">
+                                <img src="{{ asset('/vendor/elfcms/basic/admin/images/icons/upload.png') }}" alt="Upload file">
                             </div>
                             <div class="image-button-text">
                                 {{ __('basic::elf.choose_file') }}
