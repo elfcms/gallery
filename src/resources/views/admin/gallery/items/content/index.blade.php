@@ -251,6 +251,7 @@ function fileUpload (file, key = null) {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
         resolve: function(result) {
+            console.log(result.response);
             let answer = JSON.parse(result.response);
             if (answer && answer.result && answer.result == 'success') {
                 setItemData(item, answer.data, true, function(){

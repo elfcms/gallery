@@ -3,7 +3,8 @@
 namespace Elfcms\Gallery\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
-use Elfcms\Gallery\Elf\Image;
+use Elfcms\Basic\Elf\Image;
+use Elfcms\Gallery\Http\Requests\Admin\GalleryItemStoreRequest;
 use Elfcms\Gallery\Models\Gallery;
 use Elfcms\Gallery\Models\GalleryItem;
 use Illuminate\Http\Request;
@@ -72,101 +73,25 @@ class GalleryItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Elfcms\Gallery\Http\Requests\Admin\GalleryItemStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Gallery $gallery)
+    public function store(GalleryItemStoreRequest $request, Gallery $gallery)
     {
-        /* if ($request->ajax()) {
-            return [
-                'image' => $request->file()['image'],
-                'name' => $request->file()['image']->getClientOriginalName(),
-            ];
-        } */
-        $imageConfig = config('elfcms.gallery.images');
-        $imageConfig['image']['size'] = $imageConfig['image']['size'] ?? 768;
-        $imageConfig['preview']['size'] = $imageConfig['preview']['size'] ?? 512;
-        $imageConfig['preview']['width'] = $imageConfig['preview']['width'] ?? 800;
-        $imageConfig['preview']['height'] = $imageConfig['preview']['height'] ?? 600;
-        $imageConfig['thumbnail']['size'] = $imageConfig['thumbnail']['size'] ?? 256;
-        $imageConfig['thumbnail']['width'] = $imageConfig['thumbnail']['width'] ?? 400;
-        $imageConfig['thumbnail']['height'] = $imageConfig['thumbnail']['height'] ?? 300;
+        $request->validated();
 
-        if (empty($request->name) && !empty($request->file()['image'])) {
-            $request->merge([
-                'name' => $request->file()['image']->getClientOriginalName(),
-            ]);
+        $validated = $request->all();
 
-        }
-
-        if (empty($request->slug)) {
-            $request->merge([
-                'slug' => Str::slug($request->name),
-            ]);
-        }
-        else {
-            $request->merge([
-                'slug' => Str::slug($request->slug),
-            ]);
-        }
-        if (GalleryItem::withTrashed()->where('slug',$request->slug)->count() > 0) {
-            $request->merge([
-                'slug' => $request->slug . '_' . time(),
-            ]);
-        }
-
-        $validated = $request->validate([
-            'category_id' => 'nullable',
-            'name' => 'required',
-            'slug' => 'required|unique:Elfcms\Gallery\Models\GalleryItem,slug',
-            'image' => 'required|file|max:'.$imageConfig['image']['size'],
-            'preview' => 'nullable|file|max:'.$imageConfig['preview']['size']
-        ]);
-
-        $image_path = '';
-        if (!empty($request->file()['image'])) {
-            $image = $request->file()['image']->store('public/gallery/items/image');
-            $image_path = str_ireplace('public/','/storage/',$image);
-        }
-        $preview_path = '';
-        if (!empty($request->file()['preview'])) {
-            $preview = $request->file()['preview']->store('public/gallery/items/preview');
-            $preview_path = str_ireplace('public/','/storage/',$preview);
-        }
-        elseif (!empty($image_path) && !empty($image) && (!isset($imageConfig['preview']['auto']) || $imageConfig['preview']['auto'] === true)) {
-            $preview = Image::resize($image,'public/gallery/items/preview/',$imageConfig['preview']['width'],$imageConfig['preview']['height']);
-            $preview_path = str_ireplace('public/','/storage/',$preview);
-        }
-        $thumbnail_path = '';
-        if (!empty($request->file()['thumbnail'])) {
-            $thumbnail = $request->file()['thumbnail']->store('public/gallery/items/thumbnail');
-            $thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
-        }
-        elseif (!empty($image_path) && !empty($image) && (!isset($imageConfig['thumbnail']['auto']) || $imageConfig['thumbnail']['auto'] === true)) {
-            $thumbnail = Image::resize($image,'public/gallery/items/thumbnail/',$imageConfig['thumbnail']['width'],$imageConfig['thumbnail']['height']);
-            $thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
-        }
-
+        $validated['gallery_id'] = $gallery->id;
         if (empty($validated['category_id'])) {
             $validated['category_id'] = null;
         }
-
         $position = $request->position;
         if (empty($position)) {
             $maxPosition = GalleryItem::where('gallery_id',$gallery->id)->max('position');
             $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
         }
-
-        $validated['image'] = $image_path;
-        $validated['preview'] = $preview_path;
-        $validated['thumbnail'] = $thumbnail_path;
-        $validated['description'] = $request->description;
-        $validated['additional_text'] = $request->additional_text;
-        $validated['active'] = empty($request->active) ? 0 : 1;
-        $validated['option'] = $request->option;
         $validated['position'] = $position;
-        $validated['link'] = $request->link;
-        $validated['gallery_id'] = $gallery->id;
 
         $galleryItem = GalleryItem::create($validated);
 
@@ -177,25 +102,10 @@ class GalleryItemController extends Controller
         }
 
         if ($request->ajax()) {
-            /* $data = view('gallery::admin.gallery.items.content.item',[
-                'gallery' => $gallery,
-                'item' => $galleryItem,
-            ])->render();
-            return [
-                'result' => 'success',
-                'data' => $data
-            ]; */
             return [
                 'result' => 'success',
                 'message' => __('gallery::elf.item_edited_successfully'),
                 'data' => $galleryItem->toArray(),
-                /* [
-                    'id' => $galleryItem->id,
-                    'name' => $galleryItem->name,
-                    'slug' => $galleryItem->slug,
-                    'image' => $galleryItem->image,
-                    'position' => $galleryItem->position,
-                ], */
             ];
         }
         else {

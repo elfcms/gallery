@@ -32,18 +32,18 @@ return [
 
     'images' => [
         'image' => [
-            'size' => 768
+            'size' => 1024
         ],
         'preview' => [
             'auto' => true,
             'width' => 800,
-            'height' => 600,
+            'height' => 800,
             'size' => 512,
         ],
         'thumbnail' => [
             'auto' => true,
             'width' => 400,
-            'height' => 300,
+            'height' => 400,
             'size' => 256,
         ],
     ],
