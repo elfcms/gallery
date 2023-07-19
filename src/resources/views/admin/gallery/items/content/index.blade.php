@@ -251,9 +251,39 @@ function fileUpload (file, key = null) {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
         resolve: function(result) {
-            console.log(result.response);
             let answer = JSON.parse(result.response);
-            if (answer && answer.result && answer.result == 'success') {
+            if (result.status > 200) {
+                let message = '';
+                if (result.status == 422) {
+                    for(key in answer) {
+                        message += answer[key].join(" ");
+                    }
+                }
+                else if (result.status == 500) {
+                    message = answer.message;
+                }
+                else {
+                    message = 'Error ' + result.status;
+                }
+                popup({
+                title: 'Error ' + result.status,
+                content: message,
+                buttons:[
+                    {
+                        title:'OK',
+                        class:'default-btn cancel-button',
+                        callback:[
+                            function(){
+                                item.remove();
+                            },
+                            'close'
+                        ]
+                    }
+                ],
+                class:'danger'
+            });
+            }
+            else if (answer && answer.result && answer.result == 'success') {
                 setItemData(item, answer.data, true, function(){
                     if (loader.box) {
                         loader.box.remove();
@@ -272,6 +302,7 @@ function fileUpload (file, key = null) {
             }
         },
         uploadResolve: null,
+        errorIgnore: true
     });
 }
 

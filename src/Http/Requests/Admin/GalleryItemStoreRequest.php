@@ -6,6 +6,9 @@ use Elfcms\Basic\Elf\Image;
 use Elfcms\Gallery\Models\GalleryItem;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
 
 class GalleryItemStoreRequest extends FormRequest
 {
@@ -19,6 +22,27 @@ class GalleryItemStoreRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'name' => __('basic::elf.name'),
+            'slug' => __('basic::elf.slug'),
+            'image' => __('basic::elf.image'),
+            'preview' => __('basic::elf.preview'),
+            'thumbnail' => __('basic::elf.thumbnail'),
+            'description' => __('basic::elf.description'),
+            'additional_text' => __('gallery::elf.additional_text'),
+            'option' => __('gallery::elf.option'),
+            'active' => __('basic::elf.active'),
+            'link' => __('basic::elf.link'),
+        ];
     }
 
     /**
@@ -87,6 +111,7 @@ class GalleryItemStoreRequest extends FormRequest
     {
         $image_path = '';
         if (!empty($this->file()['image'])) {
+            //return $this->file();
             $image = $this->file()['image']->store('public/gallery/items/image');
             $image_path = str_ireplace('public/','/storage/',$image);
         }
@@ -122,5 +147,55 @@ class GalleryItemStoreRequest extends FormRequest
             'option' => $this->option,
             'link' => $this->link,
         ]);
+    }
+
+    /**
+     * Get the validated data from the request.
+     *
+     * @param  array|int|string|null  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function validated($key = null, $default = null) {
+        if($this->ajax()) {
+            $instance = $this->getValidatorInstance();
+            if ($instance->fails()) {
+            //dd($instance);
+                throw new HttpResponseException(response()->json($instance->errors(), 422));
+            }
+        }
+        else {
+            parent::validated($key, $default);
+        }
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        //dd($validator->errors()->messages());
+        /* if($this->wantsJson())
+        {
+            $response = response()->json([
+                'success' => false,
+                'message' => 'Ops! Some errors occurred',
+                'errors' => $validator->errors()
+            ]);
+        }else{
+            $response = redirect()
+                ->route('guest.login')
+                ->with('message', 'Ops! Some errors occurred')
+                ->withErrors($validator);
+        }
+
+        throw (new ValidationException($validator, $response))
+            ->errorBag($this->errorBag)
+            ->redirectTo($this->getRedirectUrl()); */
     }
 }

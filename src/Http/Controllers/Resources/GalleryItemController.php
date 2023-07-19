@@ -78,7 +78,10 @@ class GalleryItemController extends Controller
      */
     public function store(GalleryItemStoreRequest $request, Gallery $gallery)
     {
+        //return $request->all();
         $request->validated();
+
+        //dd($request);
 
         $validated = $request->all();
 
