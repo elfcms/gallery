@@ -62,7 +62,6 @@ class GalleryItemStoreRequest extends FormRequest
             'additional_text' => 'nullable',
             'active' => 'nullable',
             'option' => 'nullable',
-            //'position' => 'nullable',
             'link' => 'nullable',
         ];
     }
@@ -111,7 +110,6 @@ class GalleryItemStoreRequest extends FormRequest
     {
         $image_path = '';
         if (!empty($this->file()['image'])) {
-            //return $this->file();
             $image = $this->file()['image']->store('public/gallery/items/image');
             $image_path = str_ireplace('public/','/storage/',$image);
         }
@@ -179,23 +177,6 @@ class GalleryItemStoreRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        //dd($validator->errors()->messages());
-        /* if($this->wantsJson())
-        {
-            $response = response()->json([
-                'success' => false,
-                'message' => 'Ops! Some errors occurred',
-                'errors' => $validator->errors()
-            ]);
-        }else{
-            $response = redirect()
-                ->route('guest.login')
-                ->with('message', 'Ops! Some errors occurred')
-                ->withErrors($validator);
-        }
-
-        throw (new ValidationException($validator, $response))
-            ->errorBag($this->errorBag)
-            ->redirectTo($this->getRedirectUrl()); */
+        //
     }
 }

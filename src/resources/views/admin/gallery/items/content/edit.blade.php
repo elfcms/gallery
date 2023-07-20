@@ -3,6 +3,7 @@
     <form action="{{ route('admin.gallery.items.update',['gallery'=>$gallery,'galleryItem'=>$item]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+        <input type="hidden" name="id" value="{{ $item->id }}">
         <div class="colored-rows-box">
             <div class="input-box colored">
                 <div class="checkbox-wrapper">

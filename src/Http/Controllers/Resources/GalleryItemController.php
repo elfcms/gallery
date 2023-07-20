@@ -5,6 +5,7 @@ namespace Elfcms\Gallery\Http\Controllers\Resources;
 use App\Http\Controllers\Controller;
 use Elfcms\Basic\Elf\Image;
 use Elfcms\Gallery\Http\Requests\Admin\GalleryItemStoreRequest;
+use Elfcms\Gallery\Http\Requests\Admin\GalleryItemUpdateRequest;
 use Elfcms\Gallery\Models\Gallery;
 use Elfcms\Gallery\Models\GalleryItem;
 use Illuminate\Http\Request;
@@ -44,10 +45,6 @@ class GalleryItemController extends Controller
      */
     public function create(Request $request, Gallery $gallery)
     {
-        //Image::resize('/public/gallery/test/elka-9_1.webp', '/public/gallery/test/', height: 300);
-        //dd(pathinfo('/dfgdfgdfg/sdfgdgs/sgfsdgsdfg.ASD',PATHINFO_EXTENSION));
-        //$i = Image::watermarkToFile('/public/gallery/test/elka-9.jpg','/public/gallery/test/wm.png','/public/gallery/test/001.jpg',bottom:30, right: 10);
-        //dd($i);
         $maxPosition = GalleryItem::where('gallery_id',$gallery->id)->max('position');
         $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
         if ($request->ajax()) {
@@ -78,10 +75,7 @@ class GalleryItemController extends Controller
      */
     public function store(GalleryItemStoreRequest $request, Gallery $gallery)
     {
-        //return $request->all();
         $request->validated();
-
-        //dd($request);
 
         $validated = $request->all();
 
@@ -166,11 +160,11 @@ class GalleryItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Elfcms\Gallery\Http\Requests\Admin\GalleryItemUpdateRequest  $request
      * @param  \App\Models\GalleryItem  $galleryItem
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Gallery $gallery, GalleryItem $galleryItem)
+    public function update(GalleryItemUpdateRequest $request, Gallery $gallery, GalleryItem $galleryItem)
     {
         if ($request->notedit && $request->notedit == 1) {
             $galleryItem->active = empty($request->active) ? 0 : 1;
@@ -215,56 +209,11 @@ class GalleryItemController extends Controller
             return redirect(route('admin.gallery.items'))->with('elementsuccess',__('gallery::elf.gallery_edited_successfully'));
         }
         else {
-            $request->merge([
-                'slug' => Str::slug($request->slug),
-            ]);
-            if (GalleryItem::where('slug',$request->slug)->where('id','<>',$galleryItem->id)->first()) {
-                $request->merge([
-                    'slug' => $request->slug . '_' . time(),
-                ]);
-            }
-            $validated = $request->validate([
-                'name' => 'required',
-                //'slug' => 'required|unique:Elfcms\Blog\Models\BlogPost,slug',
-                'image' => 'nullable|file|max:512',
-                'preview' => 'nullable|file|max:256',
-                'thumbnail' => 'nullable|file|max:256'
-            ]);
+            $request->validated();
 
-            if (empty($request->image) && empty($request->image_path)) {
-                return redirect(route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$galleryItem]))->withErrors(['image'=>__('validation.required',['Attribute'=>__('basic::elf.image')])]);
-            }
+            $validated = $request->all();
 
-            $image_path = $request->image_path;
-            if (!empty($request->file()['image'])) {
-                $image = $request->file()['image']->store('public/gallery/items/image');
-                $image_path = str_ireplace('public/','/storage/',$image);
-            }
-            $preview_path = $request->preview_path;
-            if (!empty($request->file()['preview'])) {
-                $preview = $request->file()['preview']->store('public/gallery/items/preview');
-                $preview_path = str_ireplace('public/','/storage/',$preview);
-            }
-            $thumbnail_path = $request->thumbnail_path;
-            if (!empty($request->file()['thumbnail'])) {
-                $thumbnail = $request->file()['thumbnail']->store('public/gallery/items/thumbnail');
-                $thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
-            }
-
-            //dd($image_path);
-            //dd($preview_path);
-
-            $galleryItem->name = $validated['name'];
-            $galleryItem->slug = $request->slug;
-            $galleryItem->image = $image_path;
-            $galleryItem->preview = $preview_path;
-            $galleryItem->thumbnail = $thumbnail_path;
-            $galleryItem->description = $request->description;
-            $galleryItem->additional_text = $request->additional_text;
-            $galleryItem->active = empty($request->active) ? 0 : 1;
-            $galleryItem->option = $request->option;
-            $galleryItem->link = $request->link;
-            $galleryItem->position = intval($request->position);
+            $validated['position'] = intval($request->position);
 
             $existTags = $galleryItem->tags->toArray();
 
@@ -287,7 +236,7 @@ class GalleryItemController extends Controller
                 }
             }
 
-            $galleryItem->save();
+            $galleryItem->update($validated);
 
             if ($request->ajax()) {
                 return [
@@ -297,7 +246,6 @@ class GalleryItemController extends Controller
                 ];
             }
 
-            //return redirect(route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$galleryItem]))->with('elementsuccess',__('gallery::elf.gallery_edited_successfully'));
             return redirect(route('admin.gallery.items',$gallery))->with('elementsuccess',__('gallery::elf.gallery_edited_successfully'));
         }
     }
