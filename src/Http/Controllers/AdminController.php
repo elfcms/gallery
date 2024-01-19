@@ -14,7 +14,7 @@ class AdminController extends Controller
     {
         /* $categories = GalleryCategory::where('active',1)->with('galleries')->get();
         //dd($categories);
-        return view('gallery::admin.gallery.index',[
+        return view('elfcms::admin.gallery.index',[
             'page' => [
                 'title' => 'Gallery',
                 'current' => url()->current(),
@@ -27,7 +27,7 @@ class AdminController extends Controller
     {
         $result = [
             'result' => 'success',
-            'message' => __('gallery::elf.gallery_edited_successfully'),
+            'message' => __('gallery::default.gallery_edited_successfully'),
             'data' => null
         ];
         if (empty($request->item)) {
@@ -83,7 +83,7 @@ class AdminController extends Controller
 
     public function tf(Request $request)
     {
-        return view('gallery::admin.gallery.tf',[
+        return view('elfcms::admin.gallery.tf',[
             'page' => [
                 'title' => '',
                 'current' => url()->current(),

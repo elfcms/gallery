@@ -39,13 +39,13 @@ class GalleryCategoryController extends Controller
         }
         $nullCategory = new GalleryCategory;//::where('id',null)->with('galleries')->get();
         $nullCategory->id = null;
-        $nullCategory->name = '<' . __('gallery::elf.no_category') . '>';
+        $nullCategory->name = '<' . __('gallery::default.no_category') . '>';
         $nullCategory->galleries = Gallery::where('category_id',null)->get();
         $categories->push($nullCategory);
         //dd($categories);
-        return view('gallery::admin.gallery.category.index',[
+        return view('elfcms::admin.gallery.category.index',[
             'page' => [
-                'title' => __('gallery::elf.galleries'),
+                'title' => __('gallery::default.galleries'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,

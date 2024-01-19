@@ -1,4 +1,4 @@
-@extends('gallery::admin.layouts.gallery')
+@extends('elfcms::admin.layouts.gallery')
 
 @section('gallery-content')
 
@@ -22,40 +22,27 @@
             @method('POST')
             <div class="colored-rows-box">
                 <div class="input-box colored">
-                    <div class="checkbox-wrapper">
-                        <div class="checkbox-inner">
-                            <input
-                                type="checkbox"
-                                name="active"
-                                id="active"
-                                checked
-                            >
-                            <i></i>
-                            <label for="active">
-                                {{ __('basic::elf.active') }}
-                            </label>
-                        </div>
-                    </div>
+                    <x-elfcms-input-checkbox code="active" label="{{ __('elfcms::default.active') }}" checked style="blue" />
                 </div>
-                <div class="input-box colored">
-                    <label for="category_id">{{ __('basic::elf.category') }}</label>
+                {{-- <div class="input-box colored">
+                    <label for="category_id">{{ __('elfcms::default.category') }}</label>
                     <div class="input-wrapper">
                         <select name="category_id" id="category_id">
-                            <option value="0">{{__('gallery::elf.no_category')}}</option>
+                            <option value="0">{{__('gallery::default.no_category')}}</option>
                         @foreach ($categories as $item)
-                            <option value="{{ $item->id }}" @if ($item->active != 1) class="inactive" @endif @if ($item->id == $category_id) selected @endif>{{ $item->name }}@if ($item->active != 1) [{{ __('basic::elf.inactive') }}] @endif</option>
+                            <option value="{{ $item->id }}" @if ($item->active != 1) class="inactive" @endif @if ($item->id == $category_id) selected @endif>{{ $item->name }}@if ($item->active != 1) [{{ __('elfcms::default.inactive') }}] @endif</option>
                         @endforeach
                         </select>
                     </div>
-                </div>
+                </div> --}}
                 <div class="input-box colored">
-                    <label for="name">{{ __('basic::elf.name') }}</label>
+                    <label for="name">{{ __('elfcms::default.name') }}</label>
                     <div class="input-wrapper">
                         <input type="text" name="name" id="name" autocomplete="off">
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="slug">{{ __('basic::elf.slug') }}</label>
+                    <label for="slug">{{ __('elfcms::default.slug') }}</label>
                     <div class="input-wrapper">
                         <input type="text" name="slug" id="slug" autocomplete="off">
                     </div>
@@ -67,42 +54,43 @@
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="desctiption">{{ __('basic::elf.description') }}</label>
+                    <label for="desctiption">{{ __('elfcms::default.description') }}</label>
                     <div class="input-wrapper">
                         <textarea name="description" id="description" cols="30" rows="10"></textarea>
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="additional_text">{{ __('gallery::elf.additional_text') }}</label>
+                    <label for="additional_text">{{ __('gallery::default.additional_text') }}</label>
                     <div class="input-wrapper">
                         <textarea name="additional_text" id="additional_text" cols="30" rows="10"></textarea>
                     </div>
                 </div>
                 <div class="input-box colored">
-                    <label for="preview">{{ __('basic::elf.preview') }}</label>
+                    <label for="preview">{{ __('elfcms::default.preview') }}</label>
                     <div class="input-wrapper">
-                        <input type="hidden" name="preview_path" id="preview_path">
+                        {{-- <input type="hidden" name="preview_path" id="preview_path">
                         <div class="image-button">
                             <div class="delete-image hidden">&#215;</div>
                             <div class="image-button-img">
-                                <img src="{{ asset('/vendor/elfcms/basic/admin/images/icons/upload.png') }}" alt="Upload file">
+                                <img src="{{ asset('/vendor/elfcms/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
                             </div>
                             <div class="image-button-text">
-                                {{ __('basic::elf.choose_file') }}
+                                {{ __('elfcms::default.choose_file') }}
                             </div>
                             <input type="file" name="preview" id="preview">
-                        </div>
+                        </div> --}}
+                        <x-elfcms-input-image code="preview" />
                     </div>
                 </div>
-                <div class="input-box colored">
-                    <label for="option">{{ __('gallery::elf.option') }}</label>
+                {{-- <div class="input-box colored">
+                    <label for="option">{{ __('gallery::default.option') }}</label>
                     <div class="input-wrapper">
                         <input type="text" name="option" id="option">
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="button-box single-box">
-                <button type="submit" class="default-btn submit-button">{{ __('basic::elf.submit') }}</button>
+                <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>
             </div>
         </form>
     </div>

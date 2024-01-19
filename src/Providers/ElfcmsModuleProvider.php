@@ -2,15 +2,15 @@
 
 namespace Elfcms\Gallery\Providers;
 
-use Elfcms\Basic\Http\Middleware\AccountUser;
-use Elfcms\Basic\Http\Middleware\AdminUser;
-use Elfcms\Basic\Http\Middleware\CookieCheck;
+use Elfcms\Elfcms\Http\Middleware\AccountUser;
+use Elfcms\Elfcms\Http\Middleware\AdminUser;
+use Elfcms\Elfcms\Http\Middleware\CookieCheck;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
-class ElfModuleProvider extends ServiceProvider
+class ElfcmsModuleProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -29,7 +29,30 @@ class ElfModuleProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $moduleDir = dirname(__DIR__);
+
+        $this->loadRoutesFrom($moduleDir . '/routes/web.php');
+        $this->loadViewsFrom($moduleDir . '/resources/views', 'elfcms');
+        $this->loadMigrationsFrom($moduleDir . '/database/migrations');
+
+        $this->loadTranslationsFrom($moduleDir . '/resources/lang', 'gallery');
+
+        $this->publishes([
+            $moduleDir . '/resources/lang' => resource_path('lang/elfcms/gallery'),
+        ], 'lang');
+
+        $this->publishes([
+            $moduleDir . '/config/gallery.php' => config_path('elfcms/gallery.php'),
+        ], 'config');
+
+        $this->publishes([
+            $moduleDir . '/resources/views/admin' => resource_path('views/elfcms/admin'),
+        ], 'admin');
+
+        $this->publishes([
+            $moduleDir . '/public/admin' => public_path('elfcms/admin/modules/gallery/'),
+        ], 'admin');
+        /* $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'gallery');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'gallery');
@@ -60,7 +83,7 @@ class ElfModuleProvider extends ServiceProvider
             }
         }
         if ($firstStart) {
-            Artisan::call('vendor:publish',['--provider'=>'Elfcms\Gallery\Providers\ElfModuleProvider','--force'=>true]);
+            Artisan::call('vendor:publish',['--provider'=>'Elfcms\Gallery\Providers\ElfcmsModuleProvider','--force'=>true]);
             Artisan::call('migrate');
             if (unlink($startFile)) {
                 //
@@ -84,6 +107,6 @@ class ElfModuleProvider extends ServiceProvider
 
         $this->loadViewComponentsAs('elfcms-gallery', [
             'slider' => \Elfcms\Gallery\View\Components\Slider::class,
-        ]);
+        ]); */
     }
 }

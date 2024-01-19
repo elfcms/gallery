@@ -1,4 +1,4 @@
-@extends('gallery::admin.layouts.gallery')
+@extends('elfcms::admin.layouts.gallery')
 
 @section('gallery-content')
 
@@ -21,19 +21,19 @@
 </div> --}}
 <nav class="pagenav">
     <div class="abstract-nav-line">
-        <a href="{{route('admin.gallery.categories.create')}}" class="default-btn submit-button create-button">{{__('basic::elf.create_category')}}</a>
+        <a href="{{route('admin.gallery.categories.create')}}" class="default-btn submit-button create-button">{{__('elfcms::default.create_category')}}</a>
     </div>
 </nav>
 {{-- <div class="table-search-box">
     <div class="table-search-result-title">
         @if (!empty($search))
-            {{ __('basic::elf.search_result_for') }} "{{ $search }}" <a href="{{ route('admin.gallery.index') }}" title="{{ __('basic::elf.reset_search') }}">&#215;</a>
+            {{ __('elfcms::default.search_result_for') }} "{{ $search }}" <a href="{{ route('admin.gallery.index') }}" title="{{ __('elfcms::default.reset_search') }}">&#215;</a>
         @endif
     </div>
     <form action="{{ route('admin.gallery.index') }}" method="get">
         <div class="input-box">
             <label for="search">
-                {{ __('basic::elf.search') }}
+                {{ __('elfcms::default.search') }}
             </label>
             <div class="input-wrapper">
                 <input type="text" name="search" id="search" value="{{ $search ?? '' }}" placeholder="">
@@ -71,19 +71,19 @@
                     {{__('blog::elf.preview')}}
                 </th>
                 <th>
-                    {{__('basic::elf.name')}}
+                    {{__('elfcms::default.name')}}
                     {{-- <a href="{{ route('admin.gallery.index',UrlParams::addArr(['order'=>'name','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['name'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a> --}}
                 </th>
                 <th>
-                    {{ __('basic::elf.created') }}
+                    {{ __('elfcms::default.created') }}
                     {{-- <a href="{{ route('admin.gallery.index',UrlParams::addArr(['order'=>'created_at','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['created_at'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a> --}}
                 </th>
                 <th>
-                    {{ __('basic::elf.updated') }}
+                    {{ __('elfcms::default.updated') }}
                     {{-- <a href="{{ route('admin.gallery.index',UrlParams::addArr(['order'=>'updated_at','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['updated_at'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a> --}}
                 </th>
                 <th>
-                    {{ __('basic::elf.active') }}
+                    {{ __('elfcms::default.active') }}
                     {{-- <a href="{{ route('admin.gallery.index',UrlParams::addArr(['order'=>'active','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['active'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a> --}}
                 </th>
                 <th></th>
@@ -104,9 +104,9 @@
                 <td>
                 @if (!empty($category->id))
                     @if ($category->active)
-                    {{ __('basic::elf.active') }}
+                    {{ __('elfcms::default.active') }}
                     @else
-                    {{ __('basic::elf.not_active') }}
+                    {{ __('elfcms::default.not_active') }}
                     @endif
                 @endif
                 </td>
@@ -114,16 +114,16 @@
                 @if (!empty($category->id))
                     <form action="{{ route('admin.gallery.create') }}" method="GET">
                         <input type="hidden" name="category_id" value="{{$category->id}}">
-                        <button type="submit" class="default-btn submit-button create-button" title="{{__('gallery::elf.create_gallery')}}"></button>
+                        <button type="submit" class="default-btn submit-button create-button" title="{{__('gallery::default.create_gallery')}}"></button>
                     </form>
-                    <a href="{{ route('admin.gallery.edit',$category->id) }}" class="default-btn edit-button" title="{{ __('basic::elf.edit') }}"></a>
+                    <a href="{{ route('admin.gallery.edit',$category->id) }}" class="default-btn edit-button" title="{{ __('elfcms::default.edit') }}"></a>
                     <form action="{{ route('admin.gallery.update',$category->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="id" id="id" value="{{ $category->id }}">
                         <input type="hidden" name="active" id="active" value="{{ (int)!(bool)$category->active }}">
                         <input type="hidden" name="notedit" value="1">
-                        <button type="submit" @if ($category->active == 1) class="default-btn deactivate-button" title="{{__('basic::elf.deactivate') }}" @else class="default-btn activate-button" title="{{ __('basic::elf.activate') }}" @endif>
+                        <button type="submit" @if ($category->active == 1) class="default-btn deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="default-btn activate-button" title="{{ __('elfcms::default.activate') }}" @endif>
 
                         </button>
                     </form>
@@ -132,14 +132,14 @@
                         @method('DELETE')
                         <input type="hidden" name="id" value="{{ $category->id }}">
                         <input type="hidden" name="email" value="{{ $category->email }}">
-                        <button type="submit" class="default-btn delete-button" title="{{ __('basic::elf.delete') }}"></button>
+                        <button type="submit" class="default-btn delete-button" title="{{ __('elfcms::default.delete') }}"></button>
                     </form>
                     <div class="contextmenu-content-box">
                         <form action="{{ route('admin.gallery.create') }}" method="GET">
                             <input type="hidden" name="category_id" value="{{$category->id}}">
-                            <button type="submit" class="contextmenu-item" title="{{__('gallery::elf.create_gallery')}}"></button>
+                            <button type="submit" class="contextmenu-item" title="{{__('gallery::default.create_gallery')}}"></button>
                         </form>
-                        <a href="{{ route('admin.gallery.edit',$category->id) }}" class="contextmenu-item">{{ __('basic::elf.edit') }}</a>
+                        <a href="{{ route('admin.gallery.edit',$category->id) }}" class="contextmenu-item">{{ __('elfcms::default.edit') }}</a>
                         <form action="{{ route('admin.gallery.update',$category->id) }}" method="POST">
                             @csrf
                             @method('PUT')
@@ -148,9 +148,9 @@
                             <input type="hidden" name="notedit" value="1">
                             <button type="submit" class="contextmenu-item">
                             @if ($category->active == 1)
-                                {{ __('basic::elf.deactivate') }}
+                                {{ __('elfcms::default.deactivate') }}
                             @else
-                                {{ __('basic::elf.activate') }}
+                                {{ __('elfcms::default.activate') }}
                             @endif
                             </button>
                         </form>
@@ -159,7 +159,7 @@
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{ $category->id }}">
                             <input type="hidden" name="email" value="{{ $category->email }}">
-                            <button type="submit" class="contextmenu-item">{{ __('basic::elf.delete') }}</button>
+                            <button type="submit" class="contextmenu-item">{{ __('elfcms::default.delete') }}</button>
                         </form>
                     </div>
                 @endif
@@ -167,7 +167,7 @@
             </tr>
             <tr class="full-width">
                 <td colspan="7">
-                    <h6 @class(['notempty' => $category->galleries->count()>0]) data-hide="({{__('gallery::elf.hide')}})" data-show="({{__('gallery::elf.show')}})">{{__('gallery::elf.galleries')}}: {{$category->galleries->count()}} </h6>
+                    <h6 @class(['notempty' => $category->galleries->count()>0]) data-hide="({{__('gallery::default.hide')}})" data-show="({{__('gallery::default.show')}})">{{__('gallery::default.galleries')}}: {{$category->galleries->count()}} </h6>
                     <div class="table-collapse">
                     @if(!empty($category->galleries))
                         <table class="grid-table galleries-by-category">
@@ -180,16 +180,16 @@
                                         {{__('blog::elf.preview')}}
                                     </th>
                                     <th>
-                                        {{__('basic::elf.name')}}
+                                        {{__('elfcms::default.name')}}
                                     </th>
                                     <th>
-                                        {{ __('basic::elf.created') }}
+                                        {{ __('elfcms::default.created') }}
                                     </th>
                                     <th>
-                                        {{ __('basic::elf.updated') }}
+                                        {{ __('elfcms::default.updated') }}
                                     </th>
                                     <th>
-                                        {{ __('basic::elf.active') }}
+                                        {{ __('elfcms::default.active') }}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -204,20 +204,20 @@
                                     <td>{{ $gallery->updated_at }}</td>
                                     <td>
                                     @if ($gallery->active)
-                                        {{ __('basic::elf.active') }}
+                                        {{ __('elfcms::default.active') }}
                                     @else
-                                        {{ __('basic::elf.not_active') }}
+                                        {{ __('elfcms::default.not_active') }}
                                     @endif
                                     </td>
                                     <td class="button-column non-text-buttons">
-                                        <a href="{{ route('admin.gallery.edit',$gallery->id) }}" class="default-btn edit-button" title="{{ __('basic::elf.edit') }}"></a>
+                                        <a href="{{ route('admin.gallery.edit',$gallery->id) }}" class="default-btn edit-button" title="{{ __('elfcms::default.edit') }}"></a>
                                         <form action="{{ route('admin.gallery.update',$gallery->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="id" id="id" value="{{ $gallery->id }}">
                                             <input type="hidden" name="active" id="active" value="{{ (int)!(bool)$gallery->active }}">
                                             <input type="hidden" name="notedit" value="1">
-                                            <button type="submit" @if ($gallery->active == 1) class="default-btn deactivate-button" title="{{__('basic::elf.deactivate') }}" @else class="default-btn activate-button" title="{{ __('basic::elf.activate') }}" @endif>
+                                            <button type="submit" @if ($gallery->active == 1) class="default-btn deactivate-button" title="{{__('elfcms::default.deactivate') }}" @else class="default-btn activate-button" title="{{ __('elfcms::default.activate') }}" @endif>
 
                                             </button>
                                         </form>
@@ -226,10 +226,10 @@
                                             @method('DELETE')
                                             <input type="hidden" name="id" value="{{ $gallery->id }}">
                                             <input type="hidden" name="email" value="{{ $gallery->email }}">
-                                            <button type="submit" class="default-btn delete-button" title="{{ __('basic::elf.delete') }}"></button>
+                                            <button type="submit" class="default-btn delete-button" title="{{ __('elfcms::default.delete') }}"></button>
                                         </form>
                                         <div class="contextmenu-content-box">
-                                            <a href="{{ route('admin.gallery.edit',$gallery->id) }}" class="contextmenu-item">{{ __('basic::elf.edit') }}</a>
+                                            <a href="{{ route('admin.gallery.edit',$gallery->id) }}" class="contextmenu-item">{{ __('elfcms::default.edit') }}</a>
                                             <form action="{{ route('admin.gallery.update',$gallery->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
@@ -238,9 +238,9 @@
                                                 <input type="hidden" name="notedit" value="1">
                                                 <button type="submit" class="contextmenu-item">
                                                 @if ($gallery->active == 1)
-                                                    {{ __('basic::elf.deactivate') }}
+                                                    {{ __('elfcms::default.deactivate') }}
                                                 @else
-                                                    {{ __('basic::elf.activate') }}
+                                                    {{ __('elfcms::default.activate') }}
                                                 @endif
                                                 </button>
                                             </form>
@@ -249,7 +249,7 @@
                                                 @method('DELETE')
                                                 <input type="hidden" name="id" value="{{ $gallery->id }}">
                                                 <input type="hidden" name="email" value="{{ $gallery->email }}">
-                                                <button type="submit" class="contextmenu-item">{{ __('basic::elf.delete') }}</button>
+                                                <button type="submit" class="contextmenu-item">{{ __('elfcms::default.delete') }}</button>
                                             </form>
                                         </div>
                                     </td>
@@ -266,11 +266,11 @@
     </table>
     @if (empty(count($categories)))
         <div class="no-results-box">
-            {{ __('basic::elf.nothing_was_found') }}
+            {{ __('elfcms::default.nothing_was_found') }}
         </div>
     @endif
 </div>
-{{-- {{$categories->links('basic::admin.layouts.pagination')}} --}}
+{{-- {{$categories->links('elfcms::admin.layouts.pagination')}} --}}
 <script>
 const tableExpander = document.querySelectorAll('h6.notempty');
 if (tableExpander) {

@@ -3,7 +3,7 @@
 namespace Elfcms\Gallery\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
-use Elfcms\Basic\Elf\Image;
+use Elfcms\Elfcms\Aux\Image;
 use Elfcms\Gallery\Http\Requests\Admin\GalleryItemStoreRequest;
 use Elfcms\Gallery\Http\Requests\Admin\GalleryItemUpdateRequest;
 use Elfcms\Gallery\Models\Gallery;
@@ -21,17 +21,17 @@ class GalleryItemController extends Controller
     public function index(Request $request, Gallery $gallery)
     {
         if ($request->ajax()) {
-            return view('gallery::admin.gallery.items.content.index',[
+            return view('elfcms::admin.gallery.items.content.index',[
                 'page' => [
-                    'title' => __('gallery::elf.items'),
+                    'title' => __('gallery::default.items'),
                     'current' => url()->current(),
                 ],
                 'gallery' => $gallery,
             ]);
         }
-        return view('gallery::admin.gallery.items.index',[
+        return view('elfcms::admin.gallery.items.index',[
             'page' => [
-                'title' => __('gallery::elf.items'),
+                'title' => __('gallery::default.items'),
                 'current' => url()->current(),
             ],
             'gallery' => $gallery,
@@ -48,18 +48,18 @@ class GalleryItemController extends Controller
         $maxPosition = GalleryItem::where('gallery_id',$gallery->id)->max('position');
         $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
         if ($request->ajax()) {
-            return view('gallery::admin.gallery.items.content.create',[
+            return view('elfcms::admin.gallery.items.content.create',[
                 'page' => [
-                    'title' => __('gallery::elf.create_item'),
+                    'title' => __('gallery::default.create_item'),
                     'current' => url()->current(),
                 ],
                 'gallery' => $gallery,
                 'position' => $position,
             ]);
         }
-        return view('gallery::admin.gallery.items.create',[
+        return view('elfcms::admin.gallery.items.create',[
             'page' => [
-                'title' => __('gallery::elf.create_item'),
+                'title' => __('gallery::default.create_item'),
                 'current' => url()->current(),
             ],
             'gallery' => $gallery,
@@ -101,12 +101,12 @@ class GalleryItemController extends Controller
         if ($request->ajax()) {
             return [
                 'result' => 'success',
-                'message' => __('gallery::elf.item_edited_successfully'),
+                'message' => __('gallery::default.item_edited_successfully'),
                 'data' => $galleryItem->toArray(),
             ];
         }
         else {
-            return redirect(route('admin.gallery.items',$gallery))->with('elementsuccess',__('gallery::elf.item_created_successfully'));
+            return redirect(route('admin.gallery.items',$gallery))->with('elementsuccess',__('gallery::default.item_created_successfully'));
         }
 
 
@@ -121,7 +121,7 @@ class GalleryItemController extends Controller
     public function show(Request $request, Gallery $gallery, GalleryItem $galleryItem)
     {
         if ($request->ajax()) {
-            return view('gallery::admin.gallery.items.content.item',[
+            return view('elfcms::admin.gallery.items.content.item',[
                 'gallery' => $gallery,
                 'item' => $galleryItem,
             ]);
@@ -138,18 +138,18 @@ class GalleryItemController extends Controller
     public function edit(Request $request, Gallery $gallery, GalleryItem $galleryItem)
     {
         if ($request->ajax()) {
-            return view('gallery::admin.gallery.items.content.edit',[
+            return view('elfcms::admin.gallery.items.content.edit',[
                 'page' => [
-                    'title' => __('gallery::elf.edit_item'),
+                    'title' => __('gallery::default.edit_item'),
                     'current' => url()->current(),
                 ],
                 'gallery' => $gallery,
                 'item' => $galleryItem,
             ]);
         }
-        return view('gallery::admin.gallery.items.edit',[
+        return view('elfcms::admin.gallery.items.edit',[
             'page' => [
-                'title' => __('gallery::elf.edit_item'),
+                'title' => __('gallery::default.edit_item'),
                 'current' => url()->current(),
             ],
             'gallery' => $gallery,
@@ -174,7 +174,7 @@ class GalleryItemController extends Controller
             if ($request->ajax()) {
                 return [
                     'result' => 'success',
-                    'message' => __('gallery::elf.item_edited_successfully'),
+                    'message' => __('gallery::default.item_edited_successfully'),
                     'data' => [
                         'id' => $galleryItem->id,
                         'name' => $galleryItem->name,
@@ -185,7 +185,7 @@ class GalleryItemController extends Controller
                 ];
             }
 
-            return redirect(route('admin.gallery.items'))->with('elementsuccess',__('gallery::elf.item_edited_successfully'));
+            return redirect(route('admin.gallery.items'))->with('elementsuccess',__('gallery::default.item_edited_successfully'));
         }
         elseif ($request->posedit && $request->posedit == 1) {
             $galleryItem->position = $request->position ?? 0;
@@ -195,7 +195,7 @@ class GalleryItemController extends Controller
             if ($request->ajax()) {
                 return [
                     'result' => 'success',
-                    'message' => __('gallery::elf.item_edited_successfully'),
+                    'message' => __('gallery::default.item_edited_successfully'),
                     'data' => [
                         'id' => $galleryItem->id,
                         'name' => $galleryItem->name,
@@ -206,7 +206,7 @@ class GalleryItemController extends Controller
                 ];
             }
 
-            return redirect(route('admin.gallery.items'))->with('elementsuccess',__('gallery::elf.gallery_edited_successfully'));
+            return redirect(route('admin.gallery.items'))->with('elementsuccess',__('gallery::default.gallery_edited_successfully'));
         }
         else {
             $request->validated();
@@ -241,12 +241,12 @@ class GalleryItemController extends Controller
             if ($request->ajax()) {
                 return [
                     'result' => 'success',
-                    'message' => __('gallery::elf.item_edited_successfully'),
+                    'message' => __('gallery::default.item_edited_successfully'),
                     'data' => $galleryItem->toArray(),
                 ];
             }
 
-            return redirect(route('admin.gallery.items',$gallery))->with('elementsuccess',__('gallery::elf.gallery_edited_successfully'));
+            return redirect(route('admin.gallery.items',$gallery))->with('elementsuccess',__('gallery::default.gallery_edited_successfully'));
         }
     }
 

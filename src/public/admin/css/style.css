@@ -119,10 +119,10 @@ main:has(.gallery-items-box) {
     justify-content: center;
 }
 .big-square-button.edit-button {
-    background-color: #9acd32;
+    background-color: var(--main-success-color);
     color: #ffffff;
-    border-color: #84b02b;
-    text-shadow: 1px 1px 1px #84b02b;
+    border-color: var(--main-success-dark-color);
+    text-shadow: 1px 1px 1px var(--main-success-dark-color);
     background-image: url('/vendor/elfcms/gallery/admin/images/icons/edit-white.png');
     background-repeat: no-repeat;
     background-position: 50% 5px;
@@ -260,18 +260,18 @@ main:has(.gallery-items-box) {
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    background-color: #e0e8dc;
+    background-color: #e4fcf5;
     order: -5000;
 }
 .gallery-item-add::before {
     content: '\002B';
-    color: #84b02b;
+    color: var(--main-success-dark-color);
     /* text-shadow: 1px 1px 3px rgba(0, 0, 0, .3); */
     font-size: 100px;
     font-weight: 300;
 }
 .gallery-item-add:hover {
-    background-color: #e6f3df;
+    background-color: #c6f5e6;
 }
 
 .gallery-items-buttons {

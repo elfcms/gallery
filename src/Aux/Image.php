@@ -1,6 +1,6 @@
 <?php
 
-namespace Elfcms\Gallery\Elf;
+namespace Elfcms\Gallery\Aux;
 
 use GdImage;
 use Illuminate\Support\Facades\Storage;
@@ -82,6 +82,9 @@ class Image {
 
         $resultName = basename($filePath,'.'.$extension) . '_' . $width . '_' . $height . '.' . $extension;
         $resultPath = Storage::path($destination) . $resultName;
+        if (!file_exists($destination)) {
+            Storage::makeDirectory($destination);
+        }
         $result = $saveFunction($resultImage,$resultPath);
 
         imagedestroy($tmpImage);

@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "elfcms/basic": "^1.4.6"
+        "elfcms/elfcms": "^1.2.2"
     },
     "autoload": {
         "psr-4": {
@@ -21,7 +21,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Elfcms\\Gallery\\Providers\\ElfModuleProvider"
+                "Elfcms\\Gallery\\Providers\\ElfcmsModuleProvider"
             ]
         }
     }

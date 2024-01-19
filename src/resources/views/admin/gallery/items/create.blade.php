@@ -1,4 +1,4 @@
-@extends('gallery::admin.layouts.gallery')
+@extends('elfcms::admin.layouts.gallery')
 
 @section('gallery-content')
 
@@ -15,6 +15,6 @@
     </div>
     @endif
 
-    @include('gallery::admin.gallery.items.content.create')
+    @include('elfcms::admin.gallery.items.content.create')
 
 @endsection

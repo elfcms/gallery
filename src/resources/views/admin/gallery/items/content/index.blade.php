@@ -1,14 +1,14 @@
 <form action="{{ route('admin.gallery.items.groupSave',$gallery) }}" method="POST" name="gallery-item-list" id="gallery-item-list">
     @method('POST')
     @csrf
-    <div class="gallery-items-content dragndrop-wrapper" draggable="false" data-uploadtext="{{__('gallery::elf.file_upload')}}">
-        <a href="{{route('admin.gallery.items.create',$gallery)}}" class="gallery-item-add gallery-item-tile" id="galleryitemcreate" title="{{__('gallery::elf.create_item')}}"></a>
+    <div class="gallery-items-content dragndrop-wrapper" draggable="false" data-uploadtext="{{__('gallery::default.file_upload')}}">
+        <a href="{{route('admin.gallery.items.create',$gallery)}}" class="gallery-item-add gallery-item-tile" id="galleryitemcreate" title="{{__('gallery::default.create_item')}}"></a>
         @foreach ($gallery->items as $item)
-            @include('gallery::admin.gallery.items.content.item')
+            @include('elfcms::admin.gallery.items.content.item')
         @endforeach
     </div>
     <div class="gallery-items-buttons">
-        <button class="default-btn submit-button" disabled>{{ __('basic::elf.save') }}</button>
+        <button class="default-btn submit-button" disabled>{{ __('elfcms::default.save') }}</button>
     </div>
 </form>
 
@@ -40,11 +40,11 @@ if (submitItems) {
         const itemsForDelete = document.querySelectorAll('.fordelete');
         if (itemsForDelete && itemsForDelete.length > 0) {
             popup({
-                title:'{{__("gallery::elf.deleting_items")}}',
-                content:'{{__("gallery::elf.marked_items_will_be_removed")}}',
+                title:'{{__("gallery::default.deleting_items")}}',
+                content:'{{__("gallery::default.marked_items_will_be_removed")}}',
                 buttons:[
                     {
-                        title:'{{__("basic::elf.delete")}}',
+                        title:'{{__("elfcms::default.delete")}}',
                         class:'default-btn delete-button',
                         callback: [
                             function(){
@@ -54,7 +54,7 @@ if (submitItems) {
                         ]
                     },
                     {
-                        title:'{{__("basic::elf.cancel")}}',
+                        title:'{{__("elfcms::default.cancel")}}',
                         class:'default-btn cancel-button',
                         callback:'close'
                     }
@@ -121,8 +121,8 @@ function itemListSave(form) {
                 }
                 submitItems.disabled = true;
                 popup({
-                    title:'{{__("gallery::elf.edit_gallery")}}',
-                    content:'{{__("gallery::elf.gallery_edited_successfully")}}',
+                    title:'{{__("gallery::default.edit_gallery")}}',
+                    content:'{{__("gallery::default.gallery_edited_successfully")}}',
                     buttons:[
                         {
                             title:'OK',
@@ -136,7 +136,7 @@ function itemListSave(form) {
             else {
                 if (data.errors && data.message) {
                     popup({
-                        title:'{{__("gallery::elf.error")}}',
+                        title:'{{__("gallery::default.error")}}',
                         content:data.message,
                         buttons:[
                             {
@@ -172,10 +172,10 @@ function filesUpload (files) {
     if (n > 0) {
         popup({
             title:'&nbsp;',
-            content:'{{__("gallery::elf.following_files_will_be_downloaded")}}: <br><br>' + fileNames.join('<br>') + '<p>{{__("gallery::elf.are_you_sure")}}</p>',
+            content:'{{__("gallery::default.following_files_will_be_downloaded")}}: <br><br>' + fileNames.join('<br>') + '<p>{{__("gallery::default.are_you_sure")}}</p>',
             buttons:[
                 {
-                    title:'{{__("basic::elf.cancel")}}',
+                    title:'{{__("elfcms::default.cancel")}}',
                     class:'default-btn',
                     callback:'close'
                 },
@@ -318,7 +318,7 @@ function setItemData (item, data, empty=false, callback=null) {
     item.dataset.slug = data.slug;
     item.dataset.id = data.id;
     item.style.order = data.position;
-    item.title = '__("basic::elf.edit") ' + data.name;
+    item.title = '__("elfcms::default.edit") ' + data.name;
     const img = item.querySelector('img');
     if (img) {
         if (data.thumbnail) {
@@ -338,7 +338,7 @@ function setItemData (item, data, empty=false, callback=null) {
     if (empty) {
         const deleteBox = document.createElement('div');
         deleteBox.classList.add('delete-item-box');
-        deleteBox.title = '{{__("basic::elf.delete")}}'
+        deleteBox.title = '{{__("elfcms::default.delete")}}'
         const deleteInp = document.createElement('input');
         deleteInp.type = 'checkbox';
         deleteInp.name = `item[${data.id}][delete]`;
@@ -381,7 +381,7 @@ function createItem (data, empty = false) {
     newItem.dataset.slug = data.slug;
     newItem.dataset.id = data.id;
     newItem.style.order = data.position;
-    newItem.title = '__("basic::elf.edit") ' + data.name;
+    newItem.title = '__("elfcms::default.edit") ' + data.name;
     newItem.draggable = true;
     const img = document.createElement('img');
     if (img) {
@@ -404,7 +404,7 @@ function createItem (data, empty = false) {
     if (!empty) {
         const deleteBox = document.createElement('div');
         deleteBox.classList.add('delete-item-box');
-        deleteBox.title = '{{__("basic::elf.delete")}}'
+        deleteBox.title = '{{__("elfcms::default.delete")}}'
         const deleteInp = document.createElement('input');
         deleteInp.type = 'checkbox';
         deleteInp.name = `item[${data.id}][delete]`;
@@ -559,7 +559,7 @@ function editItem(action,currentItem,isEdit=true){
     createBoxWrapper.append(createBox);
     const closeBox = document.createElement('a');
     closeBox.classList.add('gallery-item-create-popup-close');
-    closeBox.title = '{{__("basic::elf.cancel")}}';
+    closeBox.title = '{{__("elfcms::default.cancel")}}';
     closeBox.addEventListener('click',function(e){
         e.preventDefault();
         createBoxWrapper.innerHTML = '';
@@ -632,7 +632,7 @@ function editItem(action,currentItem,isEdit=true){
                                     if (isEdit) {
                                         currentItem.dataset.slug = data.data.slug;
                                         currentItem.style.order = data.data.position;
-                                        currentItem.title = '__("basic::elf.edit") ' + data.data.name;
+                                        currentItem.title = '__("elfcms::default.edit") ' + data.data.name;
                                         const h5 = currentItem.querySelector('h5');
                                         if (h5) {
                                             h5.innerHTML = data.data.name;
@@ -658,7 +658,7 @@ function editItem(action,currentItem,isEdit=true){
                                         newItem.dataset.slug = data.data.slug;
                                         newItem.dataset.id = data.data.id;
                                         newItem.style.order = data.data.position;
-                                        newItem.title = '__("basic::elf.edit") ' + data.data.name;
+                                        newItem.title = '__("elfcms::default.edit") ' + data.data.name;
                                         newItem.draggable = true;
                                         const img = document.createElement('img');
                                         if (img) {
@@ -672,7 +672,7 @@ function editItem(action,currentItem,isEdit=true){
                                         }
                                         const deleteBox = document.createElement('div');
                                         deleteBox.classList.add('delete-item-box');
-                                        deleteBox.title = '{{__("basic::elf.delete")}}'
+                                        deleteBox.title = '{{__("elfcms::default.delete")}}'
                                         const deleteInp = document.createElement('input');
                                         deleteInp.type = 'checkbox';
                                         deleteInp.name = `item[${data.data.id}][delete]`;

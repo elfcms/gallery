@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'version' => '0.3.1',
+    'version' => '0.9.1',
 
     /*
     |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'basic_package' => '1.4.6',
+    'elfcms_package' => '1.2.2',
 
     /*
     |--------------------------------------------------------------------------
@@ -32,19 +32,19 @@ return [
 
     'images' => [
         'image' => [
-            'size' => 1024
+            'size' => 1536
         ],
         'preview' => [
             'auto' => true,
             'width' => 800,
             'height' => 800,
-            'size' => 512,
+            'size' => 768,
         ],
         'thumbnail' => [
             'auto' => true,
             'width' => 400,
             'height' => 400,
-            'size' => 256,
+            'size' => 512,
         ],
     ],
 
@@ -60,9 +60,9 @@ return [
     "menu" => [
         [
             "title" => "Galleries",
-            "lang_title" => "gallery::elf.galleries",
+            "lang_title" => "gallery::default.galleries",
             "route" => "admin.gallery.index",
-            "parent_route" => "admin.gallery.index",
+            "parent_route" => "admin.gallery",
             "icon" => "/vendor/elfcms/gallery/admin/images/icons/gallery.png",
             "position" => 120,
             "submenu" => [

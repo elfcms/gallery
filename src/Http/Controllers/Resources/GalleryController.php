@@ -46,13 +46,13 @@ class GalleryController extends Controller
         }
         /* $nullCategory = new GalleryCategory;//::where('id',null)->with('galleries')->get();
         $nullCategory->id = null;
-        $nullCategory->name = '<' . __('gallery::elf.no_category') . '>';
+        $nullCategory->name = '<' . __('gallery::default.no_category') . '>';
         $nullCategory->galleries = Gallery::where('category_id',null)->get();
         $categories->push($nullCategory); */
         //dd($galleries);
-        return view('gallery::admin.gallery.index',[
+        return view('elfcms::admin.gallery.index',[
             'page' => [
-                'title' => __('gallery::elf.galleries'),
+                'title' => __('gallery::default.galleries'),
                 'current' => url()->current(),
             ],
             'galleries' => $galleries,
@@ -69,9 +69,9 @@ class GalleryController extends Controller
     public function create(Request $request)
     {
         $categories = GalleryCategory::active()->get();
-        return view('gallery::admin.gallery.create',[
+        return view('elfcms::admin.gallery.create',[
             'page' => [
-                'title' => __('gallery::elf.create_gallery'),
+                'title' => __('gallery::default.create_gallery'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -114,7 +114,7 @@ class GalleryController extends Controller
 
         $gallery = Gallery::create($validated);
 
-        return redirect(route('admin.gallery.edit',$gallery->slug))->with('gallerysuccess',__('gallery::elf.gallery_created_successfully'));
+        return redirect(route('admin.gallery.edit',$gallery->slug))->with('gallerysuccess',__('gallery::default.gallery_created_successfully'));
     }
 
     /**
@@ -137,9 +137,9 @@ class GalleryController extends Controller
     public function edit(Gallery $gallery)
     {
         $categories = GalleryCategory::active()->get();
-        return view('gallery::admin.gallery.edit',[
+        return view('elfcms::admin.gallery.edit',[
             'page' => [
-                'title' => __('gallery::elf.edit_gallery'),
+                'title' => __('gallery::default.edit_gallery'),
                 'current' => url()->current(),
             ],
             'categories' => $categories,
@@ -161,7 +161,7 @@ class GalleryController extends Controller
 
             $gallery->save();
 
-            return redirect(route('admin.gallery.index'))->with('gallerysuccess',__('gallery::elf.gallery_edited_successfully'));
+            return redirect(route('admin.gallery.index'))->with('gallerysuccess',__('gallery::default.gallery_edited_successfully'));
         }
         else {
             $request->merge([
@@ -200,7 +200,7 @@ class GalleryController extends Controller
 
             $gallery->save();
 
-            return redirect(route('admin.gallery.edit',$gallery->slug))->with('gallerysuccess',__('gallery::elf.gallery_edited_successfully'));
+            return redirect(route('admin.gallery.edit',$gallery->slug))->with('gallerysuccess',__('gallery::default.gallery_edited_successfully'));
         }
     }
 
@@ -216,6 +216,6 @@ class GalleryController extends Controller
             return redirect(route('admin.gallery.index'))->withErrors(['gallerysuccess'=>'Error of post deleting']);
         }
 
-        return redirect(route('admin.gallery.index'))->with('gallerysuccess',__('gallery::elf.gallery_deleted_successfully'));
+        return redirect(route('admin.gallery.index'))->with('gallerysuccess',__('gallery::default.gallery_deleted_successfully'));
     }
 }

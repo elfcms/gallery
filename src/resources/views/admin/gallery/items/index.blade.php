@@ -1,5 +1,5 @@
-@extends('gallery::admin.layouts.gallery')
-@inject('image', 'Elfcms\Basic\Elf\Image')
+@extends('elfcms::admin.layouts.gallery')
+@inject('image', 'Elfcms\Elfcms\Aux\Image')
 
 @section('gallery-content')
 
@@ -31,12 +31,12 @@
     </div>
     <div class="dallery-edit-button-box">
         <a href="{{ route('admin.gallery.edit',$gallery) }}" class="default-btn big-square-button edit-button">
-            {{__('basic::elf.edit')}}
+            {{__('elfcms::default.edit')}}
         </a>
     </div>
 </div>
 <div class="gallery-items-box">
-    @include('gallery::admin.gallery.items.content.index')
+    @include('elfcms::admin.gallery.items.content.index')
 </div>
 
 @endsection

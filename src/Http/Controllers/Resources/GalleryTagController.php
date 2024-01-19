@@ -28,7 +28,7 @@ class GalleryTagController extends Controller
         }
         $tags = GalleryTag::orderBy($order, $trend)->paginate(30);
 
-        return view('gallery::admin.gallery.tags.index',[
+        return view('elfcms::admin.gallery.tags.index',[
             'page' => [
                 'title' => 'Tags',
                 'current' => url()->current(),
@@ -44,7 +44,7 @@ class GalleryTagController extends Controller
      */
     public function create()
     {
-        return view('gallery::admin.gallery.tags.create',[
+        return view('elfcms::admin.gallery.tags.create',[
             'page' => [
                 'title' => 'Create tag',
                 'current' => url()->current(),
@@ -101,7 +101,7 @@ class GalleryTagController extends Controller
      */
     public function edit(GalleryTag $galleryTag)
     {
-        return view('gallery::admin.gallery.tags.edit',[
+        return view('elfcms::admin.gallery.tags.edit',[
             'page' => [
                 'title' => 'Edit tag #' . $galleryTag->id,
                 'current' => url()->current(),
