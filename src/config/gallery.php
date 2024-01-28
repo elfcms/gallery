@@ -46,6 +46,7 @@ return [
             'height' => 400,
             'size' => 512,
         ],
+        'watermark' => false
     ],
 
     /*
@@ -66,6 +67,11 @@ return [
             "icon" => "/vendor/elfcms/gallery/admin/images/icons/gallery.png",
             "position" => 120,
             "submenu" => [
+                [
+                    "title" => "Galleries",
+                    "lang_title" => "elfcms::default.settings",
+                    "route" => "admin.gallery.settings.show",
+                ]
             ]
         ],
     ],

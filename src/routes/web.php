@@ -3,23 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-$adminPath = Config::get('elfcms.elfcms.admin_path') ?? '/admin';
+$adminPath = config('elfcms.elfcms.admin_path') ?? '/admin';
 
 Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
 
     Route::name('admin.')->middleware('admin')->group(function() use ($adminPath) {
 
-        /* Route::name('gallery.')->group(function() use ($adminPath) {
-            Route::get($adminPath . '/gallery', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'gallery'])->name('index');
-        }); */
-        /* Route::get($adminPath . '/ajax/json/simplebox/datatypes',function(Request $request){
-            $result = [];
-            if ($request->ajax()) {
-                $result = SimpleboxDataType::all()->toArray();
-                $result = json_encode($result);
-            }
-            return $result;
-        }); */
+        Route::get($adminPath . '/gallery/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'show'])->name('gallery.settings.show');
+        Route::post($adminPath . '/gallery/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'save'])->name('gallery.settings.save');
+
         Route::post($adminPath . '/gallery/tags/addnotexist', [\Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class,'addNotExist'])->name('gallery.tags.addnotexist');
         Route::resource($adminPath . '/gallery/tags', \Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class)
         ->parameters(['tags'=>'galleryTag'])
@@ -58,6 +50,7 @@ Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
             'destroy' => 'gallery.items.destroy',
         ]);
         Route::post($adminPath . 'gallery/{gallery}/items/group', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'galleryItemGroupSave'])->name('gallery.items.groupSave');
+
 
     });
 
