@@ -99,7 +99,7 @@ class Image {
     }
 
 
-    public static function watermarkGd(string|object $image, string|object $stamp, int|bool $top = null, int|bool $left = null, int $bottom = null, int $right = null)
+    public static function watermarkGD(string|object $image, string|object $stamp, int|bool $top = null, int|bool $left = null, int $bottom = null, int $right = null)
     {
         if (gettype($image) === 'string') {
             $image = self::fromFile($image);
@@ -155,7 +155,7 @@ class Image {
         }
         $saveFunction = 'image' . $extension;
 
-        if ($saveFunction(self::watermarkGd($image, $stamp, $top, $left, $bottom, $right), Storage::path($file))) {
+        if ($saveFunction(self::watermarkGD($image, $stamp, $top, $left, $bottom, $right), Storage::path($file))) {
             return $file;
         }
 

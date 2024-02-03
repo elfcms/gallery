@@ -41,4 +41,8 @@ return [
     'is_watermark' => 'Wasserzeichen verwenden',
     'watermark' => 'Wasserzeichen',
     'watermark_first' => 'Ein Wasserzeichen setzen, bevor Sie eine Vorschau und ein Miniaturbild erstellen',
+    'watermark_position' => 'Position',
+    'horizontal_indent' => 'Horizontaler Einzug',
+    'vertical_indent' => 'Vertikaler Einzug',
+    'relative_size' => 'Größe (im Verhältnis zum Quellbild)',
 ];

@@ -79,8 +79,60 @@
                 </div>
             </div>
             <div @class(['input-box', 'colored', 'collapsed' => !$settings->is_watermark]) data-setting="is_watermark">
-                <x-elfcms-input-checkbox code="watermark_first" label="{{ __('gallery::default.watermark_first') }}" style="blue" :checked="$settings->watermark_first" />
+                <label for="position">{{ __('gallery::default.watermark_position') }}</label>
+                <div class="input-wrapper">
+                    <div class="watermark-position-box">
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="left,top"><i></i>
+                        </div>
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="center,top"><i></i>
+                        </div>
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="right,top"><i></i>
+                        </div>
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="left,center"><i></i>
+                        </div>
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="center,center" @if($settings->position=='center,center' || empty($settings->position)) @endif checked><i></i>
+                        </div>
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="right,center"><i></i>
+                        </div>
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="left,bottom"><i></i>
+                        </div>
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="center,bottom"><i></i>
+                        </div>
+                        <div class="watermark-position">
+                            <input type="radio" name="position" value="right,bottom"><i></i>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div @class(['input-box', 'colored'])>
+                <label for="size">{{ __('gallery::default.relative_size') }} (%)</label>
+                <div class="input-wrapper">
+                    <input type="number" min="0" name="size" id="size" value="{{$settings->indent_h ?? 50}}">
+                </div>
+            </div>
+            <div @class(['input-box', 'colored']) data-setting="position">
+                <label for="indent_h">{{ __('gallery::default.horizontal_indent') }} (px)</label>
+                <div class="input-wrapper">
+                    <input type="number" min="0" name="indent_h" id="indent_h" value="{{$settings->indent_h ?? 0}}">
+                </div>
+            </div>
+            <div @class(['input-box', 'colored']) data-setting="position">
+                <label for="indent_v">{{ __('gallery::default.vertical_indent') }} (px)</label>
+                <div class="input-wrapper">
+                    <input type="number" min="0" name="indent_v" id="indent_v" value="{{$settings->indent_v ?? 0}}">
+                </div>
+            </div>
+            {{-- <div @class(['input-box', 'colored', 'collapsed' => !$settings->is_watermark]) data-setting="is_watermark">
+                <x-elfcms-input-checkbox code="watermark_first" label="{{ __('gallery::default.watermark_first') }}" style="blue" :checked="$settings->watermark_first" />
+            </div> --}}
         </div>
         <div class="button-box single-box">
             <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>

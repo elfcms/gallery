@@ -452,6 +452,41 @@ main:has(.gallery-items-box) {
     animation: preload-sqare-1 2s ease-in-out infinite;
 }
 
+.watermark-position-box {
+    display: grid;
+    grid-template-columns: repeat(3,auto);
+    background-color: var(--main-select-shade-color);
+    padding: 1px;
+    gap: 1px;
+}
+.watermark-position {
+    position: relative;
+    width: 30px;
+    height: 30px;
+}
+.watermark-position input[type="radio"] {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    opacity: 0;
+    z-index: 2;
+    cursor: pointer;
+}
+.watermark-position input[type="radio"] + i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    background-color: var(--main-contrast-color);
+    z-index: 1;
+}
+.watermark-position input[type="radio"]:checked + i {
+    background-color: var(--main-select-color);
+}
+
 @keyframes preload-sqare-1 {
     0% {
         left: 0px;

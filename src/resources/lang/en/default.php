@@ -41,4 +41,8 @@ return [
     'is_watermark' => 'Use watermark',
     'watermark' => 'Watermark',
     'watermark_first' => 'Set watermark before creating preview and thumbnail',
+    'watermark_position' => 'Position',
+    'horizontal_indent' => 'Horizontal indent',
+    'vertical_indent' => 'Vertical indent',
+    'relative_size' => 'Size (relative to source image)',
 ];
