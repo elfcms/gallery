@@ -45,4 +45,5 @@ return [
     'horizontal_indent' => 'Horizontaler Einzug',
     'vertical_indent' => 'Vertikaler Einzug',
     'relative_size' => 'Größe (im Verhältnis zum Quellbild)',
+    'filesize_attention' => 'Beachtung! Die maximale Größe hochgeladener Dateien beträgt :size. Um diesen Parameter zu ändern, ändern Sie die Einstellungen des Parameters upload_max_filesize in php.ini oder .htaccess',
 ];

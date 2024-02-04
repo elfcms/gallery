@@ -21,6 +21,10 @@ class GallerySetting extends DefaultModel
         'thumbnail_heigt',
         'is_watermark',
         'watermark',
+        'watermark_position',
+        'watermark_size',
+        'watermark_indent_h',
+        'watermark_indent_v',
         'watermark_first',
     ];
 

@@ -79,60 +79,70 @@
                 </div>
             </div>
             <div @class(['input-box', 'colored', 'collapsed' => !$settings->is_watermark]) data-setting="is_watermark">
-                <label for="position">{{ __('gallery::default.watermark_position') }}</label>
+                <label>{{ __('gallery::default.watermark_position') }}</label>
                 <div class="input-wrapper">
                     <div class="watermark-position-box">
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="left,top"><i></i>
+                            <input type="radio" name="watermark_position" value="left,top" @if($settings->watermark_position=='left,top') checked @endif><i></i>
                         </div>
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="center,top"><i></i>
+                            <input type="radio" name="watermark_position" value="center,top" @if($settings->watermark_position=='center,top') checked @endif><i></i>
                         </div>
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="right,top"><i></i>
+                            <input type="radio" name="watermark_position" value="right,top" @if($settings->watermark_position=='right,top') checked @endif><i></i>
                         </div>
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="left,center"><i></i>
+                            <input type="radio" name="watermark_position" value="left,center" @if($settings->watermark_position=='left,center') checked @endif><i></i>
                         </div>
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="center,center" @if($settings->position=='center,center' || empty($settings->position)) @endif checked><i></i>
+                            <input type="radio" name="watermark_position" value="center,center" @if($settings->watermark_position=='center,center' || empty($settings->watermark_position)) checked @endif><i></i>
                         </div>
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="right,center"><i></i>
+                            <input type="radio" name="watermark_position" value="right,center" @if($settings->watermark_position=='right,center') checked @endif><i></i>
                         </div>
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="left,bottom"><i></i>
+                            <input type="radio" name="watermark_position" value="left,bottom" @if($settings->watermark_position=='left,bottom') checked @endif><i></i>
                         </div>
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="center,bottom"><i></i>
+                            <input type="radio" name="watermark_position" value="center,bottom" @if($settings->watermark_position=='center,bottom') checked @endif><i></i>
                         </div>
                         <div class="watermark-position">
-                            <input type="radio" name="position" value="right,bottom"><i></i>
+                            <input type="radio" name="watermark_position" value="right,bottom" @if($settings->watermark_position=='right,bottom') checked @endif><i></i>
                         </div>
                     </div>
                 </div>
             </div>
-            <div @class(['input-box', 'colored'])>
-                <label for="size">{{ __('gallery::default.relative_size') }} (%)</label>
+            <div @class(['input-box', 'colored', 'collapsed' => !$settings->is_watermark]) data-setting="is_watermark">
+                <label for="watermark_size">{{ __('gallery::default.relative_size') }} (%)</label>
                 <div class="input-wrapper">
-                    <input type="number" min="0" name="size" id="size" value="{{$settings->indent_h ?? 50}}">
+                    <input type="number" min="0" name="watermark_size" id="watermark_size" value="{{$settings->watermark_size ?? 50}}">
                 </div>
             </div>
-            <div @class(['input-box', 'colored']) data-setting="position">
-                <label for="indent_h">{{ __('gallery::default.horizontal_indent') }} (px)</label>
+            <div @class(['input-box', 'colored', 'collapsed' => !$settings->is_watermark]) data-setting="is_watermark">
+                <label for="watermark_indent_h">{{ __('gallery::default.horizontal_indent') }} (px)</label>
                 <div class="input-wrapper">
-                    <input type="number" min="0" name="indent_h" id="indent_h" value="{{$settings->indent_h ?? 0}}">
+                    <input type="number" min="0" name="watermark_indent_h" id="watermark_indent_h" value="{{$settings->watermark_indent_h ?? 0}}">
                 </div>
             </div>
-            <div @class(['input-box', 'colored']) data-setting="position">
-                <label for="indent_v">{{ __('gallery::default.vertical_indent') }} (px)</label>
+            <div  @class(['input-box', 'colored', 'collapsed' => !$settings->is_watermark]) data-setting="is_watermark">
+                <label for="watermark_indent_v">{{ __('gallery::default.vertical_indent') }} (px)</label>
                 <div class="input-wrapper">
-                    <input type="number" min="0" name="indent_v" id="indent_v" value="{{$settings->indent_v ?? 0}}">
+                    <input type="number" min="0" name="watermark_indent_v" id="watermark_indent_v" value="{{$settings->watermark_indent_v ?? 0}}">
                 </div>
             </div>
             {{-- <div @class(['input-box', 'colored', 'collapsed' => !$settings->is_watermark]) data-setting="is_watermark">
                 <x-elfcms-input-checkbox code="watermark_first" label="{{ __('gallery::default.watermark_first') }}" style="blue" :checked="$settings->watermark_first" />
             </div> --}}
+
+        @if (!empty($filesize))
+            <div class="input-box colored">
+                <div class="input-wrapper">
+                    <div class="alert alert-notice">
+                        {{ __('gallery::default.filesize_attention',['size'=>$filesize]) }}
+                    </div>
+                </div>
+            </div>
+        @endif
         </div>
         <div class="button-box single-box">
             <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>
