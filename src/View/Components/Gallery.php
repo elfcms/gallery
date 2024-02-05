@@ -25,7 +25,6 @@ class Slider extends Component
         if (is_string($gallery)) {
             $result = Gallery::where('slug',$gallery)->with('items')->first();
         }
-        $result->data = $result->sliderJson();
         $this->gallery = $result;
         $this->theme = $theme;
     }
@@ -37,14 +36,14 @@ class Slider extends Component
      */
     public function render()
     {
-        if (View::exists('components.slider.' . $this->theme)) {
-            return view('components.slider.' . $this->theme);
+        if (View::exists('components.gallery.' . $this->theme)) {
+            return view('components.gallery.' . $this->theme);
         }
-        if (View::exists('gallery.components.slider.' . $this->theme)) {
-            return view('gallery.components.slider.' . $this->theme);
+        if (View::exists('gallery.components.gallery.' . $this->theme)) {
+            return view('gallery.components.gallery.' . $this->theme);
         }
-        if (View::exists('gallery::components.slider.' . $this->theme)) {
-            return view('gallery::components.slider.' . $this->theme);
+        if (View::exists('gallery::components.gallery.' . $this->theme)) {
+            return view('gallery::components.gallery.' . $this->theme);
         }
         if (View::exists($this->theme)) {
             return view($this->theme);

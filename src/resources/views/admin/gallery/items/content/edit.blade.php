@@ -56,6 +56,28 @@
             <div class="input-box colored">
                 <label for="image">{{ __('elfcms::default.image') }}</label>
                 <div class="input-wrapper">
+                    <x-elfcms-input-image code="image" value="{{ $item->image }}" />
+                </div>
+            </div>
+            @if ($params['is_preview'])
+            <div class="input-box colored">
+                <label for="preview">{{ __('elfcms::default.preview') }}</label>
+                <div class="input-wrapper">
+                    <x-elfcms-input-image code="preview" value="{{ $item->preview }}" />
+                </div>
+            </div>
+            @endif
+            @if ($params['is_thumbnail'])
+            <div class="input-box colored">
+                <label for="thumbnail">{{ __('elfcms::default.thumbnail') }}</label>
+                <div class="input-wrapper">
+                    <x-elfcms-input-image code="thumbnail" value="{{ $item->thumbnail }}" />
+                </div>
+            </div>
+            @endif
+            {{-- <div class="input-box colored">
+                <label for="image">{{ __('elfcms::default.image') }}</label>
+                <div class="input-wrapper">
                     <input type="hidden" name="image_path" id="image_path" value="{{ $item->image }}">
                     <div class="image-button">
                         <div class="delete-image hidden">&#215;</div>
@@ -124,7 +146,7 @@
                         <input type="file" name="thumbnail" id="thumbnail">
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="input-box colored">
                 <label for="position">{{ __('elfcms::default.position') }}</label>
                 <div class="input-wrapper">

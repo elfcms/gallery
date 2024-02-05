@@ -18,11 +18,7 @@
 
 <div class="gallery-info-box">
     <div class="gallery-preview-box">
-    @empty($gallery->preview)
-        <img src="/vendor/elfcms/gallery/admin/images/empty_270.png" alt="">
-    @else
-        <img src="{{ $image::cropCache($gallery->preview,270,270) }}" alt="">
-    @endempty
+        <img src="{{ $gallery->preview }}" alt="">
     </div>
     <div class="gallery-data-box">
         <h2>{{ $gallery->name }}</h2>

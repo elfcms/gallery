@@ -99,7 +99,7 @@ class GalleryController extends Controller
 
         $preview_path = '';
         if (!empty($request->file()['preview'])) {
-            $preview = $request->file()['preview']->store('public/gallery/preview');
+            $preview = $request->file()['preview']->store('public/elfcms/gallery/preview');
             $preview_path = str_ireplace('public/','/storage/',$preview);
         }
 
@@ -182,7 +182,7 @@ class GalleryController extends Controller
 
             $preview_path = $request->preview_path;
             if (!empty($request->file()['preview'])) {
-                $preview = $request->file()['preview']->store('public/gallery/preview');
+                $preview = $request->file()['preview']->store('public/elfcms/gallery/preview');
                 $preview_path = str_ireplace('public/','/storage/',$preview);
             }
 

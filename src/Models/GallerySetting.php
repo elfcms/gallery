@@ -40,6 +40,24 @@ class GallerySetting extends DefaultModel
         'thumbnail_heigt' => 400,
         'is_watermark' => 0,
         'watermark' => null,
+        'watermark_position' => 'center,center',
+        'watermark_size' => 50,
+        'watermark_indent_h' => 0,
+        'watermark_indent_v' => 0,
         'watermark_first' => 1,
     ];
+
+    public static function getParam(string $param = null, bool $all = false) {
+        if ($all) {
+            return self::first()->toArray() ?? self::$defaultString;
+        }
+        if (!array_key_exists($param,self::$defaultString) || empty($param)) {
+            return false;
+        }
+        return self::pluck($param)->first();
+    }
+
+    public static function getParams() {
+        return self::first()->toArray() ?? self::$defaultString;
+    }
 }

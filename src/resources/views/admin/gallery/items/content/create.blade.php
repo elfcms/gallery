@@ -86,23 +86,27 @@
                 </div>
             </div> --}}
             <div class="input-box colored">
-                <label for="preview">{{ __('elfcms::default.preview') }}</label>
-                <div class="input-wrapper">
-                    <x-elfcms-input-image code="preview" />
-                </div>
-            </div>
-            <div class="input-box colored">
                 <label for="image">{{ __('elfcms::default.image') }}</label>
                 <div class="input-wrapper">
                     <x-elfcms-input-image code="image" />
                 </div>
             </div>
+            @if ($params['is_preview'])
+            <div class="input-box colored">
+                <label for="preview">{{ __('elfcms::default.preview') }}</label>
+                <div class="input-wrapper">
+                    <x-elfcms-input-image code="preview" />
+                </div>
+            </div>
+            @endif
+            @if ($params['is_thumbnail'])
             <div class="input-box colored">
                 <label for="thumbnail">{{ __('elfcms::default.thumbnail') }}</label>
                 <div class="input-wrapper">
                     <x-elfcms-input-image code="thumbnail" />
                 </div>
             </div>
+            @endif
             <div class="input-box colored">
                 <label for="position">{{ __('elfcms::default.position') }}</label>
                 <div class="input-wrapper">

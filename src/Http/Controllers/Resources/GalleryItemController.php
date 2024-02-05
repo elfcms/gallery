@@ -8,6 +8,7 @@ use Elfcms\Gallery\Http\Requests\Admin\GalleryItemStoreRequest;
 use Elfcms\Gallery\Http\Requests\Admin\GalleryItemUpdateRequest;
 use Elfcms\Gallery\Models\Gallery;
 use Elfcms\Gallery\Models\GalleryItem;
+use Elfcms\Gallery\Models\GallerySetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -20,6 +21,12 @@ class GalleryItemController extends Controller
      */
     public function index(Request $request, Gallery $gallery)
     {
+        if (empty($gallery->preview)) {
+            $gallery->preview = '/elfcms/admin/modules/gallery/images/empty_270.png';
+        }
+        else {
+            $gallery->preview = str_ireplace('public/','/storage/', Image::cropCache($gallery->preview,270,270));
+        }
         if ($request->ajax()) {
             return view('elfcms::admin.gallery.items.content.index',[
                 'page' => [
@@ -47,6 +54,8 @@ class GalleryItemController extends Controller
     {
         $maxPosition = GalleryItem::where('gallery_id',$gallery->id)->max('position');
         $position = empty($maxPosition) && $maxPosition !== 0 ? 0 : $maxPosition + 1;
+
+        $params = GallerySetting::getParams();
         if ($request->ajax()) {
             return view('elfcms::admin.gallery.items.content.create',[
                 'page' => [
@@ -55,6 +64,7 @@ class GalleryItemController extends Controller
                 ],
                 'gallery' => $gallery,
                 'position' => $position,
+                'params' => $params,
             ]);
         }
         return view('elfcms::admin.gallery.items.create',[
@@ -64,6 +74,7 @@ class GalleryItemController extends Controller
             ],
             'gallery' => $gallery,
             'position' => $position,
+            'params' => $params,
         ]);
     }
 
@@ -137,6 +148,7 @@ class GalleryItemController extends Controller
      */
     public function edit(Request $request, Gallery $gallery, GalleryItem $galleryItem)
     {
+        $params = GallerySetting::getParams();
         if ($request->ajax()) {
             return view('elfcms::admin.gallery.items.content.edit',[
                 'page' => [
@@ -145,6 +157,7 @@ class GalleryItemController extends Controller
                 ],
                 'gallery' => $gallery,
                 'item' => $galleryItem,
+                'params' => $params,
             ]);
         }
         return view('elfcms::admin.gallery.items.edit',[
@@ -154,6 +167,7 @@ class GalleryItemController extends Controller
             ],
             'gallery' => $gallery,
             'item' => $galleryItem,
+            'params' => $params,
         ]);
     }
 

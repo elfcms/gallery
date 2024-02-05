@@ -32,7 +32,7 @@ class GallerySettingController extends Controller
 
         $image_path = $data['watermark_path'];
         if (!empty($request->file()['watermark'])) {
-            $image = $request->file()['watermark']->store('public/gallery/watermarks');
+            $image = $request->file()['watermark']->store('public/elfcms/gallery/watermarks');
             $image_path = str_ireplace('public/','/storage/',$image);
         }
         $data['watermark'] = $image_path;

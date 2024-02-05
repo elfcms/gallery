@@ -84,5 +84,12 @@ return [
                 'theme' => 'default',
             ],
         ],
+        'slider' => [
+            'class' => '\Elfcms\Gallery\View\Components\Gallery',
+            'options' => [
+                'gallery' => false,
+                'theme' => 'default',
+            ],
+        ],
     ],
 ];

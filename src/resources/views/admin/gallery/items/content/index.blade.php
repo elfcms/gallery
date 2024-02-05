@@ -627,6 +627,7 @@ function editItem(action,currentItem,isEdit=true){
                             (result) => result.json()
                         ).then (
                             (data) => {
+                                console.log(data);
                                 if (data.result && data.result == 'success' && data.data) {
                                     const itemsBox = document.querySelector('.gallery-items-content');
                                     if (isEdit) {
@@ -702,7 +703,7 @@ function editItem(action,currentItem,isEdit=true){
                                     createBoxWrapper.remove();
                                 }
                                 else {
-                                    if (data.errors && data.message) {
+                                    if ((data.errors || data.result == 'error') && data.message) {
                                         let errorString = '<div class="alert alert-danger">'+data.message+'</div>';
                                         infoMessageBox.insertAdjacentHTML('beforeend',errorString);
                                     }
