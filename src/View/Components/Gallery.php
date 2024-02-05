@@ -2,11 +2,11 @@
 
 namespace Elfcms\Gallery\View\Components;
 
-use Elfcms\Gallery\Models\Gallery;
+use Elfcms\Gallery\Models\Gallery as GalleryModel;
 use Illuminate\Support\Facades\View;
 use Illuminate\View\Component;
 
-class Slider extends Component
+class Gallery extends Component
 {
     public $gallery, $theme;
 
@@ -20,10 +20,10 @@ class Slider extends Component
         $result = $gallery;
         if (is_numeric($gallery)) {
             $gallery = intval($gallery);
-            $result = Gallery::find($gallery);
+            $result = GalleryModel::find($gallery);
         }
         if (is_string($gallery)) {
-            $result = Gallery::where('slug',$gallery)->with('items')->first();
+            $result = GalleryModel::where('slug',$gallery)->with('items')->first();
         }
         $this->gallery = $result;
         $this->theme = $theme;
@@ -44,6 +44,18 @@ class Slider extends Component
         }
         if (View::exists('gallery::components.gallery.' . $this->theme)) {
             return view('gallery::components.gallery.' . $this->theme);
+        }
+        if (View::exists('elfcms.components.gallery.' . $this->theme)) {
+            return view('elfcms.components.gallery.' . $this->theme);
+        }
+        if (View::exists('elfcms.gallery.components.gallery.' . $this->theme)) {
+            return view('elfcms.gallery.components.gallery.' . $this->theme);
+        }
+        if (View::exists('elfcms.modules.gallery.components.gallery.' . $this->theme)) {
+            return view('elfcms.modules.gallery.components.gallery.' . $this->theme);
+        }
+        if (View::exists('elfcms::gallery.components.gallery.' . $this->theme)) {
+            return view('elfcms::gallery.components.gallery.' . $this->theme);
         }
         if (View::exists($this->theme)) {
             return view($this->theme);

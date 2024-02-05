@@ -46,6 +46,15 @@ class Slider extends Component
         if (View::exists('gallery::components.slider.' . $this->theme)) {
             return view('gallery::components.slider.' . $this->theme);
         }
+        if (View::exists('elfcms.components.slider.' . $this->theme)) {
+            return view('elfcms.components.slider.' . $this->theme);
+        }
+        if (View::exists('elfcms.gallery.components.slider.' . $this->theme)) {
+            return view('elfcms.gallery.components.slider.' . $this->theme);
+        }
+        if (View::exists('elfcms::gallery.components.slider.' . $this->theme)) {
+            return view('elfcms::gallery.components.slider.' . $this->theme);
+        }
         if (View::exists($this->theme)) {
             return view($this->theme);
         }

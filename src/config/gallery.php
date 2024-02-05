@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'version' => '0.9.1',
+    'version' => '1.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'elfcms_package' => '1.2.2',
+    'elfcms_package' => '1.5.4',
 
     /*
     |--------------------------------------------------------------------------
@@ -84,7 +84,7 @@ return [
                 'theme' => 'default',
             ],
         ],
-        'slider' => [
+        'gallery' => [
             'class' => '\Elfcms\Gallery\View\Components\Gallery',
             'options' => [
                 'gallery' => false,
