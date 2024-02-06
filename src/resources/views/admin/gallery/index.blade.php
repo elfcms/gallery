@@ -59,7 +59,7 @@
 </div>
 @endif
 <div class="widetable-wrapper">
-    <table class="grid-table galleries-table">
+    <table class="grid-table table-cols-8" style="--first-col:65px; --last-col:160px; --minw:800px">
         <thead>
             <tr>
                 <th>
@@ -73,10 +73,10 @@
                     {{__('elfcms::default.name')}}
                     <a href="{{ route('admin.gallery.index',UrlParams::addArr(['order'=>'name','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['name'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
                 </th>
-                <th>
+                {{-- <th>
                     {{__('elfcms::default.category')}}
                     <a href="{{ route('admin.gallery.index',UrlParams::addArr(['order'=>'category_id','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['category_id'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
-                </th>
+                </th> --}}
                 <th>
                     {{__('gallery::default.items')}}
                     <a href="{{ route('admin.gallery.index',UrlParams::addArr(['order'=>'items_count','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['items_count'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a>
@@ -108,13 +108,13 @@
                 <td>
                     <a href="{{ route('admin.gallery.items',$gallery->slug) }}">{{ $gallery->name }}</a>
                 </td>
-                <td>
+                {{-- <td>
                 @empty($gallery->category)
                     {{__('gallery::default.no_category')}}
                 @else
                     <a href="{{ route('admin.gallery.index',UrlParams::addArr(['category'=>$gallery->category->id])) }}">{{ $gallery->category->name  }}</a>
                 @endempty
-                </td>
+                </td> --}}
                 <td>{{ $gallery->items_count }}</td>
                 <td>{{ $gallery->created_at }}</td>
                 <td>{{ $gallery->updated_at }}</td>
