@@ -65,7 +65,7 @@ return [
             "route" => "admin.gallery.index",
             "parent_route" => "admin.gallery",
             "icon" => "/vendor/elfcms/gallery/admin/images/icons/gallery.png",
-            "position" => 120,
+            "position" => 300,
             "submenu" => [
                 [
                     "title" => "Galleries",
