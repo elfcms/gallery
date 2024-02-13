@@ -123,7 +123,7 @@ main:has(.gallery-items-box) {
     color: #ffffff;
     border-color: var(--main-success-dark-color);
     text-shadow: 1px 1px 1px var(--main-success-dark-color);
-    background-image: url('/vendor/elfcms/gallery/admin/images/icons/edit-white.png');
+    background-image: url('/elfcms/admin/modules/gallery/images/icons/edit-white.png');
     background-repeat: no-repeat;
     background-position: 50% 5px;
 }

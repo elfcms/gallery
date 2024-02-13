@@ -58,6 +58,7 @@ class GallerySetting extends DefaultModel
     }
 
     public static function getParams() {
-        return self::first()->toArray() ?? self::$defaultString;
+        $first = self::first();
+        return !empty($first) ? $first->toArray() : self::$defaultString;
     }
 }

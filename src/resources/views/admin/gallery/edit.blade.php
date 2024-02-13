@@ -75,7 +75,7 @@
                             @if (!empty($gallery->preview))
                                 <img src="{{ asset($gallery->preview) }}" alt="Preview">
                             @else
-                                <img src="{{ asset('/vendor/elfcms/gallery/admin/images/icons/upload.png') }}" alt="Upload file">
+                                <img src="{{ asset('/elfcms/admin/modules/gallery/images/icons/upload.png') }}" alt="Upload file">
                             @endif
                             </div>
                             <div class="image-button-text">

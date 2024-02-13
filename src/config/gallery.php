@@ -64,7 +64,7 @@ return [
             "lang_title" => "gallery::default.galleries",
             "route" => "admin.gallery.index",
             "parent_route" => "admin.gallery",
-            "icon" => "/vendor/elfcms/gallery/admin/images/icons/gallery.png",
+            "icon" => "/elfcms/admin/modules/gallery/images/icons/gallery.png",
             "position" => 300,
             "submenu" => [
                 [

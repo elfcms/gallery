@@ -85,7 +85,7 @@
                         @if (!empty($item->image))
                             <img src="{{ asset($item->image) }}" alt="">
                         @else
-                            <img src="{{ asset('/vendor/elfcms/gallery/admin/images/icons/upload.png') }}" alt="Upload file">
+                            <img src="{{ asset('/elfcms/admin/modules/gallery/images/icons/upload.png') }}" alt="Upload file">
                         @endif
                         </div>
                         <div class="image-button-text">
@@ -109,7 +109,7 @@
                         @if (!empty($item->preview))
                             <img src="{{ asset($item->preview) }}" alt="">
                         @else
-                            <img src="{{ asset('/vendor/elfcms/gallery/admin/images/icons/upload.png') }}" alt="Upload file">
+                            <img src="{{ asset('/elfcms/admin/modules/gallery/images/icons/upload.png') }}" alt="Upload file">
                         @endif
                         </div>
                         <div class="image-button-text">
@@ -133,7 +133,7 @@
                         @if (!empty($item->thumbnail))
                             <img src="{{ asset($item->thumbnail) }}" alt="">
                         @else
-                            <img src="{{ asset('/vendor/elfcms/gallery/admin/images/icons/upload.png') }}" alt="Upload file">
+                            <img src="{{ asset('/elfcms/admin/modules/gallery/images/icons/upload.png') }}" alt="Upload file">
                         @endif
                         </div>
                         <div class="image-button-text">

@@ -227,7 +227,7 @@ function fileUpload (file, key = null) {
         slug: key,
         name: file.name,
         position: 1000,
-        image: '/vendor/elfcms/gallery/admin/images/empty.png',
+        image: '/elfcms/admin/modules/gallery/images/empty.png',
     },true);
 
     item.href = 'javascript:void(0)';
