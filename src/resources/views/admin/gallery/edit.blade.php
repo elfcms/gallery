@@ -68,25 +68,6 @@
                 <div class="input-box colored">
                     <label for="preview">{{ __('elfcms::default.preview') }}</label>
                     <div class="input-wrapper">
-                        {{-- <input type="hidden" name="preview_path" id="preview_path" value="{{$gallery->preview}}">
-                        <div class="image-button">
-                            <div class="delete-image @if (empty($gallery->preview)) hidden @endif">&#215;</div>
-                            <div class="image-button-img">
-                            @if (!empty($gallery->preview))
-                                <img src="{{ asset($gallery->preview) }}" alt="Preview">
-                            @else
-                                <img src="{{ asset('/elfcms/admin/modules/gallery/images/icons/upload.png') }}" alt="Upload file">
-                            @endif
-                            </div>
-                            <div class="image-button-text">
-                            @if (!empty($gallery->preview))
-                                {{ __('elfcms::default.change_file') }}
-                            @else
-                                {{ __('elfcms::default.choose_file') }}
-                            @endif
-                            </div>
-                            <input type="file" name="preview" id="preview">
-                        </div> --}}
                         <x-elfcms-input-image code="preview" value="{{$gallery->preview}}" />
                     </div>
                 </div>

@@ -1,11 +1,11 @@
 <a href="{{ route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$item]) }}" class="gallery-item-tile gallery-item-element" title="{{ __('elfcms::default.edit') . ' ' . $item->name }}" style="order:{{$item->position}};" data-id="{{ $item->id }}" data-slug="{{ $item->slug }}">
     <img src="
         @if (!empty($item->thumbnail))
-            {{asset($item->thumbnail)}}
+            {{asset(file_path($item->thumbnail))}}
         @elseif (!empty($item->preview))
-            {{asset($item->preview)}}
+            {{asset(file_path($item->preview))}}
         @else
-            {{asset($item->image)}}
+            {{asset(file_path($item->image))}}
         @endif
     " alt="">
     <h5>{{ $item->name }}</h5>

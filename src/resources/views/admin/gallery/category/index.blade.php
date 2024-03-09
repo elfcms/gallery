@@ -95,7 +95,7 @@
                 <td>{{ $category->id }}</td>
                 <td>
                 @if (!empty($category->preview))
-                    <img src="{{ asset($category->preview) }}" alt="{{ $category->name }}">
+                    <img src="{{ asset(file_path($category->preview)) }}" alt="{{ $category->name }}">
                 @endif
                 </td>
                 <td>{{ $category->name }}</td>
@@ -198,7 +198,7 @@
                             @foreach ($category->galleries as $gallery)
                                 <tr data-id="{{ $gallery->id }}">
                                     <td>{{ $gallery->id }}</td>
-                                    <td><img src="{{ asset($gallery->preview) }}" alt="{{ $gallery->name }}"></td>
+                                    <td><img src="{{ asset(file_path($gallery->preview)) }}" alt="{{ $gallery->name }}"></td>
                                     <td>{{ $gallery->name }}</td>
                                     <td>{{ $gallery->created_at }}</td>
                                     <td>{{ $gallery->updated_at }}</td>

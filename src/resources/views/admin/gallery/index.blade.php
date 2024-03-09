@@ -102,7 +102,7 @@
                 <td>{{ $gallery->id }}</td>
                 <td>
                 @if (!empty($gallery->preview))
-                    <img src="{{ asset($gallery->preview) }}" alt="{{ $gallery->name }}">
+                    <img src="{{ asset(file_path($gallery->preview)) }}" alt="{{ $gallery->name }}">
                 @endif
                 </td>
                 <td>

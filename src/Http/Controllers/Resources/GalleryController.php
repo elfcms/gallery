@@ -99,8 +99,7 @@ class GalleryController extends Controller
 
         $preview_path = '';
         if (!empty($request->file()['preview'])) {
-            $preview = $request->file()['preview']->store('public/elfcms/gallery/preview');
-            $preview_path = str_ireplace('public/','/storage/',$preview);
+            $preview_path = $request->file()['preview']->store('elfcms/gallery/preview');
         }
 
         if (empty($validated['category_id'])) {
@@ -182,12 +181,8 @@ class GalleryController extends Controller
 
             $preview_path = $request->preview_path;
             if (!empty($request->file()['preview'])) {
-                $preview = $request->file()['preview']->store('public/elfcms/gallery/preview');
-                $preview_path = str_ireplace('public/','/storage/',$preview);
+                $preview_path = $request->file()['preview']->store('elfcms/gallery/preview');
             }
-
-            //dd($image_path);
-            //dd($preview_path);
 
             $gallery->category_id = empty($validated['category_id']) ? null : $validated['category_id'];
             $gallery->name = $validated['name'];

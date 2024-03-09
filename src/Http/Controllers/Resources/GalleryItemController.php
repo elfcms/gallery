@@ -25,7 +25,7 @@ class GalleryItemController extends Controller
             $gallery->preview = '/elfcms/admin/modules/gallery/images/empty_270.png';
         }
         else {
-            $gallery->preview = str_ireplace('public/','/storage/', Image::cropCache($gallery->preview,270,270));
+            $gallery->preview = Image::cropCache($gallery->preview,270,270);
         }
         if ($request->ajax()) {
             return view('elfcms::admin.gallery.items.content.index',[

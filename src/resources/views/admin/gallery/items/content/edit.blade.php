@@ -75,78 +75,7 @@
                 </div>
             </div>
             @endif
-            {{-- <div class="input-box colored">
-                <label for="image">{{ __('elfcms::default.image') }}</label>
-                <div class="input-wrapper">
-                    <input type="hidden" name="image_path" id="image_path" value="{{ $item->image }}">
-                    <div class="image-button">
-                        <div class="delete-image hidden">&#215;</div>
-                        <div class="image-button-img">
-                        @if (!empty($item->image))
-                            <img src="{{ asset($item->image) }}" alt="">
-                        @else
-                            <img src="{{ asset('/elfcms/admin/modules/gallery/images/icons/upload.png') }}" alt="Upload file">
-                        @endif
-                        </div>
-                        <div class="image-button-text">
-                            @if (!empty($item->image))
-                            {{ __('elfcms::default.change_file') }}
-                        @else
-                            {{ __('elfcms::default.choose_file') }}
-                        @endif
-                        </div>
-                        <input type="file" name="image" id="image">
-                    </div>
-                </div>
-            </div>
-            <div class="input-box colored">
-                <label for="preview">{{ __('elfcms::default.preview') }}</label>
-                <div class="input-wrapper">
-                    <input type="hidden" name="preview_path" id="preview_path" value="{{ $item->preview }}">
-                    <div class="image-button">
-                        <div class="delete-image hidden">&#215;</div>
-                        <div class="image-button-img">
-                        @if (!empty($item->preview))
-                            <img src="{{ asset($item->preview) }}" alt="">
-                        @else
-                            <img src="{{ asset('/elfcms/admin/modules/gallery/images/icons/upload.png') }}" alt="Upload file">
-                        @endif
-                        </div>
-                        <div class="image-button-text">
-                            @if (!empty($item->preview))
-                            {{ __('elfcms::default.change_file') }}
-                        @else
-                            {{ __('elfcms::default.choose_file') }}
-                        @endif
-                        </div>
-                        <input type="file" name="preview" id="preview">
-                    </div>
-                </div>
-            </div>
-            <div class="input-box colored">
-                <label for="thumbnail">{{ __('elfcms::default.thumbnail') }}</label>
-                <div class="input-wrapper">
-                    <input type="hidden" name="thumbnail_path" id="thumbnail_path" value="{{ $item->thumbnail }}">
-                    <div class="image-button">
-                        <div class="delete-image hidden">&#215;</div>
-                        <div class="image-button-img">
-                        @if (!empty($item->thumbnail))
-                            <img src="{{ asset($item->thumbnail) }}" alt="">
-                        @else
-                            <img src="{{ asset('/elfcms/admin/modules/gallery/images/icons/upload.png') }}" alt="Upload file">
-                        @endif
-                        </div>
-                        <div class="image-button-text">
-                        @if (!empty($item->thumbnail))
-                            {{ __('elfcms::default.change_file') }}
-                        @else
-                            {{ __('elfcms::default.choose_file') }}
-                        @endif
-                        </div>
-                        <input type="file" name="thumbnail" id="thumbnail">
-                    </div>
-                </div>
-            </div> --}}
+
             <div class="input-box colored">
                 <label for="position">{{ __('elfcms::default.position') }}</label>
                 <div class="input-wrapper">

@@ -94,26 +94,21 @@ class GalleryItemUpdateRequest extends FormRequest
     {
         $image_path = $this->image_path;
         if (!empty($this->file()['image'])) {
-            $image = $this->file()['image']->store('public/elfcms/gallery/items/image');
-            $image_path = str_ireplace('public/','/storage/',$image);
+            $image_path = $this->file()['image']->store('elfcms/gallery/items/image');
         }
         $preview_path = $this->preview_path;
         if (!empty($this->file()['preview'])) {
-            $preview = $this->file()['preview']->store('public/elfcms/gallery/items/preview');
-            $preview_path = str_ireplace('public/','/storage/',$preview);
+            $preview_path = $this->file()['preview']->store('elfcms/gallery/items/preview');
         }
         elseif (!empty($image_path) && !empty($image) && (!isset($imageConfig['preview']['auto']) || $imageConfig['preview']['auto'] === true)) {
-            $preview = Image::resize($image,'public/elfcms/gallery/items/preview/',$this->imageConfig['preview']['width'],$this->imageConfig['preview']['height']);
-            $preview_path = str_ireplace('public/','/storage/',$preview);
+            $preview_path = Image::resize($image,'elfcms/gallery/items/preview/',$this->imageConfig['preview']['width'],$this->imageConfig['preview']['height']);
         }
         $thumbnail_path = $this->thumbnail_path;
         if (!empty($this->file()['thumbnail'])) {
-            $thumbnail = $this->file()['thumbnail']->store('public/elfcms/gallery/items/thumbnail');
-            $thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
+            $thumbnail_path = $this->file()['thumbnail']->store('elfcms/gallery/items/thumbnail');
         }
         elseif (!empty($image_path) && !empty($image) && (!isset($imageConfig['thumbnail']['auto']) || $imageConfig['thumbnail']['auto'] === true)) {
-            $thumbnail = Image::resize($image,'public/elfcms/gallery/items/thumbnail/',$this->imageConfig['thumbnail']['width'],$this->imageConfig['thumbnail']['height']);
-            $thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
+            $thumbnail_path = Image::resize($image,'elfcms/gallery/items/thumbnail/',$this->imageConfig['thumbnail']['width'],$this->imageConfig['thumbnail']['height']);
         }
         $this->files->remove('image');
         $this->convertedFiles = null;
