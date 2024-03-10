@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "elfcms/elfcms": "^1.5.4"
+        "elfcms/elfcms": "^2.0.2"
     },
     "autoload": {
         "psr-4": {
