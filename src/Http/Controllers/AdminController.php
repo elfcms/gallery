@@ -76,7 +76,7 @@ class AdminController extends Controller
                 'slug' => 'test_slug',
                 'name' => 'test_name',
                 'position' => 2000,
-                'image' => asset('/storage/gallery/items/thumbnail/ew9UseZWSPvAowzj7y5sJAbkk6EcAnacpHYakcd0_400_300.jpg'),
+                'image' => file_path('elfcms/gallery/items/thumbnail/ew9UseZWSPvAowzj7y5sJAbkk6EcAnacpHYakcd0_400_300.jpg'),
             ]
         ];
     }

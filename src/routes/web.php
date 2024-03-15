@@ -49,7 +49,7 @@ Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
             'update' => 'gallery.items.update',
             'destroy' => 'gallery.items.destroy',
         ]);
-        Route::post($adminPath . 'gallery/{gallery}/items/group', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'galleryItemGroupSave'])->name('gallery.items.groupSave');
+        Route::post($adminPath . '/gallery/{gallery}/items/group', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'galleryItemGroupSave'])->name('gallery.items.groupSave');
 
 
     });

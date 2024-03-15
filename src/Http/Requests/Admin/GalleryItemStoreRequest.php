@@ -111,7 +111,7 @@ class GalleryItemStoreRequest extends FormRequest
     protected function passedValidation ()
     {
         $params = GallerySetting::getParams();
-        $params['watermark'] = str_ireplace('/storage/','public/',$params['watermark']);
+        //$params['watermark'] = str_ireplace('/storage/','public/',$params['watermark']);
         $position = explode(',',$params['watermark_position']);
         if (empty($position[0]) || !in_array(trim($position[0]),['left','center','right'])) {
             $position_h = 'center';
@@ -125,20 +125,20 @@ class GalleryItemStoreRequest extends FormRequest
         else {
             $position_v = trim($position[1]);
         }
-        $stampedDir = 'public/elfcms/gallery/items/stamped';
+        $stampedDir = 'elfcms/gallery/items/stamped';
 
         /* Image */
         $image_path = '';
         if (!empty($this->file()['image'])) {
-            $image = $this->file()['image']->store('elfcms/gallery/items/image');
+            $image_path = $this->file()['image']->store('elfcms/gallery/items/image');
             if ($params['is_watermark'] && !empty($params['watermark'])) {
                 if (!is_dir(Storage::path($stampedDir . '/image'))) {
                     Storage::makeDirectory($stampedDir . '/image');
                 }
-                $newImage = Image::stamp(Storage::path($image), $params['watermark'], $params['watermark_size'], $params['watermark_indent_h'], $params['watermark_indent_v'], $position_h, $position_v, savePath: $stampedDir . '/image');
-                if ($newImage) $image = $newImage;
+                $newImage = Image::stamp(Storage::path($image_path), $params['watermark'], $params['watermark_size'], $params['watermark_indent_h'], $params['watermark_indent_v'], $position_h, $position_v, savePath: $stampedDir . '/image');
+                if ($newImage) $image_path = $newImage;
             }
-            $image_path = $image;
+            //$image_path = str_ireplace('public/','/storage/',$image);
         }
         //dd($extra);
 
@@ -146,18 +146,19 @@ class GalleryItemStoreRequest extends FormRequest
         $preview_path = '';
         if ($params['is_preview']){
             if (!empty($this->file()['preview'])) {
-                $preview = $this->file()['preview']->store('elfcms/gallery/items/preview');
+                $preview_path = $this->file()['preview']->store('elfcms/gallery/items/preview');
                 if ($params['is_watermark'] && !empty($params['watermark'])) {
-                    $newPreview = Image::stamp($image,$params['watermark'],$params['watermark_size'],$params['watermark_indent_h'],$params['watermark_indent_v'],$position_h,$position_v,savePath:'public/elfcms/gallery/items/preview/stamped');
-                    if ($newPreview) $preview = $newPreview;
+                    $newPreview = Image::stamp($image_path,$params['watermark'],$params['watermark_size'],$params['watermark_indent_h'],$params['watermark_indent_v'],$position_h,$position_v,savePath:'elfcms/gallery/items/preview/stamped');
+                    if ($newPreview) $preview_path = $newPreview;
                 }
-                $preview_path = $preview;
+                //$preview_path = str_ireplace('public/','/storage/',$preview);
             }
-            elseif (!empty($image_path) && !empty($image) && (!isset($imageConfig['preview']['auto']) || $imageConfig['preview']['auto'] === true)) {
-                $preview_path = Image::resize($image,'public/elfcms/gallery/items/preview/',$this->imageConfig['preview']['width'],$this->imageConfig['preview']['height']);
+            elseif (!empty($image_path) && (!isset($imageConfig['preview']['auto']) || $imageConfig['preview']['auto'] === true)) {
+                $preview_path = Image::resize($image_path,'elfcms/gallery/items/preview/',$this->imageConfig['preview']['width'],$this->imageConfig['preview']['height']);
                 /* if ($params['is_watermark'] && !empty($params['watermark'])) {
                     $image = Image::stamp($image,$params['watermark'],$params['watermark_size'],$params['watermark_indent_h'],$params['watermark_indent_v'],$position_h,$position_v,savePath:'public/elfcms/gallery/items/preview/stamped');
                 } */
+                //$preview_path = str_ireplace('public/','/storage/',$preview);
             }
         }
 
@@ -165,19 +166,19 @@ class GalleryItemStoreRequest extends FormRequest
         $thumbnail_path = '';
         if ($params['is_thumbnail']) {
             if (!empty($this->file()['thumbnail'])) {
-                $thumbnail = $this->file()['thumbnail']->store('elfcms/gallery/items/thumbnail');
+                $thumbnail_path = $this->file()['thumbnail']->store('elfcms/gallery/items/thumbnail');
                 if ($params['is_watermark'] && !empty($params['watermark'])) {
-                    $newThumb = Image::stamp($image,$params['watermark'],$params['watermark_size'],$params['watermark_indent_h'],$params['watermark_indent_v'],$position_h,$position_v,savePath:'public/elfcms/gallery/items/thumbnail/stamped');
+                    $newThumb = Image::stamp($image_path,$params['watermark'],$params['watermark_size'],$params['watermark_indent_h'],$params['watermark_indent_v'],$position_h,$position_v,savePath:'elfcms/gallery/items/thumbnail/stamped');
                     if($newThumb) $thumbnail = $newThumb;
                 }
-                $thumbnail_path = $thumbnail;
+                //$thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
             }
-            elseif (!empty($image_path) && !empty($image) && (!isset($imageConfig['thumbnail']['auto']) || $imageConfig['thumbnail']['auto'] === true)) {
-                $thumbnail = Image::resize($image,'public/elfcms/gallery/items/thumbnail/',$this->imageConfig['thumbnail']['width'],$this->imageConfig['thumbnail']['height']);
+            elseif (!empty($image_path) && (!isset($imageConfig['thumbnail']['auto']) || $imageConfig['thumbnail']['auto'] === true)) {
+                $thumbnail_path = Image::resize($image_path,'elfcms/gallery/items/thumbnail/',$this->imageConfig['thumbnail']['width'],$this->imageConfig['thumbnail']['height']);
                 /* if ($params['is_watermark'] && !empty($params['watermark'])) {
                     $image = Image::stamp($image,$params['watermark'],$params['watermark_size'],$params['watermark_indent_h'],$params['watermark_indent_v'],$position_h,$position_v,savePath:'public/elfcms/gallery/items/thumbnail/stamped');
                 } */
-                $thumbnail_path = $thumbnail;
+                //$thumbnail_path = str_ireplace('public/','/storage/',$thumbnail);
             }
         }
 
