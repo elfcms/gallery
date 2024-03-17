@@ -110,10 +110,14 @@ class GalleryItemController extends Controller
         }
 
         if ($request->ajax()) {
+            $data = $galleryItem->toArray();
+            if ($data['thumbnail']) $data['thumbnail'] = file_path($data['thumbnail']);
+            if ($data['preview']) $data['preview'] = file_path($data['preview']);
+            if ($data['image']) $data['image'] = file_path($data['image']);
             return [
                 'result' => 'success',
                 'message' => __('gallery::default.item_edited_successfully'),
-                'data' => $galleryItem->toArray(),
+                'data' => $data,
             ];
         }
         else {

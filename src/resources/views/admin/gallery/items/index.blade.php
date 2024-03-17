@@ -18,7 +18,7 @@
 
 <div class="gallery-info-box">
     <div class="gallery-preview-box">
-        <img src="{{ $gallery->preview }}" alt="">
+        <img src="{{ file_path($gallery->preview) }}" alt="">
     </div>
     <div class="gallery-data-box">
         <h2>{{ $gallery->name }}</h2>
