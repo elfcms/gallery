@@ -76,6 +76,31 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Access control
+    |--------------------------------------------------------------------------
+    |
+    | Define access rules for admin panel pages.
+    |
+    */
+
+
+    "access_routes" => [
+        [
+            "title" => "Galleries",
+            "lang_title" => "gallery::default.galleries",
+            "route" => "admin.gallery.index",
+            "actions" => ["read", "write"],
+        ],
+        [
+            "title" => "Galleries",
+            "lang_title" => "elfcms::default.settings",
+            "route" => "admin.gallery.settings.show",
+            "actions" => ["read", "write"],
+        ],
+    ],
+
     'components' => [
         'slider' => [
             'class' => '\Elfcms\Gallery\View\Components\Slider',
