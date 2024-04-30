@@ -38,6 +38,7 @@ class GalleryItemUpdateRequest extends FormRequest
             'additional_text' => __('gallery::default.additional_text'),
             'option' => __('gallery::default.option'),
             'active' => __('elfcms::default.active'),
+            'position' => __('elfcms::default.position'),
             'link' => __('elfcms::default.link'),
         ];
     }
@@ -59,6 +60,7 @@ class GalleryItemUpdateRequest extends FormRequest
             'additional_text' => 'nullable',
             'active' => 'nullable',
             'option' => 'nullable',
+            'position' => 'nullable',
             'link' => 'nullable',
         ];
     }
@@ -122,6 +124,7 @@ class GalleryItemUpdateRequest extends FormRequest
             'additional_text' => $this->additional_text,
             'active' => $this->active,
             'option' => $this->option,
+            'position' => intval($this->option),
             'link' => $this->link,
         ]);
     }

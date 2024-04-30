@@ -256,6 +256,10 @@ class GalleryItemController extends Controller
 
             $galleryItem->update($validated);
 
+            $galleryItem->image = file_path($galleryItem->image);
+            $galleryItem->thumbnail = file_path($galleryItem->thumbnail);
+            $galleryItem->preview = file_path($galleryItem->preview);
+
             if ($request->ajax()) {
                 return [
                     'result' => 'success',
