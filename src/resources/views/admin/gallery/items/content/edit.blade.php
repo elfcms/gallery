@@ -119,6 +119,6 @@
 galleryTagFormInit()
 
 //add editor
-//runEditor('#description')
-//runEditor('#additional_text')
+runEditor('#description')
+runEditor('#additional_text')
 </script>
