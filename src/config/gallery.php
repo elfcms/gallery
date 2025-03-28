@@ -10,7 +10,16 @@ return [
     |
     */
 
-    'version' => '1.3.0',
+    'version' => '1.4.0',
+    'developer' => 'Maxim Klassen',
+    'license' => 'MIT',
+    'author' => 'Maxim Klassen',
+    'title' => 'Gallery',
+    'description' => '',
+    'url' => '',
+    'github' => 'https://github.com/elfcms/gallery',
+    'release_status' => 'stable',
+    'release_date' => '2025',
 
     /*
     |--------------------------------------------------------------------------
@@ -21,7 +30,7 @@ return [
     |
     */
 
-    'elfcms_package' => '2.0.5',
+    'elfcms_package' => '3.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,8 +73,10 @@ return [
             "lang_title" => "gallery::default.galleries",
             "route" => "admin.gallery.index",
             "parent_route" => "admin.gallery",
-            "icon" => "/elfcms/admin/modules/gallery/images/icons/gallery.png",
+            "icon" => "/elfcms/admin/modules/gallery/images/icons/gallery.svg",
             "position" => 300,
+            "color" => "orangered",
+            "second_color" => "orange",
             "submenu" => [
                 [
                     "title" => "Galleries",

@@ -113,7 +113,17 @@ class GalleryController extends Controller
 
         $gallery = Gallery::create($validated);
 
-        return redirect(route('admin.gallery.edit',$gallery->slug))->with('gallerysuccess',__('gallery::default.gallery_created_successfully'));
+        if ($gallery) {
+            if ($request->input('submit') == 'save_and_open') {
+                return redirect(route('admin.gallery.items',$gallery))->with('success',__('gallery::default.gallery_created_successfully'));
+            }
+            if ($request->input('submit') == 'save_and_close') {
+                return redirect(route('admin.gallery.index'))->with('success',__('gallery::default.gallery_created_successfully'));
+            }
+            return redirect(route('admin.gallery.edit',$gallery))->with('success',__('gallery::default.gallery_created_successfully'));
+        }
+
+        return redirect(route('admin.gallery.create'))->withInput()->withErrors(['store_error'=>__('gallery::default.gallery_creating_error')]);
     }
 
     /**
@@ -160,7 +170,7 @@ class GalleryController extends Controller
 
             $gallery->save();
 
-            return redirect(route('admin.gallery.index'))->with('gallerysuccess',__('gallery::default.gallery_edited_successfully'));
+            return redirect(route('admin.gallery.index'))->with('success',__('gallery::default.gallery_edited_successfully'));
         }
         else {
             $request->merge([
@@ -195,7 +205,17 @@ class GalleryController extends Controller
 
             $gallery->save();
 
-            return redirect(route('admin.gallery.edit',$gallery->slug))->with('gallerysuccess',__('gallery::default.gallery_edited_successfully'));
+            if ($gallery) {
+                if ($request->input('submit') == 'save_and_open') {
+                    return redirect(route('admin.gallery.items',$gallery))->with('success',__('gallery::default.gallery_edited_successfully'));
+                }
+                if ($request->input('submit') == 'save_and_close') {
+                    return redirect(route('admin.gallery.index'))->with('success',__('gallery::default.gallery_edited_successfully'));
+                }
+                return redirect(route('admin.gallery.edit',$gallery))->with('success',__('gallery::default.gallery_edited_successfully'));
+            }
+    
+            return redirect(route('admin.gallery.create'))->withInput()->withErrors(['store_error'=>__('gallery::default.gallery_editing_error')]);
         }
     }
 
@@ -211,6 +231,6 @@ class GalleryController extends Controller
             return redirect(route('admin.gallery.index'))->withErrors(['gallerysuccess'=>'Error of post deleting']);
         }
 
-        return redirect(route('admin.gallery.index'))->with('gallerysuccess',__('gallery::default.gallery_deleted_successfully'));
+        return redirect(route('admin.gallery.index'))->with('success',__('gallery::default.gallery_deleted_successfully'));
     }
 }

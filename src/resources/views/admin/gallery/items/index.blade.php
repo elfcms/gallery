@@ -1,20 +1,7 @@
-@extends('elfcms::admin.layouts.gallery')
+@extends('elfcms::admin.layouts.main')
 @inject('image', 'Elfcms\Elfcms\Aux\Image')
 
-@section('gallery-content')
-
-@if (Session::has('elementsuccess'))
-<div class="alert alert-alternate">{{ Session::get('elementsuccess') }}</div>
-@endif
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+@section('pagecontent')
 
 <div class="gallery-info-box">
     <div class="gallery-preview-box">
@@ -25,9 +12,10 @@
         <div class="gallery-description">{{ $gallery->description }}</div>
         <div class="gallery-addtitional-text">{{ $gallery->addtitional_text }}</div>
     </div>
-    <div class="dallery-edit-button-box">
-        <a href="{{ route('admin.gallery.edit',$gallery) }}" class="default-btn big-square-button edit-button">
-            {{__('elfcms::default.edit')}}
+    <div class="gallery-edit-button-box">
+        <a href="{{ route('admin.gallery.edit',$gallery) }}" class="button round-button theme-button">
+            <span class="button-collapsed-text">{{__('elfcms::default.edit')}}</span>
+            {!! iconHtmlLocal('elfcms/admin/images/icons/buttons/edit.svg', svg: true) !!}
         </a>
     </div>
 </div>

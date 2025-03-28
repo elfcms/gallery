@@ -6,21 +6,11 @@
         <input type="hidden" name="id" value="{{ $item->id }}">
         <div class="colored-rows-box">
             <div class="input-box colored">
-                <div class="checkbox-wrapper">
-                    <div class="checkbox-inner">
-                        <input
-                            type="checkbox"
-                            name="active"
-                            id="active"
-                            @if ($item->active == 1)
-                            checked
-                            @endif
-                        >
-                        <i></i>
-                        <label for="active">
-                            {{ __('elfcms::default.active') }}
-                        </label>
-                    </div>
+                <label for="active">
+                    {{ __('elfcms::default.active') }}
+                </label>
+                <div class="input-wrapper">
+                    <x-elfcms::ui.checkbox.switch name="active" id="active" checked="{{ $item->active == 1 }}" />
                 </div>
             </div>
             <div class="input-box colored">
@@ -35,10 +25,7 @@
                     <input type="text" name="slug" id="slug" value="{{ $item->slug }}">
                 </div>
                 <div class="input-wrapper">
-                    <div class="autoslug-wrapper">
-                        <input type="checkbox" data-text-id="name" data-slug-id="slug" class="autoslug" checked>
-                        <div class="autoslug-button"></div>
-                    </div>
+                    <x-elfcms::ui.checkbox.autoslug textid="name" slugid="slug" checked="true" />
                 </div>
             </div>
             <div class="input-box colored">
@@ -56,14 +43,14 @@
             <div class="input-box colored">
                 <label for="image">{{ __('elfcms::default.image') }}</label>
                 <div class="input-wrapper">
-                    <x-elfcms-input-image code="image" value="{{ $item->image }}" />
+                    <x-elf-input-file value="{{ $item->image }}" :params="['name' => 'image', 'code' => 'image']" :download="true" accept=".jpg,.jpeg,.png,.webp" />
                 </div>
             </div>
             @if ($params['is_preview'])
             <div class="input-box colored">
                 <label for="preview">{{ __('elfcms::default.preview') }}</label>
                 <div class="input-wrapper">
-                    <x-elfcms-input-image code="preview" value="{{ $item->preview }}" />
+                    <x-elf-input-file value="{{ $item->preview }}" :params="['name' => 'preview', 'code' => 'preview']" :download="true" accept=".jpg,.jpeg,.png,.webp" />
                 </div>
             </div>
             @endif
@@ -71,7 +58,7 @@
             <div class="input-box colored">
                 <label for="thumbnail">{{ __('elfcms::default.thumbnail') }}</label>
                 <div class="input-wrapper">
-                    <x-elfcms-input-image code="thumbnail" value="{{ $item->thumbnail }}" />
+                    <x-elf-input-file value="{{ $item->thumbnail }}" :params="['name' => 'thumbnail', 'code' => 'thumbnail']" :download="true" accept=".jpg,.jpeg,.png,.webp" />
                 </div>
             </div>
             @endif
@@ -109,7 +96,7 @@
                         </div>
                         <div class="tag-input-box">
                             <input type="text" class="tag-input" autocomplete="off">
-                            <button type="button" class="default-btn tag-add-button">Add</button>
+                            <button type="button" class="button simple-button tag-add-button">Add</button>
                             <div class="tag-prompt-list"></div>
                         </div>
                     </div>
@@ -117,29 +104,21 @@
             </div>
         </div>
         <div class="button-box single-box">
-            <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>
+            <button type="submit" class="button color-text-button success-button">{{ __('elfcms::default.submit') }}</button>
+            @if (empty($isAjax))
+                <button type="submit" name="submit" value="save_and_close"
+                    class="button color-text-button info-button">{{ __('elfcms::default.save_and_close') }}</button>
+                <a href="{{ route('admin.gallery.items',$gallery) }}"
+                    class="button color-text-button">{{ __('elfcms::default.cancel') }}</a>
+            @endif
         </div>
     </form>
 </div>
 <script>
-const previewInput = document.querySelector('#preview')
-console.log(previewInput)
-if (previewInput) {
-    inputFileImg(previewInput)
-}
-const imageInput = document.querySelector('#image')
-if (imageInput) {
-    inputFileImg(imageInput)
-}
-const thumbnailInput = document.querySelector('#thumbnail')
-if (thumbnailInput) {
-    inputFileImg(thumbnailInput)
-}
-autoSlug('.autoslug')
 
 galleryTagFormInit()
 
 //add editor
-runEditor('#description')
-runEditor('#additional_text')
+//runEditor('#description')
+//runEditor('#additional_text')
 </script>

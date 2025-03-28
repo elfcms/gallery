@@ -1,11 +1,16 @@
 <div class="item-form">
-    <h3>{{ $page['title'] }}</h3>
+    <h2>{{ $page['title'] }}</h2>
     <form action="{{ route('admin.gallery.items.store',$gallery) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('POST')
         <div class="colored-rows-box">
             <div class="input-box colored">
-                <x-elfcms-input-checkbox code="active" label="{{ __('elfcms::default.active') }}" checked style="blue" />
+                <label for="active">
+                    {{ __('elfcms::default.active') }}
+                </label>
+                <div class="input-wrapper">
+                    <x-elfcms::ui.checkbox.switch name="active" id="active" checked="{{ true }}" />
+                </div>
             </div>
             <div class="input-box colored">
                 <label for="name">{{ __('elfcms::default.name') }}</label>
@@ -19,10 +24,7 @@
                     <input type="text" name="slug" id="slug" autocomplete="off">
                 </div>
                 <div class="input-wrapper">
-                    <div class="autoslug-wrapper">
-                        <input type="checkbox" data-text-id="name" data-slug-id="slug" class="autoslug" checked>
-                        <div class="autoslug-button"></div>
-                    </div>
+                    <x-elfcms::ui.checkbox.autoslug textid="name" slugid="slug" checked="true" />
                 </div>
             </div>
             <div class="input-box colored">
@@ -37,65 +39,17 @@
                     <textarea name="additional_text" id="additional_text"></textarea>
                 </div>
             </div>
-            {{-- <div class="input-box colored">
-                <label for="image">{{ __('elfcms::default.image') }}</label>
-                <div class="input-wrapper">
-                    <input type="hidden" name="image_path" id="image_path">
-                    <div class="image-button">
-                        <div class="delete-image hidden">&#215;</div>
-                        <div class="image-button-img">
-                            <img src="{{ asset('/vendor/elfcms/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
-                        </div>
-                        <div class="image-button-text">
-                            {{ __('elfcms::default.choose_file') }}
-                        </div>
-                        <input type="file" name="image" id="image">
-                    </div>
-                </div>
-            </div>
-            <div class="input-box colored">
-                <label for="preview">{{ __('elfcms::default.preview') }}</label>
-                <div class="input-wrapper">
-                    <input type="hidden" name="preview_path" id="preview_path">
-                    <div class="image-button">
-                        <div class="delete-image hidden">&#215;</div>
-                        <div class="image-button-img">
-                            <img src="{{ asset('/vendor/elfcms/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
-                        </div>
-                        <div class="image-button-text">
-                            {{ __('elfcms::default.choose_file') }}
-                        </div>
-                        <input type="file" name="preview" id="preview">
-                    </div>
-                </div>
-            </div>
-            <div class="input-box colored">
-                <label for="thumbnail">{{ __('elfcms::default.thumbnail') }}</label>
-                <div class="input-wrapper">
-                    <input type="hidden" name="thumbnail_path" id="thumbnail_path">
-                    <div class="image-button">
-                        <div class="delete-image hidden">&#215;</div>
-                        <div class="image-button-img">
-                            <img src="{{ asset('/vendor/elfcms/elfcms/admin/images/icons/upload.png') }}" alt="Upload file">
-                        </div>
-                        <div class="image-button-text">
-                            {{ __('elfcms::default.choose_file') }}
-                        </div>
-                        <input type="file" name="thumbnail" id="thumbnail">
-                    </div>
-                </div>
-            </div> --}}
             <div class="input-box colored">
                 <label for="image">{{ __('elfcms::default.image') }}</label>
                 <div class="input-wrapper">
-                    <x-elfcms-input-image code="image" />
+                    <x-elf-input-file value="" :params="['name' => 'image', 'code' => 'image']" :download="true" accept=".jpg,.jpeg,.png,.webp" />
                 </div>
             </div>
             @if ($params['is_preview'])
             <div class="input-box colored">
                 <label for="preview">{{ __('elfcms::default.preview') }}</label>
                 <div class="input-wrapper">
-                    <x-elfcms-input-image code="preview" />
+                    <x-elf-input-file value="" :params="['name' => 'preview', 'code' => 'preview']" :download="true" accept=".jpg,.jpeg,.png,.webp" />
                 </div>
             </div>
             @endif
@@ -103,7 +57,7 @@
             <div class="input-box colored">
                 <label for="thumbnail">{{ __('elfcms::default.thumbnail') }}</label>
                 <div class="input-wrapper">
-                    <x-elfcms-input-image code="thumbnail" />
+                    <x-elf-input-file value="" :params="['name' => 'thumbnail', 'code' => 'thumbnail']" :download="true" accept=".jpg,.jpeg,.png,.webp" />
                 </div>
             </div>
             @endif
@@ -132,7 +86,7 @@
                         <div class="tag-list-box"></div>
                         <div class="tag-input-box">
                             <input type="text" class="tag-input" autocomplete="off">
-                            <button type="button" class="default-btn tag-add-button">Add</button>
+                            <button type="button" class="button simple-button tag-add-button">Add</button>
                             <div class="tag-prompt-list"></div>
                         </div>
                     </div>
@@ -140,29 +94,22 @@
             </div>
         </div>
         <div class="button-box single-box">
-            <button type="submit" class="default-btn submit-button">{{ __('elfcms::default.submit') }}</button>
+            <button type="submit" class="button color-text-button success-button">{{ __('elfcms::default.submit') }}</button>
+            @if (empty($isAjax))
+                <button type="submit" name="submit" value="save_and_close"
+                    class="button color-text-button info-button">{{ __('elfcms::default.save_and_close') }}</button>
+                <a href="{{ route('admin.gallery.items',$gallery) }}"
+                    class="button color-text-button">{{ __('elfcms::default.cancel') }}</a>
+            @endif
         </div>
     </form>
 </div>
 <script>
-const previewInput = document.querySelector('#preview')
-if (previewInput) {
-    inputFileImg(previewInput)
-}
-const imageInput = document.querySelector('#image')
-if (imageInput) {
-    inputFileImg(imageInput)
-}
-const thumbnailInput = document.querySelector('#thumbnail')
-if (thumbnailInput) {
-    inputFileImg(thumbnailInput)
-}
-autoSlug('.autoslug')
 
 
 galleryTagFormInit()
 
 //add editor
-runEditor('#description')
-runEditor('#additional_text')
+////runEditor('#description')
+////runEditor('#additional_text')
 </script>

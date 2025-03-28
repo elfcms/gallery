@@ -65,6 +65,7 @@ class GalleryItemController extends Controller
                 'gallery' => $gallery,
                 'position' => $position,
                 'params' => $params,
+                'isAjax' => true,
             ]);
         }
         return view('elfcms::admin.gallery.items.create',[
@@ -121,7 +122,14 @@ class GalleryItemController extends Controller
             ];
         }
         else {
-            return redirect(route('admin.gallery.items',$gallery))->with('elementsuccess',__('gallery::default.item_created_successfully'));
+            if ($galleryItem) {
+                if ($request->input('submit') == 'save_and_close') {
+                    return redirect(route('admin.gallery.items',$gallery))->with('success',__('gallery::default.item_created_successfully'));
+                }
+                return redirect(route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$galleryItem]))->with('success',__('gallery::default.item_created_successfully'));
+            }
+    
+            return redirect(route('admin.gallery.items.create',$gallery))->withInput()->withErrors(['store_error'=>__('gallery::default.item_creating_error')]);
         }
 
 
@@ -162,6 +170,7 @@ class GalleryItemController extends Controller
                 'gallery' => $gallery,
                 'item' => $galleryItem,
                 'params' => $params,
+                'isAjax' => true,
             ]);
         }
         return view('elfcms::admin.gallery.items.edit',[
@@ -268,7 +277,15 @@ class GalleryItemController extends Controller
                 ];
             }
 
-            return redirect(route('admin.gallery.items',$gallery))->with('elementsuccess',__('gallery::default.gallery_edited_successfully'));
+            if ($galleryItem) {
+                if ($request->input('submit') == 'save_and_close') {
+                    return redirect(route('admin.gallery.items',$gallery))->with('success',__('gallery::default.gallery_edited_successfully'));
+                }
+                return redirect(route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$galleryItem]))->with('success',__('gallery::default.gallery_edited_successfully'));
+            }
+    
+            return redirect(route('admin.gallery.items.edit',['gallery'=>$gallery,'galleryItem'=>$galleryItem]))->withInput()->withErrors(['store_error'=>__('gallery::default.gallery_editing_error')]);
+
         }
     }
 

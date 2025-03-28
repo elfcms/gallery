@@ -14,10 +14,16 @@ return [
     'edit_item' => 'Element bearbeiten',
     'item_edited_successfully' => 'Element erfolgreich bearbeitet',
     'item_deleted_successfully' => 'Element erfolgreich gelöscht',
+    'gallery_creating_error' => 'Fehler beim Erstellen der Galerie',
+    'gallery_editing_error' => 'Fehler beim Bearbeiten der Galerie',
+    'gallery_deleting_error' => 'Fehler beim Löschen der Galerie',
+    'item_creating_error' => 'Fehler beim Erstellen des Artikels',
+    'item_editing_error' => 'Fehler beim Bearbeiten des Artikels',
+    'item_deleting_error' => 'Fehler beim Löschen des Artikels',
     'show' => 'Zeigen',
     'hide' => 'Ausblenden',
     'no_category' => 'Keine Kategorie',
-    'amount_of_elements' => 'Menge der Elemente',//'Anzahl der Elemente'
+    'amount_of_elements' => 'Menge der Elemente', //'Anzahl der Elemente'
     'items' => 'Elemente',
     'showing_results_for_category' => 'Ergebnisse für die Kategorie :category werden angezeigt',
     'additional_text' => 'Zusätzlicher Text',
@@ -45,5 +51,5 @@ return [
     'horizontal_indent' => 'Horizontaler Einzug',
     'vertical_indent' => 'Vertikaler Einzug',
     'relative_size' => 'Größe (im Verhältnis zum Quellbild)',
-    'filesize_attention' => 'Beachtung! Die maximale Größe hochgeladener Dateien beträgt :size. Um diesen Parameter zu ändern, ändern Sie die Einstellungen des Parameters upload_max_filesize in php.ini oder .htaccess',
+    'filesize_attention' => '<b>Beachtung!</b> Die maximale Größe hochgeladener Dateien beträgt :size. Um diesen Parameter zu ändern, ändern Sie die Einstellungen des Parameters upload_max_filesize in php.ini oder .htaccess',
 ];
