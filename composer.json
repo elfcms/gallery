@@ -23,6 +23,9 @@
             "providers": [
                 "Elfcms\\Gallery\\Providers\\ElfcmsModuleProvider"
             ]
+        },
+        "elfcms": {
+            "title": "Gallery"
         }
     }
 }

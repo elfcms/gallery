@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'version' => '1.4.0',
+    'version' => '1.4.1',
     'developer' => 'Maxim Klassen',
     'license' => 'MIT',
     'author' => 'Maxim Klassen',
