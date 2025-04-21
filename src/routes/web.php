@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 $adminPath = config('elfcms.elfcms.admin_path') ?? '/admin';
 
-Route::group(['middleware'=>['web','cookie']],function() use ($adminPath) {
+Route::group(['middleware'=>['web', 'locales','cookie']],function() use ($adminPath) {
 
     Route::name('admin.')->middleware('admin')->group(function() use ($adminPath) {
 

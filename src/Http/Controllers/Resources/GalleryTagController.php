@@ -67,17 +67,17 @@ class GalleryTagController extends Controller
 
         if ($request->ajax()) {
             $result = 'error';
-            $message = __('elf.error_of_tag_created');
+            $message = __('blog::default.error_of_tag_created');
             $data = [];
             if ($galleryTag) {
                 $result = 'success';
-                $message = __('elf.tag_created_successfully');
+                $message = __('blog::default.tag_created_successfully');
                 $data = ['id'=> $galleryTag->id];
             }
             return json_encode(['result'=>$result,'message'=>$message,'data'=>$data]);
         }
 
-        return redirect(route('admin.gallery.tags.edit',$galleryTag->id))->with('tagcreated',__('elf.tag_created_successfully'));
+        return redirect(route('admin.gallery.tags.edit',$galleryTag->id))->with('tagcreated',__('blog::default.tag_created_successfully'));
     }
 
     /**
@@ -132,7 +132,7 @@ class GalleryTagController extends Controller
         $galleryTag->name = $validated['name'];
         $galleryTag->save();
 
-        return redirect(route('admin.gallery.tags.edit',$galleryTag->id))->with('tagedited',__('elf.tag_edited_successfully'));
+        return redirect(route('admin.gallery.tags.edit',$galleryTag->id))->with('tagedited',__('blog::default.tag_edited_successfully'));
     }
 
     /**
@@ -165,7 +165,7 @@ class GalleryTagController extends Controller
             ]);
 
             $result = 'error';
-            $message = __('elf.error_of_tag_created');
+            $message = __('blog::default.error_of_tag_created');
             $data = [];
 
             if ($tagByName = GalleryTag::where('name',$validated['name'])->first()) {
@@ -178,7 +178,7 @@ class GalleryTagController extends Controller
 
                 if ($galleryTag) {
                     $result = 'success';
-                    $message = __('elf.tag_created_successfully');
+                    $message = __('blog::default.tag_created_successfully');
                     $data = ['id'=> $galleryTag->id,'name'=>$validated['name']];
                 }
             }

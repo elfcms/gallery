@@ -68,7 +68,7 @@
                     {{-- <a href="{{ route('admin.gallery.index',UrlParams::addArr(['order'=>'id','trend'=>['desc','asc']])) }}" class="ordering @if (UrlParams::case('order',['id'=>true])) {{UrlParams::case('trend',['desc'=>'desc'],'asc')}} @endif"></a> --}}
                 </th>
                 <th>
-                    {{__('blog::elf.preview')}}
+                    {{__('blog::default.elf.preview')}}
                 </th>
                 <th>
                     {{__('elfcms::default.name')}}
@@ -177,7 +177,7 @@
                                         ID
                                     </th>
                                     <th>
-                                        {{__('blog::elf.preview')}}
+                                        {{__('blog::default.elf.preview')}}
                                     </th>
                                     <th>
                                         {{__('elfcms::default.name')}}
