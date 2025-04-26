@@ -3,53 +3,54 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-$adminPath = config('elfcms.elfcms.admin_path') ?? '/admin';
+$adminPath = config('elfcms.elfcms.admin_path') ?? 'admin';
+$adminPath = trim($adminPath,'/');
 
 Route::group(['middleware'=>['web', 'locales','cookie']],function() use ($adminPath) {
 
-    Route::name('admin.')->middleware('admin')->group(function() use ($adminPath) {
+    Route::prefix($adminPath . '/gallery')->name('admin.gallery.')->middleware('admin')->group(function() {
 
-        Route::get($adminPath . '/gallery/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'show'])->name('gallery.settings.show');
-        Route::post($adminPath . '/gallery/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'save'])->name('gallery.settings.save');
+        Route::get('/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'show'])->name('settings.show');
+        Route::post('/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'save'])->name('settings.save');
 
-        Route::post($adminPath . '/gallery/tags/addnotexist', [\Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class,'addNotExist'])->name('gallery.tags.addnotexist');
-        Route::resource($adminPath . '/gallery/tags', \Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class)
+        Route::post('/tags/addnotexist', [\Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class,'addNotExist'])->name('tags.addnotexist');
+        Route::resource('/tags', \Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class)
         ->parameters(['tags'=>'galleryTag'])
         ->names([
-            'index' => 'gallery.tags',
-            'create' => 'gallery.tags.create',
-            'edit' => 'gallery.tags.edit',
-            'store' => 'gallery.tags.store',
-            'show' => 'gallery.tags.show',
-            'edit' => 'gallery.tags.edit',
-            'update' => 'gallery.tags.update',
-            'destroy' => 'gallery.tags.destroy'
+            'index' => 'tags',
+            'create' => 'tags.create',
+            'edit' => 'tags.edit',
+            'store' => 'tags.store',
+            'show' => 'tags.show',
+            'edit' => 'tags.edit',
+            'update' => 'tags.update',
+            'destroy' => 'tags.destroy'
         ]);
-        Route::resource($adminPath . '/gallery/categories', Elfcms\Gallery\Http\Controllers\Resources\GalleryCategoryController::class)
+        Route::resource('/categories', Elfcms\Gallery\Http\Controllers\Resources\GalleryCategoryController::class)
         ->names([
-            'index' => 'gallery.categories',
-            'create' => 'gallery.categories.create',
-            'edit' => 'gallery.categories.edit',
-            'store' => 'gallery.categories.store',
-            'show' => 'gallery.categories.show',
-            'edit' => 'gallery.categories.edit',
-            'update' => 'gallery.categories.update',
-            'destroy' => 'gallery.categories.destroy'
+            'index' => 'categories',
+            'create' => 'categories.create',
+            'edit' => 'categories.edit',
+            'store' => 'categories.store',
+            'show' => 'categories.show',
+            'edit' => 'categories.edit',
+            'update' => 'categories.update',
+            'destroy' => 'categories.destroy'
         ]);
-        Route::resource($adminPath . '/gallery', Elfcms\Gallery\Http\Controllers\Resources\GalleryController::class);
-        Route::resource($adminPath . '/gallery/{gallery}/items', Elfcms\Gallery\Http\Controllers\Resources\GalleryItemController::class)
+        Route::resource('/', Elfcms\Gallery\Http\Controllers\Resources\GalleryController::class);
+        Route::resource('/{gallery}/items', Elfcms\Gallery\Http\Controllers\Resources\GalleryItemController::class)
         ->parameters(['items'=>'galleryItem'])
         ->names([
-            'index' => 'gallery.items',
-            'create' => 'gallery.items.create',
-            'edit' => 'gallery.items.edit',
-            'store' => 'gallery.items.store',
-            'show' => 'gallery.items.show',
-            'edit' => 'gallery.items.edit',
-            'update' => 'gallery.items.update',
-            'destroy' => 'gallery.items.destroy',
+            'index' => 'items',
+            'create' => 'items.create',
+            'edit' => 'items.edit',
+            'store' => 'items.store',
+            'show' => 'items.show',
+            'edit' => 'items.edit',
+            'update' => 'items.update',
+            'destroy' => 'items.destroy',
         ]);
-        Route::post($adminPath . '/gallery/{gallery}/items/group', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'galleryItemGroupSave'])->name('gallery.items.groupSave');
+        Route::post('/{gallery}/items/group', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'galleryItemGroupSave'])->name('items.groupSave');
 
 
     });

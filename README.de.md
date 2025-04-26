@@ -1,4 +1,4 @@
-🇬🇧 [English](README.en.md) | 🇷🇺 [Русский](README.ru.md)
+🇬🇧 [English](README.md) | 🇷🇺 [Русский](README.ru.md)
 
 ---
 # Galerie Modul for ELF CMS
@@ -36,6 +36,10 @@ MIT License. See the notice section below.
 
 Dieses Projekt wird unter der MIT-Lizenz veröffentlicht.  
 Sie dürfen den Code frei verwenden, kopieren, ändern und weitergeben, solange dieser Hinweis und die ursprüngliche Lizenz enthalten bleiben.
+
+## ⚖️ Haftungsausschluss
+
+Dieses Modul wird "wie besehen" ohne jegliche ausdrückliche oder stillschweigende Gewährleistungen oder Zusicherungen bereitgestellt. Die Nutzung erfolgt auf eigene Gefahr. Die Entwickler übernehmen keine Verantwortung für Schäden, Datenverluste oder andere Probleme, die durch die Nutzung dieses Moduls entstehen können.
 
 **Bitte verweisen Sie bei Nutzung auf das Original-Repository:**  
 [https://github.com/elfcms/gallery](https://github.com/elfcms/gallery)
