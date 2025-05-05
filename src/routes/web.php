@@ -8,13 +8,13 @@ $adminPath = trim($adminPath,'/');
 
 Route::group(['middleware'=>['web', 'locales','cookie']],function() use ($adminPath) {
 
-    Route::prefix($adminPath . '/gallery')->name('admin.gallery.')->middleware('admin')->group(function() {
+    Route::prefix($adminPath)->name('admin.gallery.')->middleware('admin')->group(function() {
 
-        Route::get('/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'show'])->name('settings.show');
-        Route::post('/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'save'])->name('settings.save');
+        Route::get('/gallery/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'show'])->name('settings.show');
+        Route::post('/gallery/settings', [\Elfcms\Gallery\Http\Controllers\GallerySettingController::class,'save'])->name('settings.save');
 
-        Route::post('/tags/addnotexist', [\Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class,'addNotExist'])->name('tags.addnotexist');
-        Route::resource('/tags', \Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class)
+        Route::post('/gallery/tags/addnotexist', [\Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class,'addNotExist'])->name('tags.addnotexist');
+        Route::resource('/gallery/tags', \Elfcms\Gallery\Http\Controllers\Resources\GalleryTagController::class)
         ->parameters(['tags'=>'galleryTag'])
         ->names([
             'index' => 'tags',
@@ -26,7 +26,7 @@ Route::group(['middleware'=>['web', 'locales','cookie']],function() use ($adminP
             'update' => 'tags.update',
             'destroy' => 'tags.destroy'
         ]);
-        Route::resource('/categories', Elfcms\Gallery\Http\Controllers\Resources\GalleryCategoryController::class)
+        Route::resource('/gallery/categories', Elfcms\Gallery\Http\Controllers\Resources\GalleryCategoryController::class)
         ->names([
             'index' => 'categories',
             'create' => 'categories.create',
@@ -37,8 +37,17 @@ Route::group(['middleware'=>['web', 'locales','cookie']],function() use ($adminP
             'update' => 'categories.update',
             'destroy' => 'categories.destroy'
         ]);
-        Route::resource('/', Elfcms\Gallery\Http\Controllers\Resources\GalleryController::class);
-        Route::resource('/{gallery}/items', Elfcms\Gallery\Http\Controllers\Resources\GalleryItemController::class)
+        Route::resource('/gallery', Elfcms\Gallery\Http\Controllers\Resources\GalleryController::class)->names([
+            'index' => 'index',
+            'create' => 'create',
+            'edit' => 'edit',
+            'store' => 'store',
+            'show' => 'show',
+            'edit' => 'edit',
+            'update' => 'update',
+            'destroy' => 'destroy',
+        ]);
+        Route::resource('/gallery/{gallery}/items', Elfcms\Gallery\Http\Controllers\Resources\GalleryItemController::class)
         ->parameters(['items'=>'galleryItem'])
         ->names([
             'index' => 'items',
@@ -50,7 +59,7 @@ Route::group(['middleware'=>['web', 'locales','cookie']],function() use ($adminP
             'update' => 'items.update',
             'destroy' => 'items.destroy',
         ]);
-        Route::post('/{gallery}/items/group', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'galleryItemGroupSave'])->name('items.groupSave');
+        Route::post('/gallery/{gallery}/items/group', [\Elfcms\Gallery\Http\Controllers\AdminController::class,'galleryItemGroupSave'])->name('items.groupSave');
 
 
     });
