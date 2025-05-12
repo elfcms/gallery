@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'version' => '1.5.0',
+    'version' => '1.5.1',
     'developer' => 'Maxim Klassen',
     'license' => 'MIT',
     'author' => 'Maxim Klassen',
@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'elfcms_package' => '3.0',
+    'elfcms_package' => '3.0.11',
 
     /*
     |--------------------------------------------------------------------------
