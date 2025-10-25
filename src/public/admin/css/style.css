@@ -87,7 +87,7 @@ main:has(.gallery-items-box) {
 }
 
 .gallery-preview-box {
-    width: 18.75rem;
+    min-width: 18.75rem;
     height: 18.75rem;
     display: flex;
     justify-content: center;
@@ -102,6 +102,8 @@ main:has(.gallery-items-box) {
 }
 .gallery-edit-button-box {
     padding-block: 1rem;
+    min-width: 8.5rem;
+    text-align: right;
 }
 
 .gallery-data-box {

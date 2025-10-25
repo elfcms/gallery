@@ -30,7 +30,7 @@ class GalleryItemController extends Controller
         if ($request->ajax()) {
             return view('elfcms::admin.gallery.items.content.index',[
                 'page' => [
-                    'title' => __('gallery::default.items'),
+                    'title' => __('gallery::default.gallery'),
                     'current' => url()->current(),
                 ],
                 'gallery' => $gallery,
@@ -38,7 +38,7 @@ class GalleryItemController extends Controller
         }
         return view('elfcms::admin.gallery.items.index',[
             'page' => [
-                'title' => __('gallery::default.items'),
+                'title' => __('gallery::default.gallery'),
                 'current' => url()->current(),
             ],
             'gallery' => $gallery,

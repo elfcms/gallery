@@ -117,9 +117,7 @@ class KJS {
                 window.addEventListener('resize',()=>{
                     let lastResponsiveSize = this.responsiveSize;
                     this.setParams();
-                    //console.log(lastResponsiveSize, this.responsiveSize)
                     if (lastResponsiveSize != this.responsiveSize) {
-                        //console.log('init')
                         this.init();
                     }
                     //this.init();
@@ -132,10 +130,6 @@ class KJS {
     }
 
     init() {
-
-        ////console.log(window.innerWidth)
-
-        //this.responsiveSize = window.innerWidth;
 
         this.container.innerHTML = '';
 
@@ -175,7 +169,6 @@ class KJS {
         this.viewSize = this.param.gap * (this.param.count - 1);
         this.itemSize = parseInt((this.trackViewSize - (this.viewSize)) / this.param.count);
         this.trackSize = this.itemSize * this.itemsCount + this.param.gap * (this.itemsCount - 1);
-        //console.log('1',this.itemSize);
         this.maxStep = Math.ceil((this.itemsCount - this.param.count) / this.param.step);
 
 
@@ -260,7 +253,6 @@ class KJS {
                     this.dotsItems[i].dataset.item = i;
                     let self = this;
                     this.dotsItems[i].addEventListener('click',function(){
-                        console.log(i);
                         self.step = self.active = i;
                         self.setStep();
                         self.setActiveDot();
@@ -335,7 +327,6 @@ class KJS {
 
         this.lightBoxPicture.addEventListener('touchstart',(e) => {
             this.fullSwipe.start = this.fullSwipe.current = this.fullSwipe.end = e.touches[0]['page'+this.shiftName];
-            //console.log('start', this.fullSwipe.start, this.fullSwipe.current, this.fullSwipe.end)
         },{passive: true});
 
         this.lightBoxPicture.addEventListener('touchend',(e) => {
@@ -359,16 +350,12 @@ class KJS {
 
         this.lightBoxPicture.addEventListener('touchmove',(e) => {
             this.fullSwipe.current = e.touches[0]['page'+this.shiftName];
-            /* let touchMoving = this.fullSwipe.current - this.fullSwipe.start + this.shift;
-            //console.log(touchMoving)
-            this.trackInner.style.setProperty('transform','translate'+this.shiftName+'('+touchMoving+'px)'); */
         },{passive: true});
 
         this.lightBoxPicture.addEventListener('touchcancel',(e) => {
             this.fullSwipe.start = 0;
             this.fullSwipe.current = 0;
             this.fullSwipe.end = 0;
-            //this.trackInner.style.setProperty('transform','translate'+this.shiftName+'('+this.shift+'px)');
         },{passive: true});
 
         /* /swipe */
@@ -419,7 +406,6 @@ class KJS {
     }
 
     setFullActive() {
-        ////console.log(this.fullActive)
         let img = this.data[this.fullActive].full ?? this.data[this.fullActive].img ?? this.data[this.fullActive].thumb;
         this.lightBoxPicture.style.backgroundImage = "url('" + img + "')";
     }
@@ -471,7 +457,6 @@ class KJS {
         if (this.step >= this.maxStep) {
             shift = this.trackSize - this.trackViewSize;
 
-            //console.log('2',this.trackSize);
             this.lastStep = true;
         }
         else {
@@ -582,7 +567,6 @@ class KJS {
         if (data.html) {
             item.innerHTML = data.html;
         }
-        //console.log('i',this.itemSize)
         if (this.itemSize) {
             item.style.setProperty(this.sizeName, this.itemSize+'px');
             let image = new Image();
@@ -672,7 +656,6 @@ class KJS {
 
         this.track.addEventListener('touchstart',(e) => {
             this.trackSwipe.start = this.trackSwipe.current = this.trackSwipe.end = e.touches[0]['page'+this.shiftName];
-            //console.log('start', this.trackSwipe.start, this.trackSwipe.current, this.trackSwipe.end)
         },{passive: true});
 
         this.track.addEventListener('touchend',(e) => {
@@ -697,7 +680,6 @@ class KJS {
         this.track.addEventListener('touchmove',(e) => {
             this.trackSwipe.current = e.touches[0]['page'+this.shiftName];
             let touchMoving = this.trackSwipe.current - this.trackSwipe.start + this.shift;
-            //console.log(touchMoving)
             this.trackInner.style.setProperty('transform','translate'+this.shiftName+'('+touchMoving+'px)');
         },{passive: true});
 
@@ -709,7 +691,6 @@ class KJS {
         },{passive: true});
 
         /* /swipe */
-        //console.log('track')
 
         this.trackBox = trackBox;
         return this.trackBox;
@@ -746,15 +727,9 @@ class KJS {
         single.append(this.pictureBox);
         if (content) this.pictureBox.append(content);
         if (this.param.title) {
-            /* single.classList.add('with-title');
-            this.tiltleBox = document.createElement('div');
-            this.tiltleBox.classList.add('slide-title'); */
             single.append(this.createTitle());
         }
         if (this.param.description) {
-            /* single.classList.add('with-description');
-            this.descriptionBox = document.createElement('div');
-            this.descriptionBox.classList.add('slide-description'); */
             single.append(this.createDescription());
         }
         if (this.param.zoom && this.param.single) {
@@ -782,7 +757,6 @@ class KJS {
             for (let size in this.param.responsive) {
                 size = parseInt(size);
                 if (window.innerWidth <= size) {
-                    //console.log('01',size,window.innerWidth)
                     this.responsiveSize = size;
                     this.responsiveParam = this.param.responsive[this.responsiveSize];
                     break;
@@ -808,8 +782,6 @@ class KJS {
             this.param.title       = this.responsiveParam?.title        ?? this.defaultParam.title;
             this.param.description = this.responsiveParam?.description  ?? this.defaultParam.description;
             this.param.track       = this.responsiveParam?.track        ?? this.defaultParam.track;
-            //console.log(this.param.count,this.responsiveParam?.count,this.defaultParam.count)
-
         }
 
     }

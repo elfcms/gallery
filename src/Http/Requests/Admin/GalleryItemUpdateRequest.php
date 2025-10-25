@@ -113,6 +113,8 @@ class GalleryItemUpdateRequest extends FormRequest
             $thumbnail_path = Image::resize($image,'elfcms/gallery/items/thumbnail/',$this->imageConfig['thumbnail']['width'],$this->imageConfig['thumbnail']['height']);
         }
         $this->files->remove('image');
+        $this->files->remove('preview');
+        $this->files->remove('thumbnail');
         $this->convertedFiles = null;
         $this->replace([
             'slug' => $this->slug,

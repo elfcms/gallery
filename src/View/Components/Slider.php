@@ -37,8 +37,8 @@ class Slider extends Component
      */
     public function render()
     {
-        if (View::exists('components.slider.' . $this->theme)) {
-            return view('components.slider.' . $this->theme);
+        if (View::exists('components.gallery.slider.' . $this->theme)) {
+            return view('components.gallery.slider.' . $this->theme);
         }
         if (View::exists('gallery.components.slider.' . $this->theme)) {
             return view('gallery.components.slider.' . $this->theme);
@@ -48,6 +48,9 @@ class Slider extends Component
         }
         if (View::exists('elfcms.components.slider.' . $this->theme)) {
             return view('elfcms.components.slider.' . $this->theme);
+        }
+        if (View::exists('elfcms.components.gallery.slider.' . $this->theme)) {
+            return view('elfcms.components.gallery.slider.' . $this->theme);
         }
         if (View::exists('elfcms.gallery.components.slider.' . $this->theme)) {
             return view('elfcms.gallery.components.slider.' . $this->theme);

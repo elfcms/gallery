@@ -183,6 +183,8 @@ class GalleryItemStoreRequest extends FormRequest
         }
 
         $this->files->remove('image');
+        $this->files->remove('preview');
+        $this->files->remove('thumbnail');
         $this->convertedFiles = null;
         $this->replace([
             'slug' => $this->slug,

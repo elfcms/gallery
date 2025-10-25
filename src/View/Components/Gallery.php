@@ -20,7 +20,7 @@ class Gallery extends Component
         $result = $gallery;
         if (is_numeric($gallery)) {
             $gallery = intval($gallery);
-            $result = GalleryModel::find($gallery);
+            $result = GalleryModel::with('items')->find($gallery);
         }
         if (is_string($gallery)) {
             $result = GalleryModel::where('slug',$gallery)->with('items')->first();
@@ -36,8 +36,8 @@ class Gallery extends Component
      */
     public function render()
     {
-        if (View::exists('components.gallery.' . $this->theme)) {
-            return view('components.gallery.' . $this->theme);
+        if (View::exists('components.gallery.gallery.' . $this->theme)) {
+            return view('components.gallery.gallery.' . $this->theme);
         }
         if (View::exists('gallery.components.gallery.' . $this->theme)) {
             return view('gallery.components.gallery.' . $this->theme);
